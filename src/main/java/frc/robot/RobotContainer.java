@@ -19,9 +19,8 @@ import frc.robot.subsystems.Drive;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final Joystick m_driverController = new Joystick(Constants.CONTROLLER_CHANNEL);
+  private final Joystick m_driverController = new Joystick(Constants.DRIVER_CONTROLLER);
   private final Drive m_drive = new Drive();
-  private final CheesyDrive m_cheesydrive = new CheesyDrive(m_drive, m_driverController);
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -37,7 +36,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    m_drive.setDefaultCommand(m_cheesydrive);
+    m_drive.setDefaultCommand(new CheesyDrive(m_drive, m_driverController));
   }
 
   /**
@@ -47,6 +46,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_cheesydrive;
+    return null;
   }
 }

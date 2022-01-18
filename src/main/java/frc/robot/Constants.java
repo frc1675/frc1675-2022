@@ -13,12 +13,12 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public static final int RIGHT_FRONT_CHANNEL= 0;
-    public static final int RIGHT_BACK_CHANNEL = 1;
-    public static final int LEFT_FRONT_CHANNEL = 2;
-    public static final int LEFT_BACK_CHANNEL = 3; 
+    public static final int RIGHT_FRONT= 0;
+    public static final int RIGHT_BACK = 1;
+    public static final int LEFT_FRONT = 2;
+    public static final int LEFT_BACK = 3; 
 
-    public static final int CONTROLLER_CHANNEL = 0;
-    public static final int LEFT_AXIS_CHANNEL= 1;
-    public static final int RIGHT_AXIS_CHANNEL = 4;
+    public static final int DRIVER_CONTROLLER = 0;
+    public static final int LEFT_Y_AXIS= 1;
+    public static final int RIGHT_X_AXIS = 4;
 }

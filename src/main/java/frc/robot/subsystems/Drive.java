@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.motorcontrol.PWMVictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -12,10 +11,10 @@ import frc.robot.Constants;
 
 public class Drive extends SubsystemBase {
   /** Creates a new Drive subsystem. */
-  private MotorController rightFront = new PWMVictorSPX(Constants.RIGHT_FRONT_CHANNEL);
-  private MotorController rightBack = new PWMVictorSPX(Constants.RIGHT_BACK_CHANNEL);
-  private MotorController leftFront = new PWMVictorSPX(Constants.LEFT_FRONT_CHANNEL);
-  private MotorController leftBack = new PWMVictorSPX(Constants.LEFT_BACK_CHANNEL);
+  private MotorController rightFront = new PWMVictorSPX(Constants.RIGHT_FRONT);
+  private MotorController rightBack = new PWMVictorSPX(Constants.RIGHT_BACK);
+  private MotorController leftFront = new PWMVictorSPX(Constants.LEFT_FRONT);
+  private MotorController leftBack = new PWMVictorSPX(Constants.LEFT_BACK);
 
 
 

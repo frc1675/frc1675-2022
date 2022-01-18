@@ -7,8 +7,6 @@ package frc.robot.commands;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drive;
 
-import org.ejml.equation.ManagerFunctions.Input1;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -39,8 +37,8 @@ public class CheesyDrive extends CommandBase {
   @Override
   public void execute() {
     //cheesy drive
-    double forwardPower =  m_driverController.getRawAxis(Constants.LEFT_AXIS_CHANNEL);
-    double turnPower = m_driverController.getRawAxis(Constants.RIGHT_AXIS_CHANNEL);
+    double forwardPower =  m_driverController.getRawAxis(Constants.LEFT_Y_AXIS);
+    double turnPower = m_driverController.getRawAxis(Constants.RIGHT_X_AXIS);
 
     double rightPower = forwardPower + -1 * turnPower;
     double leftPower =  forwardPower + turnPower;
