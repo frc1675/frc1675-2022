@@ -4,23 +4,29 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.Constants;
+import frc.robot.subsystems.Drive;
+
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
-public class ExampleCommand extends CommandBase {
+public class CheesyDrive extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final ExampleSubsystem m_subsystem;
+  private final Drive m_drive;
+  private final Joystick m_driverController;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ExampleCommand(ExampleSubsystem subsystem) {
-    m_subsystem = subsystem;
+  public CheesyDrive(Drive Drive, Joystick input) {
+    m_drive = Drive;
+    m_driverController = input;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
+    addRequirements(m_drive);
+
   }
 
   // Called when the command is initially scheduled.
@@ -29,7 +35,17 @@ public class ExampleCommand extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    //cheesy drive
+    double forwardPower =  m_driverController.getRawAxis(Constants.LEFT_Y_AXIS);
+    double turnPower = m_driverController.getRawAxis(Constants.RIGHT_X_AXIS);
+
+    double rightPower = forwardPower + -1 * turnPower;
+    double leftPower =  forwardPower + turnPower;
+
+    m_drive.setRight(rightPower);
+    m_drive.setLeft(leftPower);
+  }
 
   // Called once the command ends or is interrupted.
   @Override
