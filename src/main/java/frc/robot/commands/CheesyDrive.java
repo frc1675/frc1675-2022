@@ -16,11 +16,6 @@ public class CheesyDrive extends CommandBase {
   private final Drive m_drive;
   private final Joystick m_driverController;
 
-  /**
-   * Creates a new ExampleCommand.
-   *
-   * @param subsystem The subsystem used by this command.
-   */
   public CheesyDrive(Drive Drive, Joystick input) {
     m_drive = Drive;
     m_driverController = input;
@@ -49,7 +44,10 @@ public class CheesyDrive extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_drive.setLeft(0);
+    m_drive.setRight(0);
+  }
 
   // Returns true when the command should end.
   @Override
