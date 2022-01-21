@@ -5,16 +5,17 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
-import edu.wpi.first.wpilibj.motorcontrol.PWMVictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class Drive extends SubsystemBase {
   /** Creates a new Drive subsystem. */
-  private MotorController rightFront = new PWMVictorSPX(Constants.RIGHT_FRONT);
-  private MotorController rightBack = new PWMVictorSPX(Constants.RIGHT_BACK);
-  private MotorController leftFront = new PWMVictorSPX(Constants.LEFT_FRONT);
-  private MotorController leftBack = new PWMVictorSPX(Constants.LEFT_BACK);
+  private MotorController rightFront = new CANSparkMax(Constants.RIGHT_FRONT, MotorType.kBrushless);
+  private MotorController rightBack = new CANSparkMax(Constants.RIGHT_BACK, MotorType.kBrushless);
+  private MotorController leftFront = new CANSparkMax(Constants.LEFT_FRONT, MotorType.kBrushless);
+  private MotorController leftBack = new CANSparkMax(Constants.LEFT_BACK, MotorType.kBrushless);
 
 
 
