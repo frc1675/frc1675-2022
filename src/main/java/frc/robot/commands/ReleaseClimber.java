@@ -11,10 +11,10 @@ public class ReleaseClimber extends CommandBase {
   private final Climber climber;
 
   /** Creates a new ReleaseClimber. */
-  public ReleaseClimber(Climber c) {
-    climber = c;
+  public ReleaseClimber(Climber climber) {
+    this.climber = climber;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(climber);
+    addRequirements(this.climber);
   }
 
   // Called when the command is initially scheduled.

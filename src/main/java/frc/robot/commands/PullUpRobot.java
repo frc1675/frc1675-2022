@@ -11,10 +11,10 @@ public class PullUpRobot extends CommandBase {
   private final Climber climber;
 
   /** Creates a new PullUpRobot. */
-  public PullUpRobot(Climber c) {
+  public PullUpRobot(Climber climber) {
     // Use addRequirements() here to declare subsystem dependencies.
-    climber = c;
-    addRequirements(climber);
+    this.climber = climber;
+    addRequirements(this.climber);
   }
 
   // Called when the command is initially scheduled.
