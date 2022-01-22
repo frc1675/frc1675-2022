@@ -50,6 +50,11 @@ public class Climber extends SubsystemBase {
     }
   }
 
+  public void stop() {
+    climberMotor1.set(0);
+    climberMotor2.set(0);
+  }
+
   public boolean getIsExtended() {
     return isExtended;
   }

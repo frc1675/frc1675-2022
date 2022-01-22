@@ -29,6 +29,6 @@ public final class Constants {
 
     public static final int LEFT_Y_AXIS= 1;
     public static final int RIGHT_X_AXIS = 4;
-    public static final int X_BUTTON = 0;
     public static final int A_BUTTON = 1;
+    public static final int X_BUTTON = 3;
 }
