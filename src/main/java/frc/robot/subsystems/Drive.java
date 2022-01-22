@@ -9,18 +9,19 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.REVPhysicsSim;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxAlternateEncoder;
 
+/**
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import edu.wpi.first.wpilibj.simulation.EncoderSim;
+import edu.wpi.first.wpilibj.simulation.SimDeviceSim;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+*/
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -33,19 +34,15 @@ public class Drive extends SubsystemBase {
   private CANSparkMax leftFront = new CANSparkMax(Constants.LEFT_FRONT, MotorType.kBrushless);
   private CANSparkMax leftBack = new CANSparkMax(Constants.LEFT_BACK, MotorType.kBrushless);
 
-  //private static final SparkMaxAlternateEncoder.Type kAltEncType = SparkMaxAlternateEncoder.Type.kQuadrature;
+  private RelativeEncoder rightEncoder = rightFront.getEncoder();
+  private RelativeEncoder leftEncoder = leftFront.getEncoder();
 
-  //private RelativeEncoder m_rightEncoder = rightFront.getAlternateEncoder(kAltEncType, Constants.DRIVETRAIN_ENCODER_RPM);
-  //private RelativeEncoder m_leftEncoder = leftFront.getAlternateEncoder(kAltEncType, Constants.DRIVETRAIN_ENCODER_RPM);
-  private AnalogGyro m_gyro = new AnalogGyro(Constants.GYRO);
-  /** simulated encoders */
-  //private EncoderSim m_leftEncoderSim = new EncoderSim((Encoder) m_leftEncoder);
+  /** simulated encoders (INCOMPLETE) - Field2D simulation stuff is incomplete - may not be possible due to the motor controllers being from a third party controller*/
+  //private SimDeviceSim leftEncoderSim = new SimDeviceSim(m_leftEncoder);
   //private EncoderSim m_rightEncoderSim = new EncoderSim((Encoder) m_rightEncoder);
+  //private Field2d m_field = new Field2d();
 
-  private Field2d m_field = new Field2d();
-
-
-  /** simulated drivetrain */
+  /** simulated drivetrain 
   DifferentialDrivetrainSim m_driveSim = new DifferentialDrivetrainSim(
   DCMotor.getNEO(2),       // 2 NEO motors on each side of the drivetrain.
   8.45,                    //gearing reduction.
@@ -55,6 +52,7 @@ public class Drive extends SubsystemBase {
   0.58,                  // The track width
   null
   );
+  */
 
 
 
@@ -66,7 +64,7 @@ public class Drive extends SubsystemBase {
     rightFront.setInverted(true);
     rightBack.setInverted(true);
 
-    SmartDashboard.putData("Field", m_field);
+    //SmartDashboard.putData("Field", m_field);
 
     //DifferentialDriveOdometry m_odometry = new DifferentialDriveOdometry(m_gyro.getGyroHeading(), new Pose2d(5.0, 13.5, new Rotation2d()));
     if(Robot.isSimulation()){
@@ -93,7 +91,7 @@ public class Drive extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    var gyroAngle = Rotation2d.fromDegrees(-m_gyro.getAngle());
+    //var gyroAngle = Rotation2d.fromDegrees(-gyro.getAngle());
 
     // Update the pose
     //m_pose = m_odometry.update(gyroAngle, m_leftEncoder.getDistance(), m_rightEncoder.getDistance());
@@ -107,15 +105,16 @@ public class Drive extends SubsystemBase {
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
-    m_driveSim.setInputs(leftFront.get() * RobotController.getInputVoltage(),
-    rightFront.get() * -1 * RobotController.getInputVoltage());
+    //m_driveSim.setInputs(leftFront.get() * RobotController.getInputVoltage(),
+    //rightFront.get() * -1 * RobotController.getInputVoltage());
 
-  m_driveSim.update(0.02);
+  //m_driveSim.update(0.02);
 
-  // Update all of our sensors.
-  //m_leftEncoderSim.setDistance(m_driveSim.getLeftPositionMeters());
-  //m_leftEncoderSim.setRate(m_driveSim.getLeftVelocityMetersPerSecond());
-  //m_rightEncoderSim.setDistance(m_driveSim.getRightPositionMeters());
-  //m_rightEncoderSim.setRate(m_driveSim.getRightVelocityMetersPerSecond());
+  /** Update all  sensors. (REQUIRES OTHER STUFF TO BE COMPLETED)
+  m_leftEncoderSim.setDistance(m_driveSim.getLeftPositionMeters());
+  m_leftEncoderSim.setRate(m_driveSim.getLeftVelocityMetersPerSecond());
+  m_rightEncoderSim.setDistance(m_driveSim.getRightPositionMeters());
+  m_rightEncoderSim.setRate(m_driveSim.getRightVelocityMetersPerSecond());
+  */
   }
 }
