@@ -68,23 +68,23 @@ public class Drive extends SubsystemBase {
 
     //DifferentialDriveOdometry m_odometry = new DifferentialDriveOdometry(m_gyro.getGyroHeading(), new Pose2d(5.0, 13.5, new Rotation2d()));
     if(Robot.isSimulation()){
-      REVPhysicsSim.getInstance().addSparkMax(rightFront, DCMotor.getNEO(1));
-      REVPhysicsSim.getInstance().addSparkMax(rightBack, DCMotor.getNEO(1));
-      REVPhysicsSim.getInstance().addSparkMax(leftFront, DCMotor.getNEO(1));
-      REVPhysicsSim.getInstance().addSparkMax(leftBack, DCMotor.getNEO(1));
+      REVPhysicsSim.getInstance().addSparkMax(rightFront, DCMotor.getNEO(2));
+      REVPhysicsSim.getInstance().addSparkMax(rightBack, DCMotor.getNEO(2));
+      REVPhysicsSim.getInstance().addSparkMax(leftFront, DCMotor.getNEO(2));
+      REVPhysicsSim.getInstance().addSparkMax(leftBack, DCMotor.getNEO(2));
     }
     
   }
 
   public void setRight(double speed){
-    rightFront.setVoltage(speed);
-    rightBack.setVoltage(speed);
+    rightFront.set(speed);
+    rightBack.set(speed);
 
   }
 
   public void setLeft(double speed){
-    leftFront.setVoltage(speed);
-    leftBack.setVoltage(speed);
+    leftFront.set(speed);
+    leftBack.set(speed);
 
   }
 

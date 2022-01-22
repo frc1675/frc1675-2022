@@ -13,26 +13,27 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+    //drivebase constants
     public static final int RIGHT_FRONT= 0;
     public static final int RIGHT_BACK = 1;
     public static final int LEFT_FRONT = 2;
     public static final int LEFT_BACK = 3;
+    public static final int DRIVETRAIN_ENCODER_RPM = 8192;
+    public static final int GYRO = 1;
 
+    //climber constants
     public static final int CLIMBER_MOTOR_1 = 4;
     public static final int CLIMBER_MOTOR_2 = 5;
     public static final int CLIMBER_SOLENOID = 1;
     public static final double CLIMBER_POWER = 0.75;
     public static final int CLIMBER_ENCODER_SENSITIVITY = 4096;
 
+    //controller constants
     public static final int DRIVER_CONTROLLER = 0;
     public static final int OPERATOR_CONTROLLER = 1;
-
     public static final int LEFT_Y_AXIS= 1;
     public static final int RIGHT_X_AXIS = 4;
-
-    public static final int DRIVETRAIN_ENCODER_RPM = 8192;
-
-    public static final int GYRO = 1;
     public static final int A_BUTTON = 1;
     public static final int X_BUTTON = 3;
 }
