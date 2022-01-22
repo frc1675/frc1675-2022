@@ -21,4 +21,8 @@ public final class Constants {
     public static final int DRIVER_CONTROLLER = 0;
     public static final int LEFT_Y_AXIS= 1;
     public static final int RIGHT_X_AXIS = 4;
+
+    public static final int DRIVETRAIN_ENCODER_RPM = 8192;
+
+    public static final int GYRO = 1;
 }

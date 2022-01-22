@@ -4,47 +4,118 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.motorcontrol.MotorController;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.REVPhysicsSim;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAlternateEncoder;
+
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
+import edu.wpi.first.wpilibj.simulation.EncoderSim;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+import frc.robot.Robot;
+
 
 public class Drive extends SubsystemBase {
   /** Creates a new Drive subsystem. */
-  private MotorController rightFront = new CANSparkMax(Constants.RIGHT_FRONT, MotorType.kBrushless);
-  private MotorController rightBack = new CANSparkMax(Constants.RIGHT_BACK, MotorType.kBrushless);
-  private MotorController leftFront = new CANSparkMax(Constants.LEFT_FRONT, MotorType.kBrushless);
-  private MotorController leftBack = new CANSparkMax(Constants.LEFT_BACK, MotorType.kBrushless);
+  private CANSparkMax rightFront = new CANSparkMax(Constants.RIGHT_FRONT, MotorType.kBrushless);
+  private CANSparkMax rightBack = new CANSparkMax(Constants.RIGHT_BACK, MotorType.kBrushless);
+  private CANSparkMax leftFront = new CANSparkMax(Constants.LEFT_FRONT, MotorType.kBrushless);
+  private CANSparkMax leftBack = new CANSparkMax(Constants.LEFT_BACK, MotorType.kBrushless);
 
+  //private static final SparkMaxAlternateEncoder.Type kAltEncType = SparkMaxAlternateEncoder.Type.kQuadrature;
+
+  //private RelativeEncoder m_rightEncoder = rightFront.getAlternateEncoder(kAltEncType, Constants.DRIVETRAIN_ENCODER_RPM);
+  //private RelativeEncoder m_leftEncoder = leftFront.getAlternateEncoder(kAltEncType, Constants.DRIVETRAIN_ENCODER_RPM);
+  private AnalogGyro m_gyro = new AnalogGyro(Constants.GYRO);
+  /** simulated encoders */
+  //private EncoderSim m_leftEncoderSim = new EncoderSim((Encoder) m_leftEncoder);
+  //private EncoderSim m_rightEncoderSim = new EncoderSim((Encoder) m_rightEncoder);
+
+  private Field2d m_field = new Field2d();
+
+
+  /** simulated drivetrain */
+  DifferentialDrivetrainSim m_driveSim = new DifferentialDrivetrainSim(
+  DCMotor.getNEO(2),       // 2 NEO motors on each side of the drivetrain.
+  8.45,                    //gearing reduction.
+  7.5,                     // MOI of 7.5 kg m^2 (from CAD model).
+  54.0,                    // The mass
+  Units.inchesToMeters(6), // wheel radius.
+  0.58,                  // The track width
+  null
+  );
+
+
+
+
+  
 
 
   public Drive() {
     rightFront.setInverted(true);
     rightBack.setInverted(true);
 
+    SmartDashboard.putData("Field", m_field);
+
+    //DifferentialDriveOdometry m_odometry = new DifferentialDriveOdometry(m_gyro.getGyroHeading(), new Pose2d(5.0, 13.5, new Rotation2d()));
+    if(Robot.isSimulation()){
+      REVPhysicsSim.getInstance().addSparkMax(rightFront, DCMotor.getNEO(1));
+      REVPhysicsSim.getInstance().addSparkMax(rightBack, DCMotor.getNEO(1));
+      REVPhysicsSim.getInstance().addSparkMax(leftFront, DCMotor.getNEO(1));
+      REVPhysicsSim.getInstance().addSparkMax(leftBack, DCMotor.getNEO(1));
+    }
     
   }
 
   public void setRight(double speed){
-    rightFront.set(speed);
-    rightBack.set(speed);
+    rightFront.setVoltage(speed);
+    rightBack.setVoltage(speed);
 
   }
 
   public void setLeft(double speed){
-    leftFront.set(speed);
-    leftBack.set(speed);
+    leftFront.setVoltage(speed);
+    leftBack.setVoltage(speed);
 
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    var gyroAngle = Rotation2d.fromDegrees(-m_gyro.getAngle());
+
+    // Update the pose
+    //m_pose = m_odometry.update(gyroAngle, m_leftEncoder.getDistance(), m_rightEncoder.getDistance());
+    
+    //m_odometry.update(m_gyro.getRotation2d(),
+    //((Encoder) m_leftEncoder).getDistance(),
+    //((Encoder) m_rightEncoder).getDistance());
+//m_field.setRobotPose(m_odometry.getPoseMeters());
   }
 
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
+    m_driveSim.setInputs(leftFront.get() * RobotController.getInputVoltage(),
+    rightFront.get() * -1 * RobotController.getInputVoltage());
+
+  m_driveSim.update(0.02);
+
+  // Update all of our sensors.
+  //m_leftEncoderSim.setDistance(m_driveSim.getLeftPositionMeters());
+  //m_leftEncoderSim.setRate(m_driveSim.getLeftVelocityMetersPerSecond());
+  //m_rightEncoderSim.setDistance(m_driveSim.getRightPositionMeters());
+  //m_rightEncoderSim.setRate(m_driveSim.getRightVelocityMetersPerSecond());
   }
 }
