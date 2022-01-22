@@ -25,8 +25,8 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Joystick m_driverController = new Joystick(Constants.DRIVER_CONTROLLER);
   private final Joystick m_operatorController = new Joystick(Constants.OPERATOR_CONTROLLER);
-  private final JoystickButton oControllerAButton = new JoystickButton(m_operatorController, Constants.A_BUTTON);
-  private final JoystickButton oControllerXButton = new JoystickButton(m_operatorController, Constants.X_BUTTON);
+  private final JoystickButton operatorControllerAButton = new JoystickButton(m_operatorController, Constants.A_BUTTON);
+  private final JoystickButton operatorControllerXButton = new JoystickButton(m_operatorController, Constants.X_BUTTON);
 
   private final Drive m_drive = new Drive();
   private final Climber m_climber = new Climber();
@@ -46,8 +46,8 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     m_drive.setDefaultCommand(new CheesyDrive(m_drive, m_driverController));
-    oControllerAButton.whenPressed(new ReleaseClimber(m_climber));
-    oControllerXButton.whenHeld(new PullUpRobot(m_climber));
+    operatorControllerAButton.whenPressed(new ReleaseClimber(m_climber));
+    operatorControllerXButton.whenHeld(new PullUpRobot(m_climber));
   }
 
   /**

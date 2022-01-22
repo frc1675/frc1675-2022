@@ -8,19 +8,19 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climber;
 
 public class PullUpRobot extends CommandBase {
-  private final Climber m_climber;
+  private final Climber climber;
 
   /** Creates a new PullUpRobot. */
-  public PullUpRobot(Climber climber) {
+  public PullUpRobot(Climber c) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_climber = climber;
-    addRequirements(m_climber);
+    climber = c;
+    addRequirements(climber);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_climber.pullUp();
+    climber.pullUp();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -30,7 +30,7 @@ public class PullUpRobot extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_climber.stop();
+    climber.stop();
   }
 
   // Returns true when the command should end.
