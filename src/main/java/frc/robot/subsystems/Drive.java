@@ -4,11 +4,11 @@
 
 package frc.robot.subsystems;
 
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.REVPhysicsSim;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
 
 /**
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -22,6 +22,8 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 */
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -36,6 +38,19 @@ public class Drive extends SubsystemBase {
 
   private RelativeEncoder rightEncoder = rightFront.getEncoder();
   private RelativeEncoder leftEncoder = leftFront.getEncoder();
+
+  private SparkMaxPIDController rightPIDController = rightFront.getPIDController();
+  private SparkMaxPIDController leftPIDController = leftFront.getPIDController();
+
+  //PID coefficents
+  private double kP = 6e-5; 
+  private double kI = 0;
+  private double kD = 0; 
+  private double kIz = 0;
+  private double kFF = 0.000015; 
+  private double kMaxOutput = 1; 
+  private double kMinOutput = -1;
+  private double maxRPM = 5700;
 
   /** simulated encoders (INCOMPLETE) - Field2D simulation stuff is incomplete - may not be possible due to the motor controllers being from a third party controller*/
   //private SimDeviceSim leftEncoderSim = new SimDeviceSim(m_leftEncoder);
@@ -64,19 +79,42 @@ public class Drive extends SubsystemBase {
     rightFront.setInverted(true);
     rightBack.setInverted(true);
 
+    //set PID coefficents
+    rightPIDController.setP(kP);
+    rightPIDController.setD(kD);
+    rightPIDController.setI(kI);
+    rightPIDController.setIZone(kIz);
+    rightPIDController.setOutputRange(kMinOutput, kMaxOutput);
+
+    leftPIDController.setP(kP);
+    leftPIDController.setD(kD);
+    leftPIDController.setI(kI);
+    leftPIDController.setIZone(kIz);
+    leftPIDController.setOutputRange(kMinOutput, kMaxOutput);
+
+    //display coefficents in Shuffleboard
+    ShuffleboardTab PIDTab = Shuffleboard.getTab("PID Coefficents");
+    PIDTab.addNumber("kP", () -> kP);
+    PIDTab.addNumber("kI", () -> kI);
+    PIDTab.addNumber("kD", () -> kD);
+    PIDTab.addNumber("kI Zone", () -> kIz);
+    PIDTab.addNumber("Minimum Output", () -> kMinOutput);
+    PIDTab.addNumber("Maximum Output", () -> kMaxOutput);
+
     //SmartDashboard.putData("Field", m_field);
 
     //DifferentialDriveOdometry m_odometry = new DifferentialDriveOdometry(m_gyro.getGyroHeading(), new Pose2d(5.0, 13.5, new Rotation2d()));
     if(Robot.isSimulation()){
-      REVPhysicsSim.getInstance().addSparkMax(rightFront, DCMotor.getNEO(2));
-      REVPhysicsSim.getInstance().addSparkMax(rightBack, DCMotor.getNEO(2));
-      REVPhysicsSim.getInstance().addSparkMax(leftFront, DCMotor.getNEO(2));
-      REVPhysicsSim.getInstance().addSparkMax(leftBack, DCMotor.getNEO(2));
+      REVPhysicsSim.getInstance().addSparkMax(rightFront, DCMotor.getNEO(1));
+      REVPhysicsSim.getInstance().addSparkMax(rightBack, DCMotor.getNEO(1));
+      REVPhysicsSim.getInstance().addSparkMax(leftFront, DCMotor.getNEO(1));
+      REVPhysicsSim.getInstance().addSparkMax(leftBack, DCMotor.getNEO(1));
     }
     
   }
 
   public void setRight(double speed){
+    //setVoltage for simulation support
     rightFront.set(speed);
     rightBack.set(speed);
 
@@ -86,6 +124,15 @@ public class Drive extends SubsystemBase {
     leftFront.set(speed);
     leftBack.set(speed);
 
+  }
+
+  //using pid
+  public void setRightVelocity(double targetVelocity){
+    rightPIDController.setReference(targetVelocity, CANSparkMax.ControlType.kVelocity);
+  }
+
+  public void setLeftVelocity(double targetVelocity){
+    leftPIDController.setReference(targetVelocity, CANSparkMax.ControlType.kVelocity);
   }
 
   @Override
