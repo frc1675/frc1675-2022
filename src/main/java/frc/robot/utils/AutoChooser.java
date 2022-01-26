@@ -1,8 +1,11 @@
 package frc.robot.utils;
 
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Drive;
 
 public class AutoChooser {
@@ -33,15 +36,61 @@ public class AutoChooser {
         this.drive = drive;
 
         startPositionChooser.setDefaultOption("Touching hub", StartPosition.TOUCHING_HUB);
-        startPositionChooser.addOption("A few feet behind hub", StartPosition.BEHIND_HUB);
+        startPositionChooser.addOption("Robot in front of us touching hub", StartPosition.BEHIND_HUB);
         startPositionChooser.addOption("Start area 1", StartPosition.AREA_1);
         startPositionChooser.addOption("Start area 2", StartPosition.AREA_2);
         startPositionChooser.addOption("Start area 3", StartPosition.AREA_3);
         startPositionChooser.addOption("Start area 4", StartPosition.AREA_4);
+        autoTab.add("Starting position", startPositionChooser).withWidget(BuiltInWidgets.kComboBoxChooser).withSize(2, 1).withPosition(0, 0);
 
         getBallChooser.setDefaultOption("Get no balls", GetBall.NONE);
         getBallChooser.setDefaultOption("Get ball 1", GetBall.BALL_1);
         getBallChooser.setDefaultOption("Get ball 2", GetBall.BALL_2);
         getBallChooser.setDefaultOption("Get ball 3", GetBall.BALL_3);
+        autoTab.add("Which ball to get", startPositionChooser).withWidget(BuiltInWidgets.kComboBoxChooser).withSize(2, 1).withPosition(0, 1);
+
+        SmartDashboard.putData(startPositionChooser);
+        SmartDashboard.putData(getBallChooser);
+    }
+
+    public SequentialCommandGroup GenerateAuto() {
+        SequentialCommandGroup auto = new SequentialCommandGroup();
+
+        StartPosition selectedStart = (StartPosition)startPositionChooser.getSelected();
+        GetBall selectedBalls = (GetBall)getBallChooser.getSelected();
+
+        boolean wrongPath = false;
+
+        //certain combinations of selectedStart and selectedBalls will add
+        //commands to auto, but others will do nothing.
+        switch (selectedStart) {
+            case TOUCHING_HUB: switch (selectedBalls) {
+                case NONE:
+                default: break;
+            }
+            case BEHIND_HUB: switch (selectedBalls) {
+                case NONE:
+                default: break;
+            }
+            case AREA_1: switch (selectedBalls) {
+                case BALL_1:
+                default: break;
+            }
+            case AREA_2: switch (selectedBalls) {
+                case BALL_1:
+                case BALL_2:
+                default: break;
+            }
+            case AREA_3: switch (selectedBalls) {
+                case BALL_2:
+                case BALL_3:
+                default: break;
+            }
+            case AREA_4: switch (selectedBalls) {
+                case BALL_3:
+                default: break;
+            }
+            default:break;
+        }
     }
 }
