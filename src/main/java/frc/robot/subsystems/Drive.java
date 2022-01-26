@@ -61,8 +61,10 @@ public class Drive extends SubsystemBase {
 
 
   public Drive() {
-    rightFront.setInverted(true);
-    rightBack.setInverted(true);
+    leftFront.setInverted(true);
+    leftBack.setInverted(true);
+    rightFront.setInverted(false);
+    rightBack.setInverted(false);
 
     //SmartDashboard.putData("Field", m_field);
 
@@ -77,12 +79,14 @@ public class Drive extends SubsystemBase {
   }
 
   public void setRight(double speed){
+    speed = speed * 0.2;
     rightFront.set(speed);
     rightBack.set(speed);
 
   }
 
   public void setLeft(double speed){
+    speed = speed * 0.2;
     leftFront.set(speed);
     leftBack.set(speed);
 
