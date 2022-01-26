@@ -32,6 +32,8 @@ public class AutoChooser {
     private SendableChooser<StartPosition> startPositionChooser = new SendableChooser<StartPosition>();
     private SendableChooser<GetBall> getBallChooser = new SendableChooser<GetBall>();
 
+    private String message;
+
     public AutoChooser(Drive drive) {
         this.drive = drive;
 
@@ -49,17 +51,82 @@ public class AutoChooser {
         getBallChooser.setDefaultOption("Get ball 3", GetBall.BALL_3);
         autoTab.add("Which ball to get", startPositionChooser).withWidget(BuiltInWidgets.kComboBoxChooser).withSize(2, 1).withPosition(0, 1);
 
+        autoTab.addString("Selected auto path", () -> message);
+
         SmartDashboard.putData(startPositionChooser);
         SmartDashboard.putData(getBallChooser);
     }
 
-    public SequentialCommandGroup GenerateAuto() {
+    //displays what the current auto routine is, or an error if a combination with
+    //no routine is selected.
+    //runs in disabledPeriodic.
+    public void checkAutoPath() {
+        StartPosition selectedStart = (StartPosition)startPositionChooser.getSelected();
+        GetBall selectedBalls = (GetBall)getBallChooser.getSelected();
+
+        switch (selectedStart) {
+            case TOUCHING_HUB: switch (selectedBalls) {
+                case NONE: message = "Shoot immediately, drive off tarmac";
+                    break;
+                default: message = "We do not have an auto routine programmed for this combination. DO NOT START THE MATCH WITH THIS COMBINATION.";
+                    break;
+            }
+            break;
+
+            case BEHIND_HUB: switch (selectedBalls) {
+                case NONE: message = "Wait for team robot, drive to hub, shoot, drive off tarmac";
+                    break;
+                default: message = "We do not have an auto routine programmed for this combination. DO NOT START THE MATCH WITH THIS COMBINATION.";
+                    break;
+            }
+            break;
+
+            case AREA_1: switch (selectedBalls) {
+                case BALL_1: message = "Start area 1, get ball 1, drive to hub, shoot both";
+                    break;
+                default: message = "We do not have an auto routine programmed for this combination. DO NOT START THE MATCH WITH THIS COMBINATION.";
+                    break;
+            }
+            break;
+
+            case AREA_2: switch (selectedBalls) {
+                case BALL_1: message = "Start area 2, get ball 1, drive to hub, shoot both";
+                    break;
+                case BALL_2: message = "Start area 2, get ball 2, drive to hub, shoot both";
+                    break;
+                default: message = "We do not have an auto routine programmed for this combination. DO NOT START THE MATCH WITH THIS COMBINATION.";
+                    break;
+            }
+            break;
+
+            case AREA_3: switch (selectedBalls) {
+                case BALL_2: message = "Start area 3, get ball 2, drive to hub, shoot both";
+                    break;
+                case BALL_3: message = "Start area 3, get ball 3, drive to hub, shoot both";
+                    break;
+                default: message = "We do not have an auto routine programmed for this combination. DO NOT START THE MATCH WITH THIS COMBINATION.";
+                    break;
+            }
+            break;
+
+            case AREA_4: switch (selectedBalls) {
+                case BALL_3: message = "Start area 4, get ball 3, drive to hub, shoot both";
+                    break;
+                default: message = "We do not have an auto routine programmed for this combination. DO NOT START THE MATCH WITH THIS COMBINATION.";
+                    break;
+            }
+            break;
+
+            default: message = "You should never see this message. If you do, something has gone wrong with the shuffleboard.";
+                break;
+        }
+    }
+
+    public SequentialCommandGroup generateAuto() {
         SequentialCommandGroup auto = new SequentialCommandGroup();
 
         StartPosition selectedStart = (StartPosition)startPositionChooser.getSelected();
         GetBall selectedBalls = (GetBall)getBallChooser.getSelected();
-
-        boolean wrongPath = false;
 
         //certain combinations of selectedStart and selectedBalls will add
         //commands to auto, but others will do nothing.
@@ -68,29 +135,41 @@ public class AutoChooser {
                 case NONE:
                 default: break;
             }
+            break;
+
             case BEHIND_HUB: switch (selectedBalls) {
                 case NONE:
                 default: break;
             }
+            break;
+
             case AREA_1: switch (selectedBalls) {
                 case BALL_1:
                 default: break;
             }
+            break;
+
             case AREA_2: switch (selectedBalls) {
                 case BALL_1:
                 case BALL_2:
                 default: break;
             }
+            break;
+
             case AREA_3: switch (selectedBalls) {
                 case BALL_2:
                 case BALL_3:
                 default: break;
             }
+            break;
+
             case AREA_4: switch (selectedBalls) {
                 case BALL_3:
                 default: break;
             }
-            default:break;
+            break;
+
+            default: break;
         }
     }
 }
