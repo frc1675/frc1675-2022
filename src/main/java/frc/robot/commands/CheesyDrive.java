@@ -35,8 +35,8 @@ public class CheesyDrive extends CommandBase {
     double forwardPower =  m_driverController.getRawAxis(Constants.LEFT_Y_AXIS);
     double turnPower = m_driverController.getRawAxis(Constants.RIGHT_X_AXIS);
 
-    double rightPower = forwardPower + -1 * turnPower;
-    double leftPower =  forwardPower + turnPower;
+    double rightPower = forwardPower + turnPower;
+    double leftPower =  forwardPower + -1 * turnPower;
 
     m_drive.setRight(rightPower);
     m_drive.setLeft(leftPower);
