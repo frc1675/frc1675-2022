@@ -37,25 +37,16 @@ public class Catapult extends SubsystemBase {
     leftSol1.set(true);
     leftSol2.set(true);
   }
-
-  public void retractRight(){
-    rightSol1.set(false);
-    rightSol2.set(false);
-  }
   
-  public void retractLeft(){
-    leftSol1.set(false);
-    leftSol2.set(false);
-  }
-  
-  public void retractBoth(){
+  //I dont really see a reason not to just retract all 4 solenoids at once beacause if only one set is accuated then nothing will change 
+  public void retract(){
     rightSol1.set(false);
     rightSol2.set(false);
     leftSol1.set(false);
     leftSol2.set(false);
   }
 
-  
+
   @Override
   public void periodic() {
     

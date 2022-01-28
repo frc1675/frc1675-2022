@@ -37,6 +37,7 @@ public final class Constants {
     public static final int A_BUTTON = 1;
     public static final int X_BUTTON = 3;
     public static final int START_BUTTON = 11;
+    public static final int RIGHT_BUMPER = 6;
 
     //catapult constants
     public static final int RIGHT_SOLENOID_1 = 1;
