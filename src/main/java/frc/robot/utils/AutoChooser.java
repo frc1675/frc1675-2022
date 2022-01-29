@@ -18,7 +18,7 @@ public class AutoChooser {
         AREA_4
     }
 
-    public enum GetBall {
+    public enum SelectedBall {
         NONE,
         BALL_1,
         BALL_2,
@@ -30,7 +30,7 @@ public class AutoChooser {
     private ShuffleboardTab autoTab = Shuffleboard.getTab("Choose auto routine");
 
     private SendableChooser<StartPosition> startPositionChooser = new SendableChooser<StartPosition>();
-    private SendableChooser<GetBall> getBallChooser = new SendableChooser<GetBall>();
+    private SendableChooser<SelectedBall> selectedBallsChooser = new SendableChooser<SelectedBall>();
 
     private String message;
 
@@ -45,16 +45,16 @@ public class AutoChooser {
         startPositionChooser.addOption("Start area 4", StartPosition.AREA_4);
         autoTab.add("Starting position", startPositionChooser).withWidget(BuiltInWidgets.kComboBoxChooser).withSize(2, 1).withPosition(0, 0);
 
-        getBallChooser.setDefaultOption("Get no balls", GetBall.NONE);
-        getBallChooser.setDefaultOption("Get ball 1", GetBall.BALL_1);
-        getBallChooser.setDefaultOption("Get ball 2", GetBall.BALL_2);
-        getBallChooser.setDefaultOption("Get ball 3", GetBall.BALL_3);
-        autoTab.add("Which ball to get", startPositionChooser).withWidget(BuiltInWidgets.kComboBoxChooser).withSize(2, 1).withPosition(0, 1);
+        selectedBallsChooser.setDefaultOption("Get no balls", SelectedBall.NONE);
+        selectedBallsChooser.setDefaultOption("Get ball 1", SelectedBall.BALL_1);
+        selectedBallsChooser.setDefaultOption("Get ball 2", SelectedBall.BALL_2);
+        selectedBallsChooser.setDefaultOption("Get ball 3", SelectedBall.BALL_3);
+        autoTab.add("Which ball to get", selectedBallsChooser).withWidget(BuiltInWidgets.kComboBoxChooser).withSize(2, 1).withPosition(0, 1);
 
         autoTab.addString("Selected auto path", () -> message);
 
         SmartDashboard.putData(startPositionChooser);
-        SmartDashboard.putData(getBallChooser);
+        SmartDashboard.putData(selectedBallsChooser);
     }
 
     //displays what the current auto routine is, or an error if a combination with
@@ -62,7 +62,7 @@ public class AutoChooser {
     //runs in disabledPeriodic.
     public void checkAutoPath() {
         StartPosition selectedStart = (StartPosition)startPositionChooser.getSelected();
-        GetBall selectedBalls = (GetBall)getBallChooser.getSelected();
+        SelectedBall selectedBalls = (SelectedBall)selectedBallsChooser.getSelected();
 
         switch (selectedStart) {
             case TOUCHING_HUB: switch (selectedBalls) {
@@ -117,7 +117,7 @@ public class AutoChooser {
             }
             break;
 
-            default: message = "You should never see this message. If you do, something has gone wrong with the shuffleboard.";
+            default: message = "No routine selected";
                 break;
         }
     }
@@ -126,7 +126,7 @@ public class AutoChooser {
         SequentialCommandGroup auto = new SequentialCommandGroup();
 
         StartPosition selectedStart = (StartPosition)startPositionChooser.getSelected();
-        GetBall selectedBalls = (GetBall)getBallChooser.getSelected();
+        SelectedBall selectedBalls = (SelectedBall)selectedBallsChooser.getSelected();
 
         //certain combinations of selectedStart and selectedBalls will add
         //commands to auto, but others will do nothing.
@@ -171,5 +171,7 @@ public class AutoChooser {
 
             default: break;
         }
+
+        return auto;
     }
 }
