@@ -17,6 +17,7 @@ import frc.robot.subsystems.Catapult;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drive;
 import frc.robot.utils.DeadzoneCorrection;
+import frc.robot.utils.AutoChooser;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -55,6 +56,7 @@ public class RobotContainer {
   }
 
 
+  private final AutoChooser autoChooser = new AutoChooser(drive);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -83,6 +85,10 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return null;
+    return autoChooser.generateAuto();
+  }
+
+  public void checkAutoPath() {
+    autoChooser.checkAutoPath();
   }
 }
