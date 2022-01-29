@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.CheesyDrive;
 import frc.robot.commands.CheesyDrivePID;
-import frc.robot.commands.FireCatapultBoth;
 import frc.robot.commands.PullUpRobot;
 import frc.robot.commands.ReleaseClimber;
 import frc.robot.subsystems.Catapult;
@@ -56,7 +55,6 @@ public class RobotContainer {
     driverControllerStartButton.toggleWhenPressed(new CheesyDrivePID(drive, driverController));
     operatorControllerAButton.whenPressed(new ReleaseClimber(m_climber));
     operatorControllerXButton.whenHeld(new PullUpRobot(m_climber));
-    operatorControllerRightBumber.whenPressed(new FireCatapultBoth(catapult).withTimeout(2));
 
   }
 
