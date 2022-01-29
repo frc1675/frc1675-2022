@@ -12,27 +12,33 @@ import frc.robot.Constants;
 
 public class Catapult extends SubsystemBase {
   /** Creates a new Catapult subsystem. */
-  private Solenoid rightSol = new Solenoid(PneumaticsModuleType.REVPH,Constants.CATAPULT_RIGHT_SOLENOID);
-  private Solenoid leftSol = new Solenoid(PneumaticsModuleType.REVPH,Constants.CATAPULT_LEFT_SOLENOID);
+  private Solenoid rightSol1 = new Solenoid(PneumaticsModuleType.REVPH,Constants.CATAPULT_RIGHT_SOLENOID_1);
+  private Solenoid rightSol2 = new Solenoid(PneumaticsModuleType.REVPH,Constants.CATAPULT_RIGHT_SOLENOID_2);
+  private Solenoid leftSol1 = new Solenoid(PneumaticsModuleType.REVPH,Constants.CATAPULT_LEFT_SOLENOID_1);
+  private Solenoid leftSol2 = new Solenoid(PneumaticsModuleType.REVPH,Constants.CATAPULT_LEFT_SOLENOID_2);
  
   public Catapult() {
     
   }
 
   public void fireRight(){
-    rightSol.set(true);
+    rightSol1.set(true);
+    rightSol2.set(true);
   }
 
   public void fireLeft(){
-    leftSol.set(true);
+    leftSol1.set(true);
+    leftSol2.set(true);
   }
   
   public void retractRight(){
-    rightSol.set(false);
+    rightSol1.set(false);
+    rightSol2.set(false);
   }
 
   public void retractLeft(){
-    leftSol.set(false);
+    leftSol1.set(false);
+    leftSol2.set(false);
   }
 
   @Override

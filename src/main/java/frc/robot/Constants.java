@@ -30,8 +30,10 @@ public final class Constants {
     public static final int CLIMBER_ENCODER_SENSITIVITY = 4096;
 
     //catapult constants
-    public static final int CATAPULT_RIGHT_SOLENOID = 2;
-    public static final int CATAPULT_LEFT_SOLENOID = 3;
+    public static final int CATAPULT_RIGHT_SOLENOID_1 = 2;
+    public static final int CATAPULT_RIGHT_SOLENOID_2 = 3;
+    public static final int CATAPULT_LEFT_SOLENOID_1 = 4;
+    public static final int CATAPULT_LEFT_SOLENOID_2 = 5;
 
     //controller constants
     public static final int DRIVER_CONTROLLER = 0;
