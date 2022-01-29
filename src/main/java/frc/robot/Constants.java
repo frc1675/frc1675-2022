@@ -29,6 +29,10 @@ public final class Constants {
     public static final double CLIMBER_POWER = 0.75;
     public static final int CLIMBER_ENCODER_SENSITIVITY = 4096;
 
+    //catapult constants
+    public static final int CATAPULT_RIGHT_SOLENOID = 2;
+    public static final int CATAPULT_LEFT_SOLENOID = 3;
+
     //controller constants
     public static final int DRIVER_CONTROLLER = 0;
     public static final int OPERATOR_CONTROLLER = 1;
@@ -36,4 +40,7 @@ public final class Constants {
     public static final int RIGHT_X_AXIS = 4;
     public static final int A_BUTTON = 1;
     public static final int X_BUTTON = 3;
+    public static final int START_BUTTON = 11;
+    public static final int RIGHT_BUMPER = 6;
+
 }

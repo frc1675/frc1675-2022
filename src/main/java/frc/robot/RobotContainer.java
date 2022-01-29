@@ -10,8 +10,10 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.CheesyDrive;
+import frc.robot.commands.CheesyDrivePID;
 import frc.robot.commands.PullUpRobot;
 import frc.robot.commands.ReleaseClimber;
+import frc.robot.subsystems.Catapult;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drive;
 
@@ -23,13 +25,17 @@ import frc.robot.subsystems.Drive;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final Joystick m_driverController = new Joystick(Constants.DRIVER_CONTROLLER);
-  private final Joystick m_operatorController = new Joystick(Constants.OPERATOR_CONTROLLER);
-  private final JoystickButton operatorControllerAButton = new JoystickButton(m_operatorController, Constants.A_BUTTON);
-  private final JoystickButton operatorControllerXButton = new JoystickButton(m_operatorController, Constants.X_BUTTON);
+  private final Joystick driverController = new Joystick(Constants.DRIVER_CONTROLLER);
+  private final Joystick operatorController = new Joystick(Constants.OPERATOR_CONTROLLER);
+  private final JoystickButton operatorControllerAButton = new JoystickButton(operatorController, Constants.A_BUTTON);
+  private final JoystickButton operatorControllerXButton = new JoystickButton(operatorController, Constants.X_BUTTON);
+  private final JoystickButton driverControllerStartButton = new JoystickButton(driverController, Constants.START_BUTTON);
+  private final JoystickButton operatorControllerRightBumber = new JoystickButton(operatorController, Constants.RIGHT_BUMPER);
 
-  private final Drive m_drive = new Drive();
-  // final Climber m_climber = new Climber();
+
+  private final Drive drive = new Drive();
+  private final Climber m_climber = new Climber();
+  private final Catapult catapult = new Catapult();
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -45,9 +51,11 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    m_drive.setDefaultCommand(new CheesyDrive(m_drive, m_driverController));
-    //operatorControllerAButton.whenPressed(new ReleaseClimber(m_climber));
-    //operatorControllerXButton.whenHeld(new PullUpRobot(m_climber));
+    drive.setDefaultCommand(new CheesyDrive(drive, driverController));
+    //driverControllerStartButton.toggleWhenPressed(new CheesyDrivePID(drive, driverController));
+    operatorControllerAButton.whenPressed(new ReleaseClimber(m_climber));
+    operatorControllerXButton.whenHeld(new PullUpRobot(m_climber));
+
   }
 
   /**
