@@ -52,7 +52,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     drive.setDefaultCommand(new CheesyDrive(drive, driverController));
-    driverControllerStartButton.toggleWhenPressed(new CheesyDrivePID(drive, driverController));
+    //driverControllerStartButton.toggleWhenPressed(new CheesyDrivePID(drive, driverController));
     operatorControllerAButton.whenPressed(new ReleaseClimber(m_climber));
     operatorControllerXButton.whenHeld(new PullUpRobot(m_climber));
 

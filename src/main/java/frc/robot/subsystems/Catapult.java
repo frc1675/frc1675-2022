@@ -12,8 +12,8 @@ import frc.robot.Constants;
 
 public class Catapult extends SubsystemBase {
   /** Creates a new Catapult subsystem. */
-  private Solenoid rightSol = new Solenoid(PneumaticsModuleType.REVPH,Constants.RIGHT_SOLENOID);
-  private Solenoid leftSol = new Solenoid(PneumaticsModuleType.REVPH,Constants.LEFT_SOLENOID);
+  private Solenoid rightSol = new Solenoid(PneumaticsModuleType.REVPH,Constants.CATAPULT_RIGHT_SOLENOID);
+  private Solenoid leftSol = new Solenoid(PneumaticsModuleType.REVPH,Constants.CATAPULT_LEFT_SOLENOID);
  
   public Catapult() {
     
