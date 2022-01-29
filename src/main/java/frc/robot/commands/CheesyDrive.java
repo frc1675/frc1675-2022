@@ -3,22 +3,23 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
-
-import frc.robot.Constants;
 import frc.robot.subsystems.Drive;
 
-import edu.wpi.first.wpilibj.Joystick;
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
 public class CheesyDrive extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final Drive m_drive;
-  private final Joystick m_driverController;
+  private final double leftInput;
+  private final double rightInput;
 
-  public CheesyDrive(Drive Drive, Joystick input) {
+  public CheesyDrive(Drive Drive, DoubleSupplier leftInputDouble, DoubleSupplier rightInputDouble) {
     m_drive = Drive;
-    m_driverController = input;
+    leftInput = leftInputDouble.getAsDouble();
+    rightInput = rightInputDouble.getAsDouble();
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_drive);
 
@@ -32,11 +33,9 @@ public class CheesyDrive extends CommandBase {
   @Override
   public void execute() {
     //cheesy drive
-    double forwardPower =  m_driverController.getRawAxis(Constants.LEFT_Y_AXIS);
-    double turnPower = m_driverController.getRawAxis(Constants.RIGHT_X_AXIS);
 
-    double rightPower = forwardPower + turnPower;
-    double leftPower =  forwardPower + -1 * turnPower;
+    double rightPower = leftInput + rightInput;
+    double leftPower =  leftInput + -1 * rightInput;
 
     m_drive.setRight(rightPower);
     m_drive.setLeft(leftPower);
