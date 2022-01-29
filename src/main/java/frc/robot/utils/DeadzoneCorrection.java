@@ -8,7 +8,7 @@ public class DeadzoneCorrection {
 
     }
 
-    public double CorrectDeadzone(double value){
+    public static double CorrectDeadzone(double value){
         if(Math.abs(value) < Constants.DEADZONE_CONSTANT){
             return 0.0;
             //value is within deadzone

@@ -13,13 +13,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class CheesyDrive extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final Drive m_drive;
-  private final double leftInput;
-  private final double rightInput;
+  private final double forwardPower;
+  private final double turnPower;
 
   public CheesyDrive(Drive Drive, DoubleSupplier leftInputDouble, DoubleSupplier rightInputDouble) {
     m_drive = Drive;
-    leftInput = leftInputDouble.getAsDouble();
-    rightInput = rightInputDouble.getAsDouble();
+    forwardPower = leftInputDouble.getAsDouble();
+    turnPower = rightInputDouble.getAsDouble();
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_drive);
 
@@ -34,8 +34,8 @@ public class CheesyDrive extends CommandBase {
   public void execute() {
     //cheesy drive
 
-    double rightPower = leftInput + rightInput;
-    double leftPower =  leftInput + -1 * rightInput;
+    double rightPower = forwardPower + turnPower;
+    double leftPower =  forwardPower + -1 * turnPower;
 
     m_drive.setRight(rightPower);
     m_drive.setLeft(leftPower);

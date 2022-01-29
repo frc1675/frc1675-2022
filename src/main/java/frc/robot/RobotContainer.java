@@ -37,22 +37,21 @@ public class RobotContainer {
   private final Drive drive = new Drive();
   private final Climber m_climber = new Climber();
   private final Catapult catapult = new Catapult();
-  private final DeadzoneCorrection deadzone = new DeadzoneCorrection();
 
   private double getDriverLeftY(){
-    return deadzone.CorrectDeadzone(driverController.getRawAxis(Constants.LEFT_Y_AXIS));
+    return DeadzoneCorrection.CorrectDeadzone(driverController.getRawAxis(Constants.LEFT_Y_AXIS));
   }
 
   private double getDriverLeftX(){
-    return deadzone.CorrectDeadzone(driverController.getRawAxis(Constants.LEFT_X_AXIS));
+    return DeadzoneCorrection.CorrectDeadzone(driverController.getRawAxis(Constants.LEFT_X_AXIS));
   }
 
   private double getDriverRightY(){
-    return deadzone.CorrectDeadzone(driverController.getRawAxis(Constants.RIGHT_Y_AXIS));
+    return DeadzoneCorrection.CorrectDeadzone(driverController.getRawAxis(Constants.RIGHT_Y_AXIS));
   }
 
   private double getDriverRightX(){
-    return deadzone.CorrectDeadzone(driverController.getRawAxis(Constants.RIGHT_X_AXIS));
+    return DeadzoneCorrection.CorrectDeadzone(driverController.getRawAxis(Constants.RIGHT_X_AXIS));
   }
 
 
