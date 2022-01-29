@@ -31,16 +31,16 @@ import frc.robot.Robot;
 
 public class Drive extends SubsystemBase {
   /** Creates a new Drive subsystem. */
-  private CANSparkMax rightFront = new CANSparkMax(Constants.RIGHT_FRONT, MotorType.kBrushless);
-  private CANSparkMax rightBack = new CANSparkMax(Constants.RIGHT_BACK, MotorType.kBrushless);
-  private CANSparkMax leftFront = new CANSparkMax(Constants.LEFT_FRONT, MotorType.kBrushless);
-  private CANSparkMax leftBack = new CANSparkMax(Constants.LEFT_BACK, MotorType.kBrushless);
+  private CANSparkMax rightMain = new CANSparkMax(Constants.RIGHT_FRONT, MotorType.kBrushless);
+  private CANSparkMax rightFollower = new CANSparkMax(Constants.RIGHT_BACK, MotorType.kBrushless);
+  private CANSparkMax leftMain = new CANSparkMax(Constants.LEFT_FRONT, MotorType.kBrushless);
+  private CANSparkMax leftFollower = new CANSparkMax(Constants.LEFT_BACK, MotorType.kBrushless);
 
-  private RelativeEncoder rightEncoder = rightFront.getEncoder();
-  private RelativeEncoder leftEncoder = leftFront.getEncoder();
+  private RelativeEncoder rightEncoder = rightMain.getEncoder();
+  private RelativeEncoder leftEncoder = leftMain.getEncoder();
 
-  private SparkMaxPIDController rightPIDController = rightFront.getPIDController();
-  private SparkMaxPIDController leftPIDController = leftFront.getPIDController();
+  private SparkMaxPIDController rightPIDController = rightMain.getPIDController();
+  private SparkMaxPIDController leftPIDController = leftMain.getPIDController();
 
   //PID coefficents
   private double kP = 6e-5; 
@@ -76,10 +76,13 @@ public class Drive extends SubsystemBase {
 
 
   public Drive() {
-    leftFront.setInverted(true);
-    leftBack.setInverted(true);
-    rightFront.setInverted(false);
-    rightBack.setInverted(false);
+    rightFollower.follow(rightMain);
+    leftFollower.follow(leftMain);
+
+    leftMain.setInverted(true);
+    rightMain.setInverted(false);
+
+
 
     //set PID coefficents
     rightPIDController.setP(kP);
@@ -107,10 +110,10 @@ public class Drive extends SubsystemBase {
 
     //DifferentialDriveOdometry m_odometry = new DifferentialDriveOdometry(m_gyro.getGyroHeading(), new Pose2d(5.0, 13.5, new Rotation2d()));
     if(Robot.isSimulation()){
-      REVPhysicsSim.getInstance().addSparkMax(rightFront, DCMotor.getNEO(1));
-      REVPhysicsSim.getInstance().addSparkMax(rightBack, DCMotor.getNEO(1));
-      REVPhysicsSim.getInstance().addSparkMax(leftFront, DCMotor.getNEO(1));
-      REVPhysicsSim.getInstance().addSparkMax(leftBack, DCMotor.getNEO(1));
+      REVPhysicsSim.getInstance().addSparkMax(rightMain, DCMotor.getNEO(1));
+      REVPhysicsSim.getInstance().addSparkMax(rightFollower, DCMotor.getNEO(1));
+      REVPhysicsSim.getInstance().addSparkMax(leftMain, DCMotor.getNEO(1));
+      REVPhysicsSim.getInstance().addSparkMax(leftFollower, DCMotor.getNEO(1));
     }
     
   }
@@ -118,15 +121,13 @@ public class Drive extends SubsystemBase {
   public void setRight(double speed){
     //setVoltage for simulation support
     speed = speed * 0.2;
-    rightFront.set(speed);
-    rightBack.set(speed);
+    rightMain.set(speed);
   
   }
 
   public void setLeft(double speed){
     speed = speed * 0.2;
-    leftFront.set(speed);
-    leftBack.set(speed);
+    leftMain.set(speed);
 
   }
 
