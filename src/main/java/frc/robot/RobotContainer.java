@@ -38,7 +38,7 @@ public class RobotContainer {
   private final Climber m_climber = new Climber();
   private final Catapult catapult = new Catapult();
 
-  private final AutoChooser autoChooser = new AutoChooser(m_drive);
+  private final AutoChooser autoChooser = new AutoChooser(drive);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -66,11 +66,15 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
+    // .An ExampleCommand will run in autonomous
     return autoChooser.generateAuto();
   }
 
   public void checkAutoPath() {
     autoChooser.checkAutoPath();
+  }
+
+  public void setCheesyDrivePID() {
+    drive.setCheesyDrivePID();
   }
 }

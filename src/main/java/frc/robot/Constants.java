@@ -15,12 +15,20 @@ package frc.robot;
 public final class Constants {
 
     //drivebase constants
-    public static final int RIGHT_FRONT= 1;
+    public static final int RIGHT_FRONT = 1;
     public static final int RIGHT_BACK = 2;
     public static final int LEFT_FRONT = 4;
     public static final int LEFT_BACK = 3;
-    public static final int DRIVETRAIN_ENCODER_RPM = 8192;
+    public static final int DRIVE_ENCODER_SENSITIVITY = 8192;
     public static final int GYRO = 1;
+    public static final double DRIVE_VELOCITY_P = 0.00006;
+    public static final double DRIVE_VELOCITY_FF = 0.000015;
+    public static final double DRIVE_MAX_ACCELERATION = 1.0;
+    public static final double DRIVE_POSITION_P = 0.2;
+    public static final double DRIVE_POSITION_D = 0.01;
+    public static final int ROTATIONS_PER_INCH = 50;
+    public static final double DRIVE_TOLERANCE = 2.0; //in inches, not rotations
+
 
     //climber constants
     public static final int CLIMBER_MOTOR_1 = 5;
