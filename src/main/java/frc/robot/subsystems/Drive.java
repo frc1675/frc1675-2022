@@ -76,8 +76,10 @@ public class Drive extends SubsystemBase {
 
 
   public Drive() {
-    rightFront.setInverted(true);
-    rightBack.setInverted(true);
+    leftFront.setInverted(true);
+    leftBack.setInverted(true);
+    rightFront.setInverted(false);
+    rightBack.setInverted(false);
 
     //set PID coefficents
     rightPIDController.setP(kP);
@@ -115,12 +117,14 @@ public class Drive extends SubsystemBase {
 
   public void setRight(double speed){
     //setVoltage for simulation support
+    speed = speed * 0.2;
     rightFront.set(speed);
     rightBack.set(speed);
 
   }
 
   public void setLeft(double speed){
+    speed = speed * 0.2;
     leftFront.set(speed);
     leftBack.set(speed);
 
