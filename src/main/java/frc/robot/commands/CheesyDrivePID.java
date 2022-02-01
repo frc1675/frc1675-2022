@@ -3,12 +3,10 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
-
-import frc.robot.Constants;
 import frc.robot.subsystems.Drive;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -16,11 +14,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class CheesyDrivePID extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final Drive drive;
-  private final Joystick driverController;
+  private final DoubleSupplier forwardPower;
+  private final DoubleSupplier turnPower;
 
-  public CheesyDrivePID(Drive Drive, Joystick input) {
+  public CheesyDrivePID(Drive Drive, DoubleSupplier forwardPower, DoubleSupplier turnPower) {
     drive = Drive;
-    driverController = input;
+    this.forwardPower = forwardPower;
+    this.turnPower = turnPower;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drive);
 
@@ -36,11 +36,9 @@ public class CheesyDrivePID extends CommandBase {
   @Override
   public void execute() {
     //cheesy drive
-    double forwardPower =  driverController.getRawAxis(Constants.LEFT_Y_AXIS);
-    double turnPower = driverController.getRawAxis(Constants.RIGHT_X_AXIS);
 
-    double rightPower = forwardPower + -1 * turnPower;
-    double leftPower =  forwardPower + turnPower;
+    double rightPower = turnPower.getAsDouble() + -1 * forwardPower.getAsDouble();
+    double leftPower =  turnPower.getAsDouble() + forwardPower.getAsDouble();
 
     drive.setRightVelocity(rightPower);
     drive.setLeftVelocity(leftPower);
