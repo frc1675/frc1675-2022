@@ -98,8 +98,4 @@ public class RobotContainer {
   public void checkAutoPath() {
     autoChooser.checkAutoPath();
   }
-
-  public void setCheesyDrivePID() {
-    drive.setCheesyDrivePID();
-  }
 }

@@ -53,6 +53,32 @@ public class Drive extends SubsystemBase {
       REVPhysicsSim.getInstance().addSparkMax(leftMain, DCMotor.getNEO(1));
       REVPhysicsSim.getInstance().addSparkMax(leftFollower, DCMotor.getNEO(1));
     }
+
+    rightPIDController.setP(Constants.DRIVE_POSITION_P, 0);
+    rightPIDController.setI(0, 0);
+    rightPIDController.setD(Constants.DRIVE_POSITION_D, 0);
+    rightPIDController.setIZone(0, 0);
+    rightPIDController.setFF(0, 0);
+
+    leftPIDController.setP(Constants.DRIVE_POSITION_P, 0);
+    leftPIDController.setI(0, 0);
+    leftPIDController.setD(Constants.DRIVE_POSITION_D, 0);
+    leftPIDController.setIZone(0, 0);
+    leftPIDController.setFF(0, 0);
+
+    rightPIDController.setP(Constants.DRIVE_VELOCITY_P, 1);
+    rightPIDController.setI(0, 1);
+    rightPIDController.setD(0, 1);
+    rightPIDController.setIZone(0, 1);
+    rightPIDController.setFF(Constants.DRIVE_VELOCITY_FF, 1);
+    rightPIDController.setOutputRange(-1 * Constants.DRIVE_MAX_ACCELERATION, Constants.DRIVE_MAX_ACCELERATION, 1);
+
+    leftPIDController.setP(Constants.DRIVE_VELOCITY_P, 1);
+    leftPIDController.setI(0, 1);
+    leftPIDController.setD(0, 1);
+    leftPIDController.setIZone(0, 1);
+    leftPIDController.setFF(Constants.DRIVE_VELOCITY_FF, 1);
+    leftPIDController.setOutputRange(-1 * Constants.DRIVE_MAX_ACCELERATION, Constants.DRIVE_MAX_ACCELERATION, 1);
   }
 
   public void setRight(double speed){
@@ -66,55 +92,25 @@ public class Drive extends SubsystemBase {
 
   //using pid
   public void setRightVelocityPID(double targetVelocity){
-    rightPIDController.setReference(targetVelocity, CANSparkMax.ControlType.kVelocity);
+    rightPIDController.setReference(targetVelocity, CANSparkMax.ControlType.kVelocity, 0);
   }
 
   public void setLeftVelocityPID(double targetVelocity){
-    leftPIDController.setReference(targetVelocity, CANSparkMax.ControlType.kVelocity);
+    leftPIDController.setReference(targetVelocity, CANSparkMax.ControlType.kVelocity, 0);
   }
 
   public void setRightPositionPID(double inches, double maxSpeed) {
-    rightPIDController.setOutputRange(-1 * maxSpeed, maxSpeed);
-    rightPIDController.setReference(inches * Constants.ROTATIONS_PER_INCH, CANSparkMax.ControlType.kPosition);
+    rightPIDController.setOutputRange(-1 * maxSpeed, maxSpeed, 0);
+    rightPIDController.setReference(inches * Constants.ROTATIONS_PER_INCH, CANSparkMax.ControlType.kPosition, 1);
 
     targetRightPosition = inches * Constants.ROTATIONS_PER_INCH;
   }
 
   public void setLeftPositionPID(double inches, double maxSpeed) {
-    leftPIDController.setOutputRange(-1 * maxSpeed, maxSpeed);
-    leftPIDController.setReference(inches * Constants.ROTATIONS_PER_INCH, CANSparkMax.ControlType.kPosition);
+    leftPIDController.setOutputRange(-1 * maxSpeed, maxSpeed, 0);
+    leftPIDController.setReference(inches * Constants.ROTATIONS_PER_INCH, CANSparkMax.ControlType.kPosition, 1);
 
     targetLeftPosition = inches * Constants.ROTATIONS_PER_INCH;
-  }
-
-  public void setCheesyDrivePID() {
-    rightPIDController.setP(Constants.DRIVE_VELOCITY_P);
-    rightPIDController.setI(0);
-    rightPIDController.setD(0);
-    rightPIDController.setIZone(0);
-    rightPIDController.setFF(Constants.DRIVE_VELOCITY_FF);
-    rightPIDController.setOutputRange(-1 * Constants.DRIVE_MAX_ACCELERATION, Constants.DRIVE_MAX_ACCELERATION);
-
-    leftPIDController.setP(Constants.DRIVE_VELOCITY_P);
-    leftPIDController.setI(0);
-    leftPIDController.setD(0);
-    leftPIDController.setIZone(0);
-    leftPIDController.setFF(Constants.DRIVE_VELOCITY_FF);
-    leftPIDController.setOutputRange(-1 * Constants.DRIVE_MAX_ACCELERATION, Constants.DRIVE_MAX_ACCELERATION);
-  }
-
-  public void setAutonomousPID() {
-    rightPIDController.setP(Constants.DRIVE_POSITION_P);
-    rightPIDController.setI(0);
-    rightPIDController.setD(Constants.DRIVE_POSITION_D);
-    rightPIDController.setIZone(0);
-    rightPIDController.setFF(0);
-
-    leftPIDController.setP(Constants.DRIVE_POSITION_P);
-    leftPIDController.setI(0);
-    leftPIDController.setD(Constants.DRIVE_POSITION_D);
-    leftPIDController.setIZone(0);
-    leftPIDController.setFF(0);
   }
 
   public void resetEncoders() {
