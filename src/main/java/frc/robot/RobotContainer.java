@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.CheesyDrive;
-import frc.robot.commands.CheesyDrivePID;
+import frc.robot.commands.InvertFront;
 import frc.robot.commands.PullUpRobot;
 import frc.robot.commands.ReleaseClimber;
 import frc.robot.subsystems.Catapult;
@@ -33,6 +33,7 @@ public class RobotContainer {
   private final JoystickButton operatorControllerXButton = new JoystickButton(operatorController, Constants.X_BUTTON);
   private final JoystickButton driverControllerStartButton = new JoystickButton(driverController, Constants.START_BUTTON);
   private final JoystickButton operatorControllerRightBumper = new JoystickButton(operatorController, Constants.RIGHT_BUMPER);
+  private final JoystickButton driverControllerBButton = new JoystickButton(driverController, Constants.B_BUTTON);
 
 
   private final Drive drive = new Drive();
@@ -73,6 +74,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     drive.setDefaultCommand(new CheesyDrive(drive, () -> getDriverLeftY(), () -> getDriverRightX() ));
     //driverControllerStartButton.toggleWhenPressed(new CheesyDrivePID(drive, () -> getDriverLeftY(), () -> getDriverRightX() ));
+    driverControllerBButton.toggleWhenPressed(new InvertFront(drive));
     operatorControllerAButton.whenPressed(new ReleaseClimber(m_climber));
     operatorControllerXButton.whenHeld(new PullUpRobot(m_climber));
 
