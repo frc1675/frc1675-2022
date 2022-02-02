@@ -6,19 +6,21 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 
-public class SetNegativeIntakeSpeed extends CommandBase {
+public class SetIntakeSpeed extends CommandBase {
   private final Intake intake;
+  private final double speed;
 
-  public SetNegativeIntakeSpeed(Intake intake) {
+  public SetIntakeSpeed(Intake intake, double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intake = intake;
+    this.speed= speed;
     addRequirements(this.intake);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    intake.setIntakeSpeed(-1);
+    intake.setIntakeSpeed(speed);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
