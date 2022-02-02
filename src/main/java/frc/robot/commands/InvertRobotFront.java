@@ -7,10 +7,10 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drive;
 
-public class InvertFront extends CommandBase {
+public class InvertRobotFront extends CommandBase {
   private final Drive drive;
 
-  public InvertFront(Drive drive) {
+  public InvertRobotFront(Drive drive) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.drive = drive;
     addRequirements(this.drive);
