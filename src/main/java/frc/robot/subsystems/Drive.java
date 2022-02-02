@@ -35,18 +35,16 @@ public class Drive extends SubsystemBase {
   private CANSparkMax leftFront = new CANSparkMax(Constants.LEFT_FRONT, MotorType.kBrushless);
   private CANSparkMax leftBack = new CANSparkMax(Constants.LEFT_BACK, MotorType.kBrushless);
 
-  private RelativeEncoder rightFrontEncoder = rightFront.getEncoder();
-  private RelativeEncoder rightBackEncoder = rightBack.getEncoder();
-  private RelativeEncoder leftFrontEncoder = leftFront.getEncoder();
-  private RelativeEncoder leftBackEncoder = leftBack.getEncoder();
+  private RelativeEncoder rightEncoder = rightFront.getEncoder();
+  private RelativeEncoder leftEncoder = leftFront.getEncoder();
 
-  private SparkMaxPIDController rightFrontController = rightFront.getPIDController();
-  private SparkMaxPIDController rightBackController = rightBack.getPIDController();
-  private SparkMaxPIDController leftFrontController = leftFront.getPIDController();
-  private SparkMaxPIDController leftBackController = leftBack.getPIDController();
+  private SparkMaxPIDController rightController = rightFront.getPIDController();
+  private SparkMaxPIDController leftController = leftFront.getPIDController();
 
   private double targetRightPosition;
   private double targetLeftPosition;
+
+  private ShuffleboardTab driveTab = Shuffleboard.getTab("Drivetrain info");
 
   /** simulated encoders (INCOMPLETE) - Field2D simulation stuff is incomplete - may not be possible due to the motor controllers being from a third party controller*/
   //private SimDeviceSim leftEncoderSim = new SimDeviceSim(m_leftEncoder);
@@ -93,102 +91,72 @@ public class Drive extends SubsystemBase {
 
   //using pid
   public void setRightVelocityPID(double targetVelocity){
-    rightFrontController.setReference(targetVelocity, CANSparkMax.ControlType.kVelocity);
-    rightBackController.setReference(targetVelocity, CANSparkMax.ControlType.kVelocity);
+    rightController.setReference(targetVelocity, CANSparkMax.ControlType.kVelocity);
   }
 
   public void setLeftVelocityPID(double targetVelocity){
-    leftFrontController.setReference(targetVelocity, CANSparkMax.ControlType.kVelocity);
-    leftBackController.setReference(targetVelocity, CANSparkMax.ControlType.kVelocity);
+    leftController.setReference(targetVelocity, CANSparkMax.ControlType.kVelocity);
   }
 
   public void setRightPositionPID(double inches, double maxSpeed) {
-    rightFrontController.setP(Constants.DRIVE_POSITION_P);
-    rightFrontController.setI(0);
-    rightFrontController.setD(Constants.DRIVE_POSITION_D);
-    rightFrontController.setIZone(0);
-    rightFrontController.setFF(0);
-    rightFrontController.setOutputRange(-1 * maxSpeed, maxSpeed);
-    rightFrontController.setReference(inches * Constants.ROTATIONS_PER_INCH, CANSparkMax.ControlType.kPosition);
+    rightController.setP(Constants.DRIVE_POSITION_P);
+    rightController.setI(0);
+    rightController.setD(Constants.DRIVE_POSITION_D);
+    rightController.setIZone(0);
+    rightController.setFF(0);
+    rightController.setOutputRange(-1 * maxSpeed, maxSpeed);
+    rightController.setReference(inches * Constants.ROTATIONS_PER_INCH, CANSparkMax.ControlType.kPosition);
 
-    rightBackController.setP(Constants.DRIVE_POSITION_P);
-    rightBackController.setI(0);
-    rightBackController.setD(Constants.DRIVE_POSITION_D);
-    rightBackController.setIZone(0);
-    rightBackController.setFF(0);
-    rightBackController.setOutputRange(-1 * maxSpeed, maxSpeed);
-    rightBackController.setReference(inches * Constants.ROTATIONS_PER_INCH, CANSparkMax.ControlType.kPosition);
-
-    targetRightPosition = inches;
+    targetRightPosition = inches * Constants.ROTATIONS_PER_INCH;
   }
 
   public void setLeftPositionPID(double inches, double maxSpeed) {
-    leftFrontController.setP(Constants.DRIVE_POSITION_P);
-    leftFrontController.setI(0);
-    leftFrontController.setD(Constants.DRIVE_POSITION_D);
-    leftFrontController.setIZone(0);
-    leftFrontController.setFF(0);
-    leftFrontController.setOutputRange(-1 * maxSpeed, maxSpeed);
-    leftFrontController.setReference(inches * Constants.ROTATIONS_PER_INCH, CANSparkMax.ControlType.kPosition);
+    leftController.setP(Constants.DRIVE_POSITION_P);
+    leftController.setI(0);
+    leftController.setD(Constants.DRIVE_POSITION_D);
+    leftController.setIZone(0);
+    leftController.setFF(0);
+    leftController.setOutputRange(-1 * maxSpeed, maxSpeed);
+    leftController.setReference(inches * Constants.ROTATIONS_PER_INCH, CANSparkMax.ControlType.kPosition);
 
-    leftBackController.setP(Constants.DRIVE_POSITION_P);
-    leftBackController.setI(0);
-    leftBackController.setD(Constants.DRIVE_POSITION_D);
-    leftBackController.setIZone(0);
-    leftBackController.setFF(0);
-    leftBackController.setOutputRange(-1 * maxSpeed, maxSpeed);
-    leftBackController.setReference(inches * Constants.ROTATIONS_PER_INCH, CANSparkMax.ControlType.kPosition);
-
-    targetLeftPosition = inches;
+    targetLeftPosition = inches * Constants.ROTATIONS_PER_INCH;
   }
 
   public void setCheesyDrivePID() {
-    rightFrontController.setP(Constants.DRIVE_VELOCITY_P);
-    rightFrontController.setI(0);
-    rightFrontController.setD(0);
-    rightFrontController.setIZone(0);
-    rightFrontController.setFF(Constants.DRIVE_VELOCITY_FF);
-    rightFrontController.setOutputRange(-1 * Constants.DRIVE_MAX_ACCELERATION, Constants.DRIVE_MAX_ACCELERATION);
+    rightController.setP(Constants.DRIVE_VELOCITY_P);
+    rightController.setI(0);
+    rightController.setD(0);
+    rightController.setIZone(0);
+    rightController.setFF(Constants.DRIVE_VELOCITY_FF);
+    rightController.setOutputRange(-1 * Constants.DRIVE_MAX_ACCELERATION, Constants.DRIVE_MAX_ACCELERATION);
 
-    rightBackController.setP(Constants.DRIVE_VELOCITY_P);
-    rightBackController.setI(0);
-    rightBackController.setD(0);
-    rightBackController.setIZone(0);
-    rightBackController.setFF(Constants.DRIVE_VELOCITY_FF);
-    rightBackController.setOutputRange(-1 * Constants.DRIVE_MAX_ACCELERATION, Constants.DRIVE_MAX_ACCELERATION);
-
-    leftFrontController.setP(Constants.DRIVE_VELOCITY_P);
-    leftFrontController.setI(0);
-    leftFrontController.setD(0);
-    leftFrontController.setIZone(0);
-    leftFrontController.setFF(Constants.DRIVE_VELOCITY_FF);
-    leftFrontController.setOutputRange(-1 * Constants.DRIVE_MAX_ACCELERATION, Constants.DRIVE_MAX_ACCELERATION);
-
-    leftBackController.setP(Constants.DRIVE_VELOCITY_P);
-    leftBackController.setI(0);
-    leftBackController.setD(0);
-    leftBackController.setIZone(0);
-    leftBackController.setFF(Constants.DRIVE_VELOCITY_FF);
-    leftBackController.setOutputRange(-1 * Constants.DRIVE_MAX_ACCELERATION, Constants.DRIVE_MAX_ACCELERATION);
+    leftController.setP(Constants.DRIVE_VELOCITY_P);
+    leftController.setI(0);
+    leftController.setD(0);
+    leftController.setIZone(0);
+    leftController.setFF(Constants.DRIVE_VELOCITY_FF);
+    leftController.setOutputRange(-1 * Constants.DRIVE_MAX_ACCELERATION, Constants.DRIVE_MAX_ACCELERATION);
   }
 
   public void resetEncoders() {
-    rightFrontEncoder.setPosition(0);
-    rightBackEncoder.setPosition(0);
-    leftFrontEncoder.setPosition(0);
-    leftBackEncoder.setPosition(0);
+    rightEncoder.setPosition(0);
+    leftEncoder.setPosition(0);
+  }
+
+  public double getRightEncoderValue() {
+    return rightEncoder.getPosition();
+  }
+
+  public double getLeftEncoderValue() {
+    return leftEncoder.getPosition();
   }
 
   public boolean rightAtTargetPosition() {
-    double encoderAverage = (rightFrontEncoder.getPosition() + rightBackEncoder.getPosition()) / 2;
-
-    return Math.abs(encoderAverage - targetRightPosition) / Constants.ROTATIONS_PER_INCH < Constants.DRIVE_TOLERANCE;
+    return Math.abs(rightEncoder.getPosition() - targetRightPosition) / Constants.ROTATIONS_PER_INCH < Constants.DRIVE_TOLERANCE;
   }
 
   public boolean leftAtTargetPosition() {
-    double encoderAverage = (leftFrontEncoder.getPosition() + leftBackEncoder.getPosition()) / 2;
-
-    return Math.abs(encoderAverage - targetLeftPosition) / Constants.ROTATIONS_PER_INCH < Constants.DRIVE_TOLERANCE;
+    return Math.abs(leftEncoder.getPosition() - targetLeftPosition) / Constants.ROTATIONS_PER_INCH < Constants.DRIVE_TOLERANCE;
   }
 
   @Override
@@ -202,7 +170,10 @@ public class Drive extends SubsystemBase {
     //m_odometry.update(m_gyro.getRotation2d(),
     //((Encoder) m_leftEncoder).getDistance(),
     //((Encoder) m_rightEncoder).getDistance());
-//m_field.setRobotPose(m_odometry.getPoseMeters());
+    //m_field.setRobotPose(m_odometry.getPoseMeters());
+
+    driveTab.addNumber("Right encoder value", () -> rightEncoder.getPosition());
+    driveTab.addNumber("Left encoder value", () -> leftEncoder.getPosition());
   }
 
   @Override
