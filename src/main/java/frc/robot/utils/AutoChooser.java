@@ -125,6 +125,7 @@ public class AutoChooser {
 
     public SequentialCommandGroup generateAuto() {
         SequentialCommandGroup auto = new SequentialCommandGroup();
+        drive.setAutonomousPID();
         auto.addCommands(new DriveToDistance(drive, 1000, 0.2));
 
         StartPosition selectedStart = (StartPosition)startPositionChooser.getSelected();

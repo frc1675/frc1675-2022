@@ -10,13 +10,14 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.CheesyDrive;
-import frc.robot.commands.CheesyDrivePID;
+import frc.robot.commands.InvertRobotFront;
 import frc.robot.commands.PullUpRobot;
 import frc.robot.commands.ReleaseClimber;
 import frc.robot.subsystems.Catapult;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drive;
 import frc.robot.utils.AutoChooser;
+import frc.robot.utils.DeadzoneCorrection;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -25,18 +26,42 @@ import frc.robot.utils.AutoChooser;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
+  //driver controller
   private final Joystick driverController = new Joystick(Constants.DRIVER_CONTROLLER);
+  private final JoystickButton driverControllerBButton = new JoystickButton(driverController, Constants.B_BUTTON);
+  private final JoystickButton driverControllerStartButton = new JoystickButton(driverController, Constants.START_BUTTON);
+
+  //operator controller
   private final Joystick operatorController = new Joystick(Constants.OPERATOR_CONTROLLER);
   private final JoystickButton operatorControllerAButton = new JoystickButton(operatorController, Constants.A_BUTTON);
   private final JoystickButton operatorControllerXButton = new JoystickButton(operatorController, Constants.X_BUTTON);
-  private final JoystickButton driverControllerStartButton = new JoystickButton(driverController, Constants.START_BUTTON);
-  private final JoystickButton operatorControllerRightBumber = new JoystickButton(operatorController, Constants.RIGHT_BUMPER);
+  private final JoystickButton operatorControllerRightBumper = new JoystickButton(operatorController, Constants.RIGHT_BUMPER);
+
+
+  
+  
 
 
   private final Drive drive = new Drive();
   private final Climber m_climber = new Climber();
   private final Catapult catapult = new Catapult();
+
+  private double getDriverLeftY(){
+    return DeadzoneCorrection.correctDeadzone(driverController.getRawAxis(Constants.LEFT_Y_AXIS));
+  }
+
+  private double getDriverLeftX(){
+    return DeadzoneCorrection.correctDeadzone(driverController.getRawAxis(Constants.LEFT_X_AXIS));
+  }
+
+  private double getDriverRightY(){
+    return DeadzoneCorrection.correctDeadzone(driverController.getRawAxis(Constants.RIGHT_Y_AXIS));
+  }
+
+  private double getDriverRightX(){
+    return DeadzoneCorrection.correctDeadzone(driverController.getRawAxis(Constants.RIGHT_X_AXIS));
+  }
+
 
   private final AutoChooser autoChooser = new AutoChooser(drive);
 
@@ -53,11 +78,11 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    drive.setDefaultCommand(new CheesyDrive(drive, driverController));
-    //driverControllerStartButton.toggleWhenPressed(new CheesyDrivePID(drive, driverController));
+    drive.setDefaultCommand(new CheesyDrive(drive, () -> getDriverLeftY(), () -> getDriverRightX() ));
+    //driverControllerStartButton.toggleWhenPressed(new CheesyDrivePID(drive, () -> getDriverLeftY(), () -> getDriverRightX() ));
+    driverControllerBButton.toggleWhenPressed(new InvertRobotFront(drive));
     operatorControllerAButton.whenPressed(new ReleaseClimber(m_climber));
     operatorControllerXButton.whenHeld(new PullUpRobot(m_climber));
-
   }
 
   /**

@@ -9,18 +9,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.REVPhysicsSim;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
-
-/**
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
-import edu.wpi.first.wpilibj.simulation.EncoderSim;
-import edu.wpi.first.wpilibj.simulation.SimDeviceSim;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-*/
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -30,112 +19,102 @@ import frc.robot.Robot;
 
 public class Drive extends SubsystemBase {
   /** Creates a new Drive subsystem. */
-  private CANSparkMax rightFront = new CANSparkMax(Constants.RIGHT_FRONT, MotorType.kBrushless);
-  private CANSparkMax rightBack = new CANSparkMax(Constants.RIGHT_BACK, MotorType.kBrushless);
-  private CANSparkMax leftFront = new CANSparkMax(Constants.LEFT_FRONT, MotorType.kBrushless);
-  private CANSparkMax leftBack = new CANSparkMax(Constants.LEFT_BACK, MotorType.kBrushless);
+  private CANSparkMax rightMain = new CANSparkMax(Constants.RIGHT_FRONT, MotorType.kBrushless);
+  private CANSparkMax rightFollower = new CANSparkMax(Constants.RIGHT_BACK, MotorType.kBrushless);
+  private CANSparkMax leftMain = new CANSparkMax(Constants.LEFT_FRONT, MotorType.kBrushless);
+  private CANSparkMax leftFollower = new CANSparkMax(Constants.LEFT_BACK, MotorType.kBrushless);
 
-  private RelativeEncoder rightEncoder = rightFront.getEncoder();
-  private RelativeEncoder leftEncoder = leftFront.getEncoder();
+  private RelativeEncoder rightEncoder = rightMain.getEncoder();
+  private RelativeEncoder leftEncoder = leftMain.getEncoder();
 
-  private SparkMaxPIDController rightController = rightFront.getPIDController();
-  private SparkMaxPIDController leftController = leftFront.getPIDController();
+  private SparkMaxPIDController rightPIDController = rightMain.getPIDController();
+  private SparkMaxPIDController leftPIDController = leftMain.getPIDController();
+
+  private ShuffleboardTab driveTab = Shuffleboard.getTab("Drivetrain info");
 
   private double targetRightPosition;
   private double targetLeftPosition;
 
-  private ShuffleboardTab driveTab = Shuffleboard.getTab("Drivetrain info");
+  private boolean leftInverted = true;
+  private boolean rightInverted = false;
 
-  /** simulated encoders (INCOMPLETE) - Field2D simulation stuff is incomplete - may not be possible due to the motor controllers being from a third party controller*/
-  //private SimDeviceSim leftEncoderSim = new SimDeviceSim(m_leftEncoder);
-  //private EncoderSim m_rightEncoderSim = new EncoderSim((Encoder) m_rightEncoder);
-  //private Field2d m_field = new Field2d();
-
-  /** simulated drivetrain 
-  DifferentialDrivetrainSim m_driveSim = new DifferentialDrivetrainSim(
-  DCMotor.getNEO(2),       // 2 NEO motors on each side of the drivetrain.
-  8.45,                    //gearing reduction.
-  7.5,                     // MOI of 7.5 kg m^2 (from CAD model).
-  54.0,                    // The mass
-  Units.inchesToMeters(6), // wheel radius.
-  0.58,                  // The track width
-  null
-  );
-  */
 
   public Drive() {
-    leftFront.setInverted(true);
-    leftBack.setInverted(true);
-    rightFront.setInverted(false);
-    rightBack.setInverted(false);
+    rightFollower.follow(rightMain);
+    leftFollower.follow(leftMain);
+
+    leftMain.setInverted(leftInverted);
+    rightMain.setInverted(rightInverted);
 
     //DifferentialDriveOdometry m_odometry = new DifferentialDriveOdometry(m_gyro.getGyroHeading(), new Pose2d(5.0, 13.5, new Rotation2d()));
     if(Robot.isSimulation()){
-      REVPhysicsSim.getInstance().addSparkMax(rightFront, DCMotor.getNEO(1));
-      REVPhysicsSim.getInstance().addSparkMax(rightBack, DCMotor.getNEO(1));
-      REVPhysicsSim.getInstance().addSparkMax(leftFront, DCMotor.getNEO(1));
-      REVPhysicsSim.getInstance().addSparkMax(leftBack, DCMotor.getNEO(1));
+      REVPhysicsSim.getInstance().addSparkMax(rightMain, DCMotor.getNEO(1));
+      REVPhysicsSim.getInstance().addSparkMax(rightFollower, DCMotor.getNEO(1));
+      REVPhysicsSim.getInstance().addSparkMax(leftMain, DCMotor.getNEO(1));
+      REVPhysicsSim.getInstance().addSparkMax(leftFollower, DCMotor.getNEO(1));
     }
   }
 
   public void setRight(double speed){
     //setVoltage for simulation support
-    rightFront.set(speed);
-    rightBack.set(speed);
+    rightMain.set(speed);
   }
 
   public void setLeft(double speed){
-    leftFront.set(speed);
-    leftBack.set(speed);
+    leftMain.set(speed);
   }
 
   //using pid
   public void setRightVelocityPID(double targetVelocity){
-    rightController.setReference(targetVelocity, CANSparkMax.ControlType.kVelocity);
+    rightPIDController.setReference(targetVelocity, CANSparkMax.ControlType.kVelocity);
   }
 
   public void setLeftVelocityPID(double targetVelocity){
-    leftController.setReference(targetVelocity, CANSparkMax.ControlType.kVelocity);
+    leftPIDController.setReference(targetVelocity, CANSparkMax.ControlType.kVelocity);
   }
 
   public void setRightPositionPID(double inches, double maxSpeed) {
-    rightController.setP(Constants.DRIVE_POSITION_P);
-    rightController.setI(0);
-    rightController.setD(Constants.DRIVE_POSITION_D);
-    rightController.setIZone(0);
-    rightController.setFF(0);
-    rightController.setOutputRange(-1 * maxSpeed, maxSpeed);
-    rightController.setReference(inches * Constants.ROTATIONS_PER_INCH, CANSparkMax.ControlType.kPosition);
+    rightPIDController.setOutputRange(-1 * maxSpeed, maxSpeed);
+    rightPIDController.setReference(inches * Constants.ROTATIONS_PER_INCH, CANSparkMax.ControlType.kPosition);
 
     targetRightPosition = inches * Constants.ROTATIONS_PER_INCH;
   }
 
   public void setLeftPositionPID(double inches, double maxSpeed) {
-    leftController.setP(Constants.DRIVE_POSITION_P);
-    leftController.setI(0);
-    leftController.setD(Constants.DRIVE_POSITION_D);
-    leftController.setIZone(0);
-    leftController.setFF(0);
-    leftController.setOutputRange(-1 * maxSpeed, maxSpeed);
-    leftController.setReference(inches * Constants.ROTATIONS_PER_INCH, CANSparkMax.ControlType.kPosition);
+    leftPIDController.setOutputRange(-1 * maxSpeed, maxSpeed);
+    leftPIDController.setReference(inches * Constants.ROTATIONS_PER_INCH, CANSparkMax.ControlType.kPosition);
 
     targetLeftPosition = inches * Constants.ROTATIONS_PER_INCH;
   }
 
   public void setCheesyDrivePID() {
-    rightController.setP(Constants.DRIVE_VELOCITY_P);
-    rightController.setI(0);
-    rightController.setD(0);
-    rightController.setIZone(0);
-    rightController.setFF(Constants.DRIVE_VELOCITY_FF);
-    rightController.setOutputRange(-1 * Constants.DRIVE_MAX_ACCELERATION, Constants.DRIVE_MAX_ACCELERATION);
+    rightPIDController.setP(Constants.DRIVE_VELOCITY_P);
+    rightPIDController.setI(0);
+    rightPIDController.setD(0);
+    rightPIDController.setIZone(0);
+    rightPIDController.setFF(Constants.DRIVE_VELOCITY_FF);
+    rightPIDController.setOutputRange(-1 * Constants.DRIVE_MAX_ACCELERATION, Constants.DRIVE_MAX_ACCELERATION);
 
-    leftController.setP(Constants.DRIVE_VELOCITY_P);
-    leftController.setI(0);
-    leftController.setD(0);
-    leftController.setIZone(0);
-    leftController.setFF(Constants.DRIVE_VELOCITY_FF);
-    leftController.setOutputRange(-1 * Constants.DRIVE_MAX_ACCELERATION, Constants.DRIVE_MAX_ACCELERATION);
+    leftPIDController.setP(Constants.DRIVE_VELOCITY_P);
+    leftPIDController.setI(0);
+    leftPIDController.setD(0);
+    leftPIDController.setIZone(0);
+    leftPIDController.setFF(Constants.DRIVE_VELOCITY_FF);
+    leftPIDController.setOutputRange(-1 * Constants.DRIVE_MAX_ACCELERATION, Constants.DRIVE_MAX_ACCELERATION);
+  }
+
+  public void setAutonomousPID() {
+    rightPIDController.setP(Constants.DRIVE_POSITION_P);
+    rightPIDController.setI(0);
+    rightPIDController.setD(Constants.DRIVE_POSITION_D);
+    rightPIDController.setIZone(0);
+    rightPIDController.setFF(0);
+
+    leftPIDController.setP(Constants.DRIVE_POSITION_P);
+    leftPIDController.setI(0);
+    leftPIDController.setD(Constants.DRIVE_POSITION_D);
+    leftPIDController.setIZone(0);
+    leftPIDController.setFF(0);
   }
 
   public void resetEncoders() {
@@ -159,11 +138,17 @@ public class Drive extends SubsystemBase {
     return Math.abs(leftEncoder.getPosition() - targetLeftPosition) / Constants.ROTATIONS_PER_INCH < Constants.DRIVE_TOLERANCE;
   }
 
+//switching the front
+public void invertFront(){
+  rightInverted = !rightInverted;
+  leftInverted = !leftInverted;
+  leftMain.setInverted(leftInverted);
+  rightMain.setInverted(rightInverted);
+  SmartDashboard.putBoolean("Drive Front Intake", rightInverted);
+}
+
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    //var gyroAngle = Rotation2d.fromDegrees(-gyro.getAngle());
-
     // Update the pose
     //m_pose = m_odometry.update(gyroAngle, m_leftEncoder.getDistance(), m_rightEncoder.getDistance());
     
@@ -177,18 +162,5 @@ public class Drive extends SubsystemBase {
   }
 
   @Override
-  public void simulationPeriodic() {
-    // This method will be called once per scheduler run during simulation
-    //m_driveSim.setInputs(leftFront.get() * RobotController.getInputVoltage(),
-    //rightFront.get() * -1 * RobotController.getInputVoltage());
-
-  //m_driveSim.update(0.02);
-
-  /** Update all  sensors. (REQUIRES OTHER STUFF TO BE COMPLETED)
-  m_leftEncoderSim.setDistance(m_driveSim.getLeftPositionMeters());
-  m_leftEncoderSim.setRate(m_driveSim.getLeftVelocityMetersPerSecond());
-  m_rightEncoderSim.setDistance(m_driveSim.getRightPositionMeters());
-  m_rightEncoderSim.setRate(m_driveSim.getRightVelocityMetersPerSecond());
-  */
-  }
+  public void simulationPeriodic() {}
 }
