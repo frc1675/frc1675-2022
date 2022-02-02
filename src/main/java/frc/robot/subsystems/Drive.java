@@ -9,18 +9,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.REVPhysicsSim;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
-
-/**
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
-import edu.wpi.first.wpilibj.simulation.EncoderSim;
-import edu.wpi.first.wpilibj.simulation.SimDeviceSim;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-*/
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -52,37 +41,16 @@ public class Drive extends SubsystemBase {
   private double kMinOutput = -1;
   private double maxRPM = 5700;
 
-  /** simulated encoders (INCOMPLETE) - Field2D simulation stuff is incomplete - may not be possible due to the motor controllers being from a third party controller*/
-  //private SimDeviceSim leftEncoderSim = new SimDeviceSim(m_leftEncoder);
-  //private EncoderSim m_rightEncoderSim = new EncoderSim((Encoder) m_rightEncoder);
-  //private Field2d m_field = new Field2d();
-
-  /** simulated drivetrain 
-  DifferentialDrivetrainSim m_driveSim = new DifferentialDrivetrainSim(
-  DCMotor.getNEO(2),       // 2 NEO motors on each side of the drivetrain.
-  8.45,                    //gearing reduction.
-  7.5,                     // MOI of 7.5 kg m^2 (from CAD model).
-  54.0,                    // The mass
-  Units.inchesToMeters(6), // wheel radius.
-  0.58,                  // The track width
-  null
-  );
-  */
-
-
-
-
-  
+  private boolean leftInverted = true;
+  private boolean rightInverted = false;
 
 
   public Drive() {
     rightFollower.follow(rightMain);
     leftFollower.follow(leftMain);
 
-    leftMain.setInverted(true);
-    rightMain.setInverted(false);
-
-
+    leftMain.setInverted(leftInverted);
+    rightMain.setInverted(rightInverted);
 
     //set PID coefficents
     rightPIDController.setP(kP);
@@ -97,18 +65,6 @@ public class Drive extends SubsystemBase {
     leftPIDController.setIZone(kIz);
     leftPIDController.setOutputRange(kMinOutput, kMaxOutput);
 
-    //display coefficents in Shuffleboard
-    ShuffleboardTab PIDTab = Shuffleboard.getTab("PID Coefficents");
-    PIDTab.addNumber("kP", () -> kP);
-    PIDTab.addNumber("kI", () -> kI);
-    PIDTab.addNumber("kD", () -> kD);
-    PIDTab.addNumber("kI Zone", () -> kIz);
-    PIDTab.addNumber("Minimum Output", () -> kMinOutput);
-    PIDTab.addNumber("Maximum Output", () -> kMaxOutput);
-
-    //SmartDashboard.putData("Field", m_field);
-
-    //DifferentialDriveOdometry m_odometry = new DifferentialDriveOdometry(m_gyro.getGyroHeading(), new Pose2d(5.0, 13.5, new Rotation2d()));
     if(Robot.isSimulation()){
       REVPhysicsSim.getInstance().addSparkMax(rightMain, DCMotor.getNEO(1));
       REVPhysicsSim.getInstance().addSparkMax(rightFollower, DCMotor.getNEO(1));
@@ -140,33 +96,18 @@ public class Drive extends SubsystemBase {
     leftPIDController.setReference(targetVelocity, CANSparkMax.ControlType.kVelocity);
   }
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-    //var gyroAngle = Rotation2d.fromDegrees(-gyro.getAngle());
-
-    // Update the pose
-    //m_pose = m_odometry.update(gyroAngle, m_leftEncoder.getDistance(), m_rightEncoder.getDistance());
-    
-    //m_odometry.update(m_gyro.getRotation2d(),
-    //((Encoder) m_leftEncoder).getDistance(),
-    //((Encoder) m_rightEncoder).getDistance());
-//m_field.setRobotPose(m_odometry.getPoseMeters());
-  }
+//switching the front
+public void invertFront(){
+  rightInverted = !rightInverted;
+  leftInverted = !leftInverted;
+  leftMain.setInverted(leftInverted);
+  rightMain.setInverted(rightInverted);
+  SmartDashboard.putBoolean("Drive Front Intake", rightInverted);
+}
 
   @Override
-  public void simulationPeriodic() {
-    // This method will be called once per scheduler run during simulation
-    //m_driveSim.setInputs(leftFront.get() * RobotController.getInputVoltage(),
-    //rightFront.get() * -1 * RobotController.getInputVoltage());
+  public void periodic() {}
 
-  //m_driveSim.update(0.02);
-
-  /** Update all  sensors. (REQUIRES OTHER STUFF TO BE COMPLETED)
-  m_leftEncoderSim.setDistance(m_driveSim.getLeftPositionMeters());
-  m_leftEncoderSim.setRate(m_driveSim.getLeftVelocityMetersPerSecond());
-  m_rightEncoderSim.setDistance(m_driveSim.getRightPositionMeters());
-  m_rightEncoderSim.setRate(m_driveSim.getRightVelocityMetersPerSecond());
-  */
-  }
+  @Override
+  public void simulationPeriodic() {}
 }
