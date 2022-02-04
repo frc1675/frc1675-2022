@@ -95,11 +95,11 @@ public class Drive extends SubsystemBase {
 
   //using pid
   public void setRightVelocityPID(double targetVelocity){
-    rightPIDController.setReference(targetVelocity, CANSparkMax.ControlType.kVelocity, 0);
+    rightPIDController.setReference(targetVelocity, CANSparkMax.ControlType.kVelocity, Constants.VELOCITY_PID_SLOT);
   }
 
   public void setLeftVelocityPID(double targetVelocity){
-    leftPIDController.setReference(targetVelocity, CANSparkMax.ControlType.kVelocity, 0);
+    leftPIDController.setReference(targetVelocity, CANSparkMax.ControlType.kVelocity, Constants.VELOCITY_PID_SLOT);
   }
 
   public void setRightPositionPID(double inches, double maxSpeed) {
