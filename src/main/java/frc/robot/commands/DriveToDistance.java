@@ -4,8 +4,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drive;
 
@@ -14,8 +12,6 @@ public class DriveToDistance extends CommandBase {
   private double inches;
   private double maxSpeed;
   private int count;
-
-  private ShuffleboardTab autoTab = Shuffleboard.getTab("Choose auto routine");
 
   /** Creates a new DriveToDistance. */
   public DriveToDistance(Drive drive, double inches, double maxSpeed) {
@@ -36,15 +32,7 @@ public class DriveToDistance extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    if (drive.rightAtTargetPosition() && drive.leftAtTargetPosition()) {
-      count++;
-    } else {
-      count = 0;
-    }
-
-    autoTab.addNumber("Right encoder value", () -> drive.getRightEncoderValue());
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
@@ -53,6 +41,12 @@ public class DriveToDistance extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if (drive.rightAtTargetPosition() && drive.leftAtTargetPosition()) {
+      count++;
+    } else {
+      count = 0;
+    }
+    
     return count >= 20;
   }
 }

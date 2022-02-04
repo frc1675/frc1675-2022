@@ -54,31 +54,34 @@ public class Drive extends SubsystemBase {
       REVPhysicsSim.getInstance().addSparkMax(leftFollower, DCMotor.getNEO(1));
     }
 
-    rightPIDController.setP(Constants.DRIVE_POSITION_P, 0);
-    rightPIDController.setI(0, 0);
-    rightPIDController.setD(Constants.DRIVE_POSITION_D, 0);
-    rightPIDController.setIZone(0, 0);
-    rightPIDController.setFF(0, 0);
+    rightPIDController.setP(Constants.DRIVE_POSITION_P, Constants.POSITION_PID_SLOT);
+    rightPIDController.setI(0, Constants.POSITION_PID_SLOT);
+    rightPIDController.setD(Constants.DRIVE_POSITION_D, Constants.POSITION_PID_SLOT);
+    rightPIDController.setIZone(0, Constants.POSITION_PID_SLOT);
+    rightPIDController.setFF(0, Constants.POSITION_PID_SLOT);
 
-    leftPIDController.setP(Constants.DRIVE_POSITION_P, 0);
-    leftPIDController.setI(0, 0);
-    leftPIDController.setD(Constants.DRIVE_POSITION_D, 0);
-    leftPIDController.setIZone(0, 0);
-    leftPIDController.setFF(0, 0);
+    leftPIDController.setP(Constants.DRIVE_POSITION_P, Constants.POSITION_PID_SLOT);
+    leftPIDController.setI(0, Constants.POSITION_PID_SLOT);
+    leftPIDController.setD(Constants.DRIVE_POSITION_D, Constants.POSITION_PID_SLOT);
+    leftPIDController.setIZone(0, Constants.POSITION_PID_SLOT);
+    leftPIDController.setFF(0, Constants.POSITION_PID_SLOT);
 
-    rightPIDController.setP(Constants.DRIVE_VELOCITY_P, 1);
-    rightPIDController.setI(0, 1);
-    rightPIDController.setD(0, 1);
-    rightPIDController.setIZone(0, 1);
-    rightPIDController.setFF(Constants.DRIVE_VELOCITY_FF, 1);
-    rightPIDController.setOutputRange(-1 * Constants.DRIVE_MAX_ACCELERATION, Constants.DRIVE_MAX_ACCELERATION, 1);
+    rightPIDController.setP(Constants.DRIVE_VELOCITY_P, Constants.VELOCITY_PID_SLOT);
+    rightPIDController.setI(0, Constants.VELOCITY_PID_SLOT);
+    rightPIDController.setD(0, Constants.VELOCITY_PID_SLOT);
+    rightPIDController.setIZone(0, Constants.VELOCITY_PID_SLOT);
+    rightPIDController.setFF(Constants.DRIVE_VELOCITY_FF, Constants.VELOCITY_PID_SLOT);
+    rightPIDController.setOutputRange(-1 * Constants.DRIVE_MAX_ACCELERATION, Constants.DRIVE_MAX_ACCELERATION, Constants.VELOCITY_PID_SLOT);
 
-    leftPIDController.setP(Constants.DRIVE_VELOCITY_P, 1);
-    leftPIDController.setI(0, 1);
-    leftPIDController.setD(0, 1);
-    leftPIDController.setIZone(0, 1);
-    leftPIDController.setFF(Constants.DRIVE_VELOCITY_FF, 1);
-    leftPIDController.setOutputRange(-1 * Constants.DRIVE_MAX_ACCELERATION, Constants.DRIVE_MAX_ACCELERATION, 1);
+    leftPIDController.setP(Constants.DRIVE_VELOCITY_P, Constants.VELOCITY_PID_SLOT);
+    leftPIDController.setI(0, Constants.VELOCITY_PID_SLOT);
+    leftPIDController.setD(0, Constants.VELOCITY_PID_SLOT);
+    leftPIDController.setIZone(0, Constants.VELOCITY_PID_SLOT);
+    leftPIDController.setFF(Constants.DRIVE_VELOCITY_FF, Constants.VELOCITY_PID_SLOT);
+    leftPIDController.setOutputRange(-1 * Constants.DRIVE_MAX_ACCELERATION, Constants.DRIVE_MAX_ACCELERATION, Constants.VELOCITY_PID_SLOT);
+
+    driveTab.addNumber("Right encoder value", () -> rightEncoder.getPosition());
+    driveTab.addNumber("Left encoder value", () -> leftEncoder.getPosition());
   }
 
   public void setRight(double speed){
@@ -144,18 +147,7 @@ public void invertFront(){
 }
 
   @Override
-  public void periodic() {
-    // Update the pose
-    //m_pose = m_odometry.update(gyroAngle, m_leftEncoder.getDistance(), m_rightEncoder.getDistance());
-    
-    //m_odometry.update(m_gyro.getRotation2d(),
-    //((Encoder) m_leftEncoder).getDistance(),
-    //((Encoder) m_rightEncoder).getDistance());
-    //m_field.setRobotPose(m_odometry.getPoseMeters());
-
-    driveTab.addNumber("Right encoder value", () -> rightEncoder.getPosition());
-    driveTab.addNumber("Left encoder value", () -> leftEncoder.getPosition());
-  }
+  public void periodic() {}
 
   @Override
   public void simulationPeriodic() {}

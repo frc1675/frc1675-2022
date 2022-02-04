@@ -19,13 +19,14 @@ public final class Constants {
     public static final int RIGHT_BACK = 2;
     public static final int LEFT_FRONT = 4;
     public static final int LEFT_BACK = 3;
-    public static final int DRIVE_ENCODER_SENSITIVITY = 8192;
     public static final int GYRO = 1;
     public static final double DRIVE_VELOCITY_P = 0.00006;
     public static final double DRIVE_VELOCITY_FF = 0.000015;
     public static final double DRIVE_MAX_ACCELERATION = 1.0;
     public static final double DRIVE_POSITION_P = 0.2;
     public static final double DRIVE_POSITION_D = 0.01;
+    public static final int VELOCITY_PID_SLOT = 1;
+    public static final int POSITION_PID_SLOT = 0;
     public static final double ROTATIONS_PER_INCH = 0.4642;
     public static final double DRIVE_TOLERANCE = 2.0; //in inches, not rotations
 
