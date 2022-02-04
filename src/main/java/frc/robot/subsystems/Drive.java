@@ -80,8 +80,8 @@ public class Drive extends SubsystemBase {
     leftPIDController.setFF(Constants.DRIVE_VELOCITY_FF, Constants.VELOCITY_PID_SLOT);
     leftPIDController.setOutputRange(-1 * Constants.DRIVE_MAX_ACCELERATION, Constants.DRIVE_MAX_ACCELERATION, Constants.VELOCITY_PID_SLOT);
 
-    driveTab.addNumber("Right encoder value", () -> rightEncoder.getPosition());
-    driveTab.addNumber("Left encoder value", () -> leftEncoder.getPosition());
+    driveTab.addNumber("Right position", () -> rightEncoder.getPosition());
+    driveTab.addNumber("Left position", () -> leftEncoder.getPosition());
   }
 
   public void setRight(double speed){
@@ -103,17 +103,15 @@ public class Drive extends SubsystemBase {
   }
 
   public void setRightPositionPID(double inches, double maxSpeed) {
-    rightPIDController.setOutputRange(-1 * maxSpeed, maxSpeed, 0);
-    rightPIDController.setReference(inches * Constants.ROTATIONS_PER_INCH, CANSparkMax.ControlType.kPosition, 1);
-
     targetRightPosition = inches * Constants.ROTATIONS_PER_INCH;
+    rightPIDController.setOutputRange(-1 * maxSpeed, maxSpeed, Constants.POSITION_PID_SLOT);
+    rightPIDController.setReference(targetRightPosition, CANSparkMax.ControlType.kPosition, Constants.POSITION_PID_SLOT);
   }
 
   public void setLeftPositionPID(double inches, double maxSpeed) {
-    leftPIDController.setOutputRange(-1 * maxSpeed, maxSpeed, 0);
-    leftPIDController.setReference(inches * Constants.ROTATIONS_PER_INCH, CANSparkMax.ControlType.kPosition, 1);
-
     targetLeftPosition = inches * Constants.ROTATIONS_PER_INCH;
+    leftPIDController.setOutputRange(-1 * maxSpeed, maxSpeed, Constants.POSITION_PID_SLOT);
+    leftPIDController.setReference(targetLeftPosition, CANSparkMax.ControlType.kPosition, Constants.POSITION_PID_SLOT);
   }
 
   public void resetEncoders() {
@@ -121,7 +119,7 @@ public class Drive extends SubsystemBase {
     leftEncoder.setPosition(0);
   }
 
-  public double getRightEncoderValue() {
+  public double getRightPosition() {
     return rightEncoder.getPosition();
   }
 
