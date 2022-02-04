@@ -11,8 +11,6 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -77,13 +75,13 @@ public class Drive extends SubsystemBase {
   public void setRight(double speed){
     //setVoltage for simulation support
     speed = speed * 0.2;
-    rightMain.set(speed);
+    rightMain.setVoltage(speed);
   
   }
 
   public void setLeft(double speed){
     speed = speed * 0.2;
-    leftMain.set(speed);
+    leftMain.setVoltage(speed);
 
   }
 

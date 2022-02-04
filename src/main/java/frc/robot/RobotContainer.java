@@ -47,7 +47,7 @@ public class RobotContainer {
   private final Catapult catapult = new Catapult();
 
   private double getDriverLeftY(){
-    return DeadzoneCorrection.correctDeadzone(driverController.getRawAxis(Constants.LEFT_Y_AXIS));
+    return -1 * DeadzoneCorrection.correctDeadzone(driverController.getRawAxis(Constants.LEFT_Y_AXIS));
   }
 
   private double getDriverLeftX(){
@@ -55,7 +55,7 @@ public class RobotContainer {
   }
 
   private double getDriverRightY(){
-    return DeadzoneCorrection.correctDeadzone(driverController.getRawAxis(Constants.RIGHT_Y_AXIS));
+    return -1 * DeadzoneCorrection.correctDeadzone(driverController.getRawAxis(Constants.RIGHT_Y_AXIS));
   }
 
   private double getDriverRightX(){
