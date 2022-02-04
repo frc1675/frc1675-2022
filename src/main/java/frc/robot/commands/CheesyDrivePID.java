@@ -37,8 +37,8 @@ public class CheesyDrivePID extends CommandBase {
   public void execute() {
     //cheesy drive
 
-    double rightPower = turnPower.getAsDouble() + -1 * forwardPower.getAsDouble();
-    double leftPower =  turnPower.getAsDouble() + forwardPower.getAsDouble();
+    double rightPower = forwardPower.getAsDouble() + -1 * turnPower.getAsDouble();
+    double leftPower = forwardPower.getAsDouble() + turnPower.getAsDouble();
 
     drive.setRightVelocity(rightPower);
     drive.setLeftVelocity(leftPower);
