@@ -125,7 +125,7 @@ public class AutoChooser {
 
     public SequentialCommandGroup generateAuto() {
         SequentialCommandGroup auto = new SequentialCommandGroup();
-        //auto.addCommands(new DriveToDistance(drive, 1000, 0.2));
+        auto.addCommands(new DriveToDistance(drive, 942.5, 0.1));
 
         StartPosition selectedStart = (StartPosition)startPositionChooser.getSelected();
         SelectedBall selectedBalls = (SelectedBall)selectedBallsChooser.getSelected();
