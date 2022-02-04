@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
 
-
 public class Drive extends SubsystemBase {
   /** Creates a new Drive subsystem. */
   private CANSparkMax rightMain = new CANSparkMax(Constants.RIGHT_FRONT, MotorType.kBrushless);
@@ -31,15 +30,10 @@ public class Drive extends SubsystemBase {
   private SparkMaxPIDController rightPIDController = rightMain.getPIDController();
   private SparkMaxPIDController leftPIDController = leftMain.getPIDController();
 
-  //PID coefficents
-  private double kP = 6e-5; 
-  private double kI = 0;
-  private double kD = 0; 
-  private double kIz = 0;
-  private double kFF = 0.000015; 
-  private double kMaxOutput = 1; 
-  private double kMinOutput = -1;
-  private double maxRPM = 5700;
+  private ShuffleboardTab driveTab = Shuffleboard.getTab("Drivetrain info");
+
+  private double targetRightPosition;
+  private double targetLeftPosition;
 
   private boolean leftInverted = true;
   private boolean rightInverted = false;
@@ -52,48 +46,93 @@ public class Drive extends SubsystemBase {
     leftMain.setInverted(leftInverted);
     rightMain.setInverted(rightInverted);
 
-    //set PID coefficents
-    rightPIDController.setP(kP);
-    rightPIDController.setD(kD);
-    rightPIDController.setI(kI);
-    rightPIDController.setIZone(kIz);
-    rightPIDController.setOutputRange(kMinOutput, kMaxOutput);
-
-    leftPIDController.setP(kP);
-    leftPIDController.setD(kD);
-    leftPIDController.setI(kI);
-    leftPIDController.setIZone(kIz);
-    leftPIDController.setOutputRange(kMinOutput, kMaxOutput);
-
+    //DifferentialDriveOdometry m_odometry = new DifferentialDriveOdometry(m_gyro.getGyroHeading(), new Pose2d(5.0, 13.5, new Rotation2d()));
     if(Robot.isSimulation()){
       REVPhysicsSim.getInstance().addSparkMax(rightMain, DCMotor.getNEO(1));
       REVPhysicsSim.getInstance().addSparkMax(rightFollower, DCMotor.getNEO(1));
       REVPhysicsSim.getInstance().addSparkMax(leftMain, DCMotor.getNEO(1));
       REVPhysicsSim.getInstance().addSparkMax(leftFollower, DCMotor.getNEO(1));
     }
-    
+
+    rightPIDController.setP(Constants.DRIVE_POSITION_P, Constants.POSITION_PID_SLOT);
+    rightPIDController.setI(0, Constants.POSITION_PID_SLOT);
+    rightPIDController.setD(Constants.DRIVE_POSITION_D, Constants.POSITION_PID_SLOT);
+    rightPIDController.setIZone(0, Constants.POSITION_PID_SLOT);
+    rightPIDController.setFF(0, Constants.POSITION_PID_SLOT);
+
+    leftPIDController.setP(Constants.DRIVE_POSITION_P, Constants.POSITION_PID_SLOT);
+    leftPIDController.setI(0, Constants.POSITION_PID_SLOT);
+    leftPIDController.setD(Constants.DRIVE_POSITION_D, Constants.POSITION_PID_SLOT);
+    leftPIDController.setIZone(0, Constants.POSITION_PID_SLOT);
+    leftPIDController.setFF(0, Constants.POSITION_PID_SLOT);
+
+    rightPIDController.setP(Constants.DRIVE_VELOCITY_P, Constants.VELOCITY_PID_SLOT);
+    rightPIDController.setI(0, Constants.VELOCITY_PID_SLOT);
+    rightPIDController.setD(0, Constants.VELOCITY_PID_SLOT);
+    rightPIDController.setIZone(0, Constants.VELOCITY_PID_SLOT);
+    rightPIDController.setFF(Constants.DRIVE_VELOCITY_FF, Constants.VELOCITY_PID_SLOT);
+    rightPIDController.setOutputRange(-1 * Constants.DRIVE_MAX_ACCELERATION, Constants.DRIVE_MAX_ACCELERATION, Constants.VELOCITY_PID_SLOT);
+
+    leftPIDController.setP(Constants.DRIVE_VELOCITY_P, Constants.VELOCITY_PID_SLOT);
+    leftPIDController.setI(0, Constants.VELOCITY_PID_SLOT);
+    leftPIDController.setD(0, Constants.VELOCITY_PID_SLOT);
+    leftPIDController.setIZone(0, Constants.VELOCITY_PID_SLOT);
+    leftPIDController.setFF(Constants.DRIVE_VELOCITY_FF, Constants.VELOCITY_PID_SLOT);
+    leftPIDController.setOutputRange(-1 * Constants.DRIVE_MAX_ACCELERATION, Constants.DRIVE_MAX_ACCELERATION, Constants.VELOCITY_PID_SLOT);
+
+    driveTab.addNumber("Right position", () -> rightEncoder.getPosition());
+    driveTab.addNumber("Left position", () -> leftEncoder.getPosition());
   }
 
   public void setRight(double speed){
     //setVoltage for simulation support
-    speed = speed * 0.2;
     rightMain.set(speed);
-  
   }
 
   public void setLeft(double speed){
-    speed = speed * 0.2;
     leftMain.set(speed);
-
   }
 
   //using pid
-  public void setRightVelocity(double targetVelocity){
-    rightPIDController.setReference(targetVelocity, CANSparkMax.ControlType.kVelocity);
+  public void setRightVelocityPID(double targetVelocity){
+    rightPIDController.setReference(targetVelocity, CANSparkMax.ControlType.kVelocity, Constants.VELOCITY_PID_SLOT);
   }
 
-  public void setLeftVelocity(double targetVelocity){
-    leftPIDController.setReference(targetVelocity, CANSparkMax.ControlType.kVelocity);
+  public void setLeftVelocityPID(double targetVelocity){
+    leftPIDController.setReference(targetVelocity, CANSparkMax.ControlType.kVelocity, Constants.VELOCITY_PID_SLOT);
+  }
+
+  public void setRightPositionPID(double inches, double maxSpeed) {
+    targetRightPosition = inches * Constants.ROTATIONS_PER_INCH;
+    rightPIDController.setOutputRange(-1 * maxSpeed, maxSpeed, Constants.POSITION_PID_SLOT);
+    rightPIDController.setReference(targetRightPosition, CANSparkMax.ControlType.kPosition, Constants.POSITION_PID_SLOT);
+  }
+
+  public void setLeftPositionPID(double inches, double maxSpeed) {
+    targetLeftPosition = inches * Constants.ROTATIONS_PER_INCH;
+    leftPIDController.setOutputRange(-1 * maxSpeed, maxSpeed, Constants.POSITION_PID_SLOT);
+    leftPIDController.setReference(targetLeftPosition, CANSparkMax.ControlType.kPosition, Constants.POSITION_PID_SLOT);
+  }
+
+  public void resetEncoders() {
+    rightEncoder.setPosition(0);
+    leftEncoder.setPosition(0);
+  }
+
+  public double getRightPosition() {
+    return rightEncoder.getPosition();
+  }
+
+  public double getLeftEncoderValue() {
+    return leftEncoder.getPosition();
+  }
+
+  public boolean rightAtTargetPosition() {
+    return Math.abs(rightEncoder.getPosition() - targetRightPosition) / Constants.ROTATIONS_PER_INCH < Constants.DRIVE_TOLERANCE;
+  }
+
+  public boolean leftAtTargetPosition() {
+    return Math.abs(leftEncoder.getPosition() - targetLeftPosition) / Constants.ROTATIONS_PER_INCH < Constants.DRIVE_TOLERANCE;
   }
 
 //switching the front

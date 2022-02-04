@@ -40,8 +40,8 @@ public class CheesyDrivePID extends CommandBase {
     double rightPower = turnPower.getAsDouble() + -1 * forwardPower.getAsDouble();
     double leftPower =  turnPower.getAsDouble() + forwardPower.getAsDouble();
 
-    drive.setRightVelocity(rightPower);
-    drive.setLeftVelocity(leftPower);
+    drive.setRightVelocityPID(rightPower);
+    drive.setLeftVelocityPID(leftPower);
   }
 
   // Called once the command ends or is interrupted.

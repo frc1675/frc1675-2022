@@ -83,7 +83,6 @@ public class RobotContainer {
     driverControllerBButton.toggleWhenPressed(new InvertRobotFront(drive));
     operatorControllerAButton.whenPressed(new ReleaseClimber(m_climber));
     operatorControllerXButton.whenHeld(new PullUpRobot(m_climber));
-
   }
 
   /**
@@ -92,7 +91,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
+    // .An ExampleCommand will run in autonomous
     return autoChooser.generateAuto();
   }
 

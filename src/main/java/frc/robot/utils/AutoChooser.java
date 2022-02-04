@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.DriveToDistance;
 import frc.robot.subsystems.Drive;
 
 public class AutoChooser {
@@ -124,6 +125,7 @@ public class AutoChooser {
 
     public SequentialCommandGroup generateAuto() {
         SequentialCommandGroup auto = new SequentialCommandGroup();
+        //auto.addCommands(new DriveToDistance(drive, 1000, 0.2));
 
         StartPosition selectedStart = (StartPosition)startPositionChooser.getSelected();
         SelectedBall selectedBalls = (SelectedBall)selectedBallsChooser.getSelected();
