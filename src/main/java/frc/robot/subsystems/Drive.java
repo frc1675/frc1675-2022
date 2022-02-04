@@ -75,13 +75,13 @@ public class Drive extends SubsystemBase {
   public void setRight(double speed){
     //setVoltage for simulation support
     speed = speed * 0.2;
-    rightMain.setVoltage(speed);
+    rightMain.set(speed);
   
   }
 
   public void setLeft(double speed){
     speed = speed * 0.2;
-    leftMain.setVoltage(speed);
+    leftMain.set(speed);
 
   }
 
