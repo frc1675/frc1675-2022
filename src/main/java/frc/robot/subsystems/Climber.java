@@ -42,6 +42,10 @@ public class Climber extends SubsystemBase {
     isExtended = true;
   }
 
+  public void reengage(){
+    climberSolenoid.set(false);
+  }
+
   public void pullUp() {
     if (isExtended) {
       climberMotor1.set(Constants.CLIMBER_POWER);
