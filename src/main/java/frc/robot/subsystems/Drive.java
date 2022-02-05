@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.REVPhysicsSim;
@@ -11,6 +12,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -24,6 +26,8 @@ public class Drive extends SubsystemBase {
   private CANSparkMax rightFollower = new CANSparkMax(Constants.RIGHT_BACK, MotorType.kBrushless);
   private CANSparkMax leftMain = new CANSparkMax(Constants.LEFT_FRONT, MotorType.kBrushless);
   private CANSparkMax leftFollower = new CANSparkMax(Constants.LEFT_BACK, MotorType.kBrushless);
+
+  private AHRS navx = new AHRS(I2C.Port.kMXP);
 
   private RelativeEncoder rightEncoder = rightMain.getEncoder();
   private RelativeEncoder leftEncoder = leftMain.getEncoder();
@@ -81,6 +85,7 @@ public class Drive extends SubsystemBase {
     driveTab.addNumber("Left position", () -> leftEncoder.getPosition());
     driveTab.addNumber("Right position inches", () -> {return rightEncoder.getPosition() / Constants.ROTATIONS_PER_INCH;});
     driveTab.addNumber("Left position inches", () -> {return leftEncoder.getPosition() / Constants.ROTATIONS_PER_INCH;});
+    driveTab.addNumber("Heading", () -> getHeading());
   }
 
   public void setRight(double speed){
@@ -124,18 +129,26 @@ public class Drive extends SubsystemBase {
     return leftEncoder.getPosition();
   }
 
-//switching the front
-public void invertFront(){
-  rightInverted = !rightInverted;
-  leftInverted = !leftInverted;
-  leftMain.setInverted(leftInverted);
-  rightMain.setInverted(rightInverted);
-  SmartDashboard.putBoolean("Drive Front Intake", rightInverted);
-}
+  //switching the front
+  public void invertFront(){
+    rightInverted = !rightInverted;
+    leftInverted = !leftInverted;
+    leftMain.setInverted(leftInverted);
+    rightMain.setInverted(rightInverted);
+    SmartDashboard.putBoolean("Drive Front Intake", rightInverted);
+  }
 
-public double getAveragePositionInches() {
-  return (rightEncoder.getPosition() + leftEncoder.getPosition()) / 2 / Constants.ROTATIONS_PER_INCH;
-}
+  public double getAveragePositionInches() {
+    return (rightEncoder.getPosition() + leftEncoder.getPosition()) / 2 / Constants.ROTATIONS_PER_INCH;
+  }
+
+  public void resetAngle() {
+    navx.reset();
+  }
+  
+  public double getHeading() {
+    return navx.getAngle() % 360;
+  }
 
   @Override
   public void periodic() {}

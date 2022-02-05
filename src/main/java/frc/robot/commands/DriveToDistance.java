@@ -12,7 +12,7 @@ public class DriveToDistance extends CommandBase {
   private Drive drive;
   private double inches;
   private double maxSpeed;
-  private int count;
+  private int count = 0;
 
   /** Creates a new DriveToDistance. */
   public DriveToDistance(Drive drive, double inches, double maxSpeed) {

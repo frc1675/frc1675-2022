@@ -47,12 +47,8 @@ public class RobotContainer {
   private final JoystickButton operatorControllerLeftBumper = new JoystickButton(operatorController, Constants.LEFT_BUMPER);
   private final JoystickButton operatorControllerBackButton = new JoystickButton(operatorController, Constants.BACK_BUTTON);
 
-
-  
-  
-
-
   private final Drive drive = new Drive();
+  private final Intake intake = new Intake();
   private final Climber climber = new Climber();
   private final Catapult catapult = new Catapult();
   private final Intake intake = new Intake();
@@ -74,7 +70,7 @@ public class RobotContainer {
   }
 
 
-  private final AutoChooser autoChooser = new AutoChooser(drive);
+  private final AutoChooser autoChooser = new AutoChooser(drive, intake, catapult);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
