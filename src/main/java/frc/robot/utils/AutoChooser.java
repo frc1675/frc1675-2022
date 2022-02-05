@@ -8,7 +8,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.DriveToDistance;
 import frc.robot.commands.TurnToAngle;
+import frc.robot.subsystems.Catapult;
 import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Intake;
 
 public class AutoChooser {
     public enum StartPosition {
@@ -28,6 +30,8 @@ public class AutoChooser {
     }
 
     private Drive drive;
+    private Intake intake;
+    private Catapult catapult;
 
     private ShuffleboardTab autoTab = Shuffleboard.getTab("Choose auto routine");
 
@@ -36,8 +40,10 @@ public class AutoChooser {
 
     private String message;
 
-    public AutoChooser(Drive drive) {
+    public AutoChooser(Drive drive, Intake intake, Catapult catapult) {
         this.drive = drive;
+        this.intake = intake;
+        this.catapult = catapult;
 
         startPositionChooser.setDefaultOption("Touching hub", StartPosition.TOUCHING_HUB);
         startPositionChooser.addOption("Robot in front of us touching hub", StartPosition.BEHIND_HUB);

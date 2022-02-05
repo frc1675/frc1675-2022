@@ -28,8 +28,17 @@ public class TurnToAngle extends PIDCommand {
       // This uses the output
       output -> {
         // Use the output here
-        drive.setRight(-1 * Math.min(maxSpeed, output));
-        drive.setLeft(Math.min(maxSpeed, output));
+        double power;
+        if (output > maxSpeed) {
+          power = maxSpeed;
+        } else if (output < -1 * maxSpeed) {
+          power = -1 * maxSpeed;
+        } else {
+          power = output;
+        }
+
+        drive.setRight(power);
+        drive.setLeft(power);
     });
     this.drive = drive;
     addRequirements(this.drive);
