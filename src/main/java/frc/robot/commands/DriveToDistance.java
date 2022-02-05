@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Drive;
 
 public class DriveToDistance extends CommandBase {  
@@ -41,12 +42,12 @@ public class DriveToDistance extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (drive.rightAtTargetPosition() && drive.leftAtTargetPosition()) {
+    if (Math.abs(drive.getAveragePositionInches() - inches) < Constants.DRIVE_TOLERANCE) {
       count++;
     } else {
       count = 0;
     }
-    
+
     return count >= 20;
   }
 }

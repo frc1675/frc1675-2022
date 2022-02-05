@@ -9,8 +9,11 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.REVPhysicsSim;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -30,9 +33,6 @@ public class Drive extends SubsystemBase {
 
   private ShuffleboardTab driveTab = Shuffleboard.getTab("Drivetrain info");
 
-  private double targetRightPosition;
-  private double targetLeftPosition;
-
   private boolean leftInverted = true;
   private boolean rightInverted = false;
 
@@ -44,7 +44,6 @@ public class Drive extends SubsystemBase {
     leftMain.setInverted(leftInverted);
     rightMain.setInverted(rightInverted);
 
-    //DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(gyro.getGyroHeading(), new Pose2d(5.0, 13.5, new Rotation2d()));
     if(Robot.isSimulation()){
       REVPhysicsSim.getInstance().addSparkMax(rightMain, DCMotor.getNEO(1));
       REVPhysicsSim.getInstance().addSparkMax(rightFollower, DCMotor.getNEO(1));
@@ -80,6 +79,8 @@ public class Drive extends SubsystemBase {
 
     driveTab.addNumber("Right position", () -> rightEncoder.getPosition());
     driveTab.addNumber("Left position", () -> leftEncoder.getPosition());
+    driveTab.addNumber("Right position inches", () -> {return rightEncoder.getPosition() / Constants.ROTATIONS_PER_INCH;});
+    driveTab.addNumber("Left position inches", () -> {return leftEncoder.getPosition() / Constants.ROTATIONS_PER_INCH;});
   }
 
   public void setRight(double speed){
@@ -101,15 +102,13 @@ public class Drive extends SubsystemBase {
   }
 
   public void setRightPositionPID(double inches, double maxSpeed) {
-    targetRightPosition = inches * Constants.ROTATIONS_PER_INCH;
     rightPIDController.setOutputRange(-1 * maxSpeed, maxSpeed, Constants.POSITION_PID_SLOT);
-    rightPIDController.setReference(targetRightPosition, CANSparkMax.ControlType.kPosition, Constants.POSITION_PID_SLOT);
+    rightPIDController.setReference(inches * Constants.ROTATIONS_PER_INCH, CANSparkMax.ControlType.kPosition, Constants.POSITION_PID_SLOT);
   }
 
   public void setLeftPositionPID(double inches, double maxSpeed) {
-    targetLeftPosition = inches * Constants.ROTATIONS_PER_INCH;
     leftPIDController.setOutputRange(-1 * maxSpeed, maxSpeed, Constants.POSITION_PID_SLOT);
-    leftPIDController.setReference(targetLeftPosition, CANSparkMax.ControlType.kPosition, Constants.POSITION_PID_SLOT);
+    leftPIDController.setReference(inches * Constants.ROTATIONS_PER_INCH, CANSparkMax.ControlType.kPosition, Constants.POSITION_PID_SLOT);
   }
 
   public void resetEncoders() {
@@ -121,16 +120,8 @@ public class Drive extends SubsystemBase {
     return rightEncoder.getPosition();
   }
 
-  public double getLeftEncoderValue() {
+  public double getLeftPosition() {
     return leftEncoder.getPosition();
-  }
-
-  public boolean rightAtTargetPosition() {
-    return Math.abs(rightEncoder.getPosition() - targetRightPosition) / Constants.ROTATIONS_PER_INCH < Constants.DRIVE_TOLERANCE;
-  }
-
-  public boolean leftAtTargetPosition() {
-    return Math.abs(leftEncoder.getPosition() - targetLeftPosition) / Constants.ROTATIONS_PER_INCH < Constants.DRIVE_TOLERANCE;
   }
 
 //switching the front
@@ -140,6 +131,10 @@ public void invertFront(){
   leftMain.setInverted(leftInverted);
   rightMain.setInverted(rightInverted);
   SmartDashboard.putBoolean("Drive Front Intake", rightInverted);
+}
+
+public double getAveragePositionInches() {
+  return (rightEncoder.getPosition() + leftEncoder.getPosition()) / 2 / Constants.ROTATIONS_PER_INCH;
 }
 
   @Override

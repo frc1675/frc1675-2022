@@ -27,7 +27,7 @@ public final class Constants {
     public static final double DRIVE_POSITION_D = 0.01;
     public static final int VELOCITY_PID_SLOT = 1;
     public static final int POSITION_PID_SLOT = 0;
-    public static final double ROTATIONS_PER_INCH = 0.4642;
+    public static final double ROTATIONS_PER_INCH = 0.4483;
     public static final double DRIVE_TOLERANCE = 2.0; //in inches, not rotations
 
 
