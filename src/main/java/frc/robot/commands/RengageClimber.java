@@ -7,17 +7,17 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climber;
 
-public class ExtendClimber extends CommandBase {
+public class RengageClimber extends CommandBase {
   private final Climber climber;
 
-  public ExtendClimber(Climber climber) {
+  public RengageClimber(Climber climber) {
     this.climber = climber;
     addRequirements(this.climber);
   }
 
   @Override
   public void initialize() {
-    climber.extend();
+    climber.reengage();
   }
 
   @Override
