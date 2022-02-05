@@ -126,7 +126,6 @@ public class AutoChooser {
 
     public SequentialCommandGroup generateAuto() {
         SequentialCommandGroup auto = new SequentialCommandGroup();
-        auto.addCommands(new TurnToAngle(drive, 90, 0.1));
 
         StartPosition selectedStart = (StartPosition)startPositionChooser.getSelected();
         SelectedBall selectedBalls = (SelectedBall)selectedBallsChooser.getSelected();
