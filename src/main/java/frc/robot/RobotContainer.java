@@ -43,7 +43,7 @@ public class RobotContainer {
 
 
   private final Drive drive = new Drive();
-  private final Climber m_climber = new Climber();
+  private final Climber climber = new Climber();
   private final Catapult catapult = new Catapult();
 
   private double getDriverLeftY(){
@@ -81,8 +81,8 @@ public class RobotContainer {
     drive.setDefaultCommand(new CheesyDrive(drive, () -> getDriverLeftY(), () -> getDriverRightX() ));
     //driverControllerStartButton.toggleWhenPressed(new CheesyDrivePID(drive, () -> getDriverLeftY(), () -> getDriverRightX() ));
     driverControllerBButton.toggleWhenPressed(new InvertRobotFront(drive));
-    operatorControllerAButton.whenPressed(new ReleaseClimber(m_climber));
-    operatorControllerXButton.whenHeld(new PullUpRobot(m_climber));
+    operatorControllerAButton.whenPressed(new ReleaseClimber(climber));
+    operatorControllerXButton.whenHeld(new PullUpRobot(climber));
   }
 
   /**
