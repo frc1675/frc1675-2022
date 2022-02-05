@@ -16,6 +16,7 @@ import frc.robot.commands.ReleaseClimber;
 import frc.robot.subsystems.Catapult;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Intake;
 import frc.robot.utils.AutoChooser;
 import frc.robot.utils.DeadzoneCorrection;
 
@@ -37,12 +38,8 @@ public class RobotContainer {
   private final JoystickButton operatorControllerXButton = new JoystickButton(operatorController, Constants.X_BUTTON);
   private final JoystickButton operatorControllerRightBumper = new JoystickButton(operatorController, Constants.RIGHT_BUMPER);
 
-
-  
-  
-
-
   private final Drive drive = new Drive();
+  private final Intake intake = new Intake();
   private final Climber climber = new Climber();
   private final Catapult catapult = new Catapult();
 
@@ -63,7 +60,7 @@ public class RobotContainer {
   }
 
 
-  private final AutoChooser autoChooser = new AutoChooser(drive);
+  private final AutoChooser autoChooser = new AutoChooser(drive, intake, catapult);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {

@@ -54,9 +54,9 @@ public class AutoChooser {
         autoTab.add("Starting position", startPositionChooser).withWidget(BuiltInWidgets.kComboBoxChooser).withSize(2, 1).withPosition(0, 0);
 
         selectedBallsChooser.setDefaultOption("Get no balls", SelectedBall.NONE);
-        selectedBallsChooser.setDefaultOption("Get ball 1", SelectedBall.BALL_1);
-        selectedBallsChooser.setDefaultOption("Get ball 2", SelectedBall.BALL_2);
-        selectedBallsChooser.setDefaultOption("Get ball 3", SelectedBall.BALL_3);
+        selectedBallsChooser.addOption("Get ball 1", SelectedBall.BALL_1);
+        selectedBallsChooser.addOption("Get ball 2", SelectedBall.BALL_2);
+        selectedBallsChooser.addOption("Get ball 3", SelectedBall.BALL_3);
         autoTab.add("Which ball to get", selectedBallsChooser).withWidget(BuiltInWidgets.kComboBoxChooser).withSize(2, 1).withPosition(0, 1);
 
         autoTab.addString("Selected auto path", () -> message);

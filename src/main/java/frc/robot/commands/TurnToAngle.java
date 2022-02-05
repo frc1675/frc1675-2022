@@ -37,7 +37,7 @@ public class TurnToAngle extends PIDCommand {
           power = output;
         }
 
-        drive.setRight(power);
+        drive.setRight(-1 * power);
         drive.setLeft(power);
     });
     this.drive = drive;
