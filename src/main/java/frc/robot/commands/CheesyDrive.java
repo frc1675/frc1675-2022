@@ -12,16 +12,16 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 /** An example command that uses an example subsystem. */
 public class CheesyDrive extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final Drive m_drive;
+  private final Drive drive;
   private final DoubleSupplier forwardPower;
   private final DoubleSupplier turnPower;
 
   public CheesyDrive(Drive Drive, DoubleSupplier forwardPower, DoubleSupplier turnPower) {
-    m_drive = Drive;
+    drive = Drive;
     this.forwardPower = forwardPower;
     this.turnPower = turnPower;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_drive);
+    addRequirements(drive);
 
   }
 
@@ -37,15 +37,15 @@ public class CheesyDrive extends CommandBase {
     double rightPower = forwardPower.getAsDouble() + -1 * turnPower.getAsDouble();
     double leftPower =  forwardPower.getAsDouble() +  turnPower.getAsDouble();
 
-    m_drive.setRight(rightPower);
-    m_drive.setLeft(leftPower);
+    drive.setRight(rightPower);
+    drive.setLeft(leftPower);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_drive.setLeft(0);
-    m_drive.setRight(0);
+    drive.setLeft(0);
+    drive.setRight(0);
   }
 
   // Returns true when the command should end.

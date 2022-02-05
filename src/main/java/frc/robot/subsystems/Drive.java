@@ -44,7 +44,7 @@ public class Drive extends SubsystemBase {
     leftMain.setInverted(leftInverted);
     rightMain.setInverted(rightInverted);
 
-    //DifferentialDriveOdometry m_odometry = new DifferentialDriveOdometry(m_gyro.getGyroHeading(), new Pose2d(5.0, 13.5, new Rotation2d()));
+    //DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(gyro.getGyroHeading(), new Pose2d(5.0, 13.5, new Rotation2d()));
     if(Robot.isSimulation()){
       REVPhysicsSim.getInstance().addSparkMax(rightMain, DCMotor.getNEO(1));
       REVPhysicsSim.getInstance().addSparkMax(rightFollower, DCMotor.getNEO(1));
