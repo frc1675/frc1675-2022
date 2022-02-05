@@ -39,6 +39,7 @@ public class RobotContainer {
   private final JoystickButton operatorControllerYButton = new JoystickButton(operatorController, Constants.Y_BUTTON);
   private final JoystickButton operatorControllerRightBumper = new JoystickButton(operatorController, Constants.RIGHT_BUMPER);
   private final JoystickButton operatorControllerLeftBumper = new JoystickButton(operatorController, Constants.LEFT_BUMPER);
+  private final JoystickButton operatorControllerBackButton = new JoystickButton(operatorController, Constants.BACK_BUTTON);
 
 
   
@@ -85,7 +86,7 @@ public class RobotContainer {
     //driverControllerStartButton.toggleWhenPressed(new CheesyDrivePID(drive, () -> getDriverLeftY(), () -> getDriverRightX() ));
     driverControllerBButton.toggleWhenPressed(new InvertRobotFront(drive));
     operatorControllerXButton.whenHeld(new PullUpRobot(climber));
-    operatorControllerYButton.and(operatorControllerBButton).and(operatorControllerAButton).and(operatorControllerXButton).and(operatorControllerLeftBumper).and(operatorControllerRightBumper).whenActive(new ReleaseClimber(climber));
+    operatorControllerBackButton.and(operatorControllerLeftBumper).and(operatorControllerRightBumper).whenActive(new ReleaseClimber(climber));
   }
 
   /**
