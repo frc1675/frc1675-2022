@@ -37,6 +37,7 @@ public final class Constants {
     public static final int CLIMBER_SOLENOID = 1;
     public static final double CLIMBER_POWER = 0.75;
     public static final int CLIMBER_ENCODER_SENSITIVITY = 4096;
+    public static final double CLIMBER_WAIT_TIME = 5.0;
 
     //catapult constants
     public static final int CATAPULT_RIGHT_SOLENOID_1 = 2;
