@@ -10,12 +10,16 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.CheesyDrive;
+import frc.robot.commands.ExtendIntake;
+import frc.robot.commands.FireCatapultRight;
 import frc.robot.commands.InvertRobotFront;
 import frc.robot.commands.PullUpRobot;
 import frc.robot.commands.ReleaseClimber;
+import frc.robot.commands.RetractIntake;
 import frc.robot.subsystems.Catapult;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Intake;
 import frc.robot.utils.AutoChooser;
 import frc.robot.utils.DeadzoneCorrection;
 
@@ -49,6 +53,7 @@ public class RobotContainer {
   private final Drive drive = new Drive();
   private final Climber climber = new Climber();
   private final Catapult catapult = new Catapult();
+  private final Intake intake = new Intake();
 
   private double getDriverLeftY(){
     return -1 * DeadzoneCorrection.correctDeadzone(driverController.getRawAxis(Constants.LEFT_Y_AXIS));

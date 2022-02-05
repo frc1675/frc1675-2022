@@ -48,6 +48,7 @@ public final class Constants {
     public static final int INTAKE_MOTOR = 7;
     public static final int INTAKE_RIGHT_SOLENOID = 6;
     public static final int INTAKE_LEFT_SOLENOID = 7;
+    public static final double INTAKE_WAIT_TIME = 5.0;
 
     //controller constants
     public static final int DRIVER_CONTROLLER = 0;

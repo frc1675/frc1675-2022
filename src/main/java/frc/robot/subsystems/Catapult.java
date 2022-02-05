@@ -22,23 +22,31 @@ public class Catapult extends SubsystemBase {
   }
 
   public void fireRight(){
-    rightSol1.set(true);
-    rightSol2.set(true);
+    if(Intake.isExtended()){
+      rightSol1.set(true);
+      rightSol2.set(true);
+    }
   }
 
   public void fireLeft(){
-    leftSol1.set(true);
-    leftSol2.set(true);
+    if(Intake.isExtended()){
+      leftSol1.set(true);
+      leftSol2.set(true);
+    }
   }
   
   public void retractRight(){
-    rightSol1.set(false);
-    rightSol2.set(false);
+    if(Intake.isExtended()){
+      rightSol1.set(false);
+      rightSol2.set(false);
+    }
   }
 
   public void retractLeft(){
-    leftSol1.set(false);
-    leftSol2.set(false);
+    if(Intake.isExtended()){
+      leftSol1.set(false);
+      leftSol2.set(false);
+    }
   }
 
   @Override
