@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.CheesyDrive;
+import frc.robot.commands.CheesyDriveSlow;
 import frc.robot.commands.InvertRobotFront;
 import frc.robot.commands.PullUpRobot;
 import frc.robot.commands.ReleaseClimber;
@@ -86,7 +87,7 @@ public class RobotContainer {
     //driverControllerStartButton.toggleWhenPressed(new CheesyDrivePID(drive, () -> getDriverLeftY(), () -> getDriverRightX() ));
     driverControllerBButton.toggleWhenPressed(new InvertRobotFront(drive));
     operatorControllerXButton.whenHeld(new PullUpRobot(climber));
-    operatorControllerBackButton.and(operatorControllerLeftBumper).and(operatorControllerRightBumper).whenActive(new ReleaseClimber(climber));
+    operatorControllerBackButton.and(operatorControllerLeftBumper).and(operatorControllerRightBumper).whenActive(new ReleaseClimber(climber).alongWith(new CheesyDriveSlow(drive, () -> getDriverLeftY(), () -> getDriverRightX() )));
   }
 
   /**
