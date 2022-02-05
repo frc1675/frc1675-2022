@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.CheesyDrive;
 import frc.robot.commands.ExtendIntake;
@@ -92,6 +94,11 @@ public class RobotContainer {
     driverControllerBButton.toggleWhenPressed(new InvertRobotFront(drive));
     operatorControllerXButton.whenHeld(new PullUpRobot(climber));
     operatorControllerBackButton.and(operatorControllerLeftBumper).and(operatorControllerRightBumper).whenActive(new ReleaseClimber(climber));
+    //operatorControllerLeftBumper.whenPressed(new ExtendIntake(intake));
+    //operatorControllerRightBumper.whenPressed(new RetractIntake(intake));
+    //operatorControllerXButton.whenPressed(new ConditionalCommand( new FireCatapultRight(catapult), new PrintCommand("Catapult disabled while intake is not extended."), ()-> intake.isExtended()));
+
+    
   }
 
   /**

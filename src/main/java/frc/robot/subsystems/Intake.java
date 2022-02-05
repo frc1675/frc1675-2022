@@ -20,7 +20,7 @@ public class Intake extends SubsystemBase {
   private CANSparkMax intakeMotor = new CANSparkMax(Constants.INTAKE_MOTOR , MotorType.kBrushless);
   private Solenoid rightSolenoid = new Solenoid(PneumaticsModuleType.REVPH, Constants.INTAKE_RIGHT_SOLENOID);
   private Solenoid leftSolenoid = new Solenoid(PneumaticsModuleType.REVPH, Constants.INTAKE_LEFT_SOLENOID);
-  private static boolean intakeExtended = false;
+  private boolean intakeExtended = false;
 
   private ShuffleboardTab IntakeTab = Shuffleboard.getTab("Intake");
 
@@ -46,18 +46,18 @@ public class Intake extends SubsystemBase {
     rightSolenoid.set(false);
     leftSolenoid.set(false);
     intakeExtended = false;
+    timer.stop();
+    timer.reset();
   }
 
-  public static boolean isExtended(){
+  public boolean isExtended(){
     return intakeExtended;
   }
 
   @Override
   public void periodic() {
-    if(timer.hasElapsed(Constants.INTAKE_WAIT_TIME) && !intakeExtended){
+    if(timer.hasElapsed(Constants.INTAKE_WAIT_TIME)){
       intakeExtended = true;
-      timer.stop();
-      timer.reset();
     }
     
   }
