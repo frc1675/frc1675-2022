@@ -51,7 +51,6 @@ public class RobotContainer {
   private final Intake intake = new Intake();
   private final Climber climber = new Climber();
   private final Catapult catapult = new Catapult();
-  private final Intake intake = new Intake();
 
   private double getDriverLeftY(){
     return -1 * DeadzoneCorrection.correctDeadzone(driverController.getRawAxis(Constants.LEFT_Y_AXIS));
@@ -85,11 +84,11 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    drive.setDefaultCommand(new CheesyDrive(drive, () -> getDriverLeftY(), () -> getDriverRightX() ));
+    drive.setDefaultCommand(new CheesyDrive(drive, () -> getDriverLeftY(), () -> getDriverRightX(), 1.0 ));
     //driverControllerStartButton.toggleWhenPressed(new CheesyDrivePID(drive, () -> getDriverLeftY(), () -> getDriverRightX() ));
     driverControllerBButton.toggleWhenPressed(new InvertRobotFront(drive));
     operatorControllerXButton.whenHeld(new PullUpRobot(climber));
-    operatorControllerBackButton.and(operatorControllerLeftBumper).and(operatorControllerRightBumper).whenActive(new ReleaseClimber(climber));
+    operatorControllerBackButton.and(operatorControllerLeftBumper).and(operatorControllerRightBumper).whenActive(new ReleaseClimber(climber).alongWith(new CheesyDrive(drive, () -> getDriverLeftY(), () -> getDriverRightX(), Constants.CLIMBER_DRIVE_MULTIPLIER )));
     //operatorControllerLeftBumper.whenPressed(new ExtendIntake(intake));
     //operatorControllerRightBumper.whenPressed(new RetractIntake(intake));
     //operatorControllerXButton.whenPressed(new ConditionalCommand( new FireCatapultRight(catapult), new PrintCommand("Catapult disabled while intake is not extended."), ()-> intake.isExtended()));

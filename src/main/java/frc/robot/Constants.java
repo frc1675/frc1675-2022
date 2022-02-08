@@ -30,6 +30,7 @@ public final class Constants {
     public static final int POSITION_PID_SLOT = 0;
     public static final double ROTATIONS_PER_INCH = 0.4483;
     public static final double DRIVE_TOLERANCE = 2.0; //in inches, not rotations
+    public static final double CLIMBER_DRIVE_MULTIPLIER = 0.2;
     public static final double ANGLE_TOLERANCE = 1.0; //in degrees
 
     //climber constants
