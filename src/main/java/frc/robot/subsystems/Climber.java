@@ -10,6 +10,7 @@ import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -23,6 +24,7 @@ public class Climber extends SubsystemBase {
   private RelativeEncoder encoder2 = climberMotor2.getEncoder();
 
   private boolean isExtended = false;
+  private Timer timer = new Timer();
 
   private ShuffleboardTab climberTab = Shuffleboard.getTab("Climber");
   
@@ -35,11 +37,14 @@ public class Climber extends SubsystemBase {
     climberTab.addBoolean("Extended?", () -> isExtended);
     double averageEncoderPosition = (encoder1.getPosition() + encoder2.getPosition()) / 2;
     climberTab.addNumber("Average climber position", () -> averageEncoderPosition);
+
+    
   }
 
   public void release() {
     climberSolenoid.set(true);
-    isExtended = true;
+    timer.reset();
+    timer.start();
   }
 
   public void reengage(){
@@ -65,5 +70,8 @@ public class Climber extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    if(timer.hasElapsed(Constants.CLIMBER_WAIT_TIME)){
+      isExtended = true;
+    }
   }
 }

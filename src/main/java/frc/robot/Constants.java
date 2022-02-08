@@ -19,17 +19,19 @@ public final class Constants {
     public static final int RIGHT_BACK = 2;
     public static final int LEFT_FRONT = 4;
     public static final int LEFT_BACK = 3;
-    public static final int GYRO = 1;
     public static final double DRIVE_VELOCITY_P = 0.00006;
     public static final double DRIVE_VELOCITY_FF = 0.000015;
     public static final double DRIVE_MAX_ACCELERATION = 1.0;
     public static final double DRIVE_POSITION_P = 0.2;
     public static final double DRIVE_POSITION_D = 0.01;
+    public static final double ANGLE_P = 0.02;
+    public static final double ANGLE_D = 0.002;
     public static final int VELOCITY_PID_SLOT = 1;
     public static final int POSITION_PID_SLOT = 0;
     public static final double ROTATIONS_PER_INCH = 0.4483;
     public static final double DRIVE_TOLERANCE = 2.0; //in inches, not rotations
-
+    public static final double CLIMBER_DRIVE_MULTIPLIER = 0.2;
+    public static final double ANGLE_TOLERANCE = 1.0; //in degrees
 
     //climber constants
     public static final int CLIMBER_MOTOR_1 = 5;
@@ -37,6 +39,7 @@ public final class Constants {
     public static final int CLIMBER_SOLENOID = 1;
     public static final double CLIMBER_POWER = 0.75;
     public static final int CLIMBER_ENCODER_SENSITIVITY = 4096;
+    public static final double CLIMBER_WAIT_TIME = 5.0;
 
     //catapult constants
     public static final int CATAPULT_RIGHT_SOLENOID_1 = 2;
@@ -72,7 +75,6 @@ public final class Constants {
     public static final int LEFT_JOYSTICK_BUTTON = 9;
     public static final int RIGHT_JOYSTICK_BUTTON = 10;
     
-
     //mathematical constants
     public static final double DEADZONE_CONSTANT = 0.1675;
 

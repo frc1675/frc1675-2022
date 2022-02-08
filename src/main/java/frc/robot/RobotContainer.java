@@ -48,15 +48,10 @@ public class RobotContainer {
   private final JoystickButton operatorControllerLeftBumper = new JoystickButton(operatorController, Constants.LEFT_BUMPER);
   private final JoystickButton operatorControllerBackButton = new JoystickButton(operatorController, Constants.BACK_BUTTON);
 
-
-  
-  
-
-
   private final Drive drive = new Drive();
+  private final Intake intake = new Intake();
   private final Climber climber = new Climber();
   private final Catapult catapult = new Catapult();
-  private final Intake intake = new Intake();
 
   private double getDriverLeftY(){
     return -1 * DeadzoneCorrection.correctDeadzone(driverController.getRawAxis(Constants.LEFT_Y_AXIS));
@@ -75,7 +70,7 @@ public class RobotContainer {
   }
 
 
-  private final AutoChooser autoChooser = new AutoChooser(drive);
+  private final AutoChooser autoChooser = new AutoChooser(drive, intake, catapult);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -90,12 +85,12 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    drive.setDefaultCommand(new CheesyDrive(drive, () -> getDriverLeftY(), () -> getDriverRightX() ));
+    drive.setDefaultCommand(new CheesyDrive(drive, () -> getDriverLeftY(), () -> getDriverRightX(), 1.0 ));
     //driverControllerStartButton.toggleWhenPressed(new CheesyDrivePID(drive, () -> getDriverLeftY(), () -> getDriverRightX() ));
     driverControllerBButton.toggleWhenPressed(new InvertRobotFront(drive));
     /**
     operatorControllerXButton.whenHeld(new PullUpRobot(climber));
-    operatorControllerBackButton.and(operatorControllerLeftBumper).and(operatorControllerRightBumper).whenActive(new ReleaseClimber(climber));
+    operatorControllerBackButton.and(operatorControllerLeftBumper).and(operatorControllerRightBumper).whenActive(new ReleaseClimber(climber).alongWith(new CheesyDrive(drive, () -> getDriverLeftY(), () -> getDriverRightX(), Constants.CLIMBER_DRIVE_MULTIPLIER )));
 
     operatorControllerLeftBumper.whenPressed(new ConditionalCommand( new ExtendIntake(intake), new PrintCommand("Intake disabled while either catapult is extended"), ()-> catapult.isSafe() ));
     operatorControllerRightBumper.whenPressed(new ConditionalCommand(new RetractIntake(intake), new PrintCommand("Intake disabled while either catapult is extended"), ()->catapult.isSafe() ));
