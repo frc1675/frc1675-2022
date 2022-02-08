@@ -92,12 +92,12 @@ public class RobotContainer {
     operatorControllerXButton.whenHeld(new PullUpRobot(climber));
     operatorControllerBackButton.and(operatorControllerLeftBumper).and(operatorControllerRightBumper).whenActive(new ReleaseClimber(climber).alongWith(new CheesyDrive(drive, () -> getDriverLeftY(), () -> getDriverRightX(), Constants.CLIMBER_DRIVE_MULTIPLIER )));
 
-    operatorControllerLeftBumper.whenPressed(new ConditionalCommand( new ExtendIntake(intake), new PrintCommand("Intake disabled while either catapult is extended"), ()-> catapult.isSafe() ));
-    operatorControllerRightBumper.whenPressed(new ConditionalCommand(new RetractIntake(intake), new PrintCommand("Intake disabled while either catapult is extended"), ()->catapult.isSafe() ));
+    operatorControllerLeftBumper.whenPressed(new ConditionalCommand(new PrintCommand("Intake disabled while either catapult is extended"), new ExtendIntake(intake), ()-> catapult.isExtended() ));
+    operatorControllerRightBumper.whenPressed(new ConditionalCommand(new PrintCommand("Intake disabled while either catapult is extended"), new RetractIntake(intake), ()-> catapult.isExtended() ));
 
     operatorControllerYButton.whenPressed(new ConditionalCommand( new FireCatapultRight(catapult), new PrintCommand("Catapult disabled while intake is not extended."), ()-> intake.isExtended()));
     operatorControllerBButton.whenPressed(new ConditionalCommand( new RetractCatapultRight(catapult), new PrintCommand("Catapult disabled while intake is not extended."), ()-> intake.isExtended()));
-    */
+     */
     
   }
 

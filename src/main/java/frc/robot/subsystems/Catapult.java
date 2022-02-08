@@ -23,14 +23,14 @@ public class Catapult extends SubsystemBase {
   private boolean rightExtended = false;
   private boolean leftExtended = false;
 
-  private ShuffleboardTab CatapultTab = Shuffleboard.getTab("Catapult");
+  private ShuffleboardTab catapultTab = Shuffleboard.getTab("Catapult");
 
   private Timer rightTimer = new Timer();
   private Timer leftTimer = new Timer();
  
   public Catapult() {
-    CatapultTab.addBoolean("Right Up?", () -> rightIsExtended() );
-    CatapultTab.addBoolean("Left Up?", () -> leftIsExtended() );
+    catapultTab.addBoolean("Right Up?", () -> rightIsExtended() );
+    catapultTab.addBoolean("Left Up?", () -> leftIsExtended() );
     
   }
 
@@ -70,7 +70,7 @@ public class Catapult extends SubsystemBase {
     return leftExtended;
   }
 
-  public boolean isSafe(){
+  public boolean isExtended(){
     if(rightExtended || leftExtended){
       return false;
     }
