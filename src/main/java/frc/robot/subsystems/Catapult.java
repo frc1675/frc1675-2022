@@ -22,24 +22,24 @@ public class Catapult extends SubsystemBase {
   }
 
   public void fireRight(){
-    rightSol1.set(true);
-    rightSol2.set(true);
+      rightSol1.set(true);
+      rightSol2.set(true);
   }
 
   public void fireLeft(){
-    leftSol1.set(true);
-    leftSol2.set(true);
-  }
+      leftSol1.set(true);
+      leftSol2.set(true);
+    }
   
   public void retractRight(){
-    rightSol1.set(false);
-    rightSol2.set(false);
-  }
+      rightSol1.set(false);
+      rightSol2.set(false);
+    }
 
   public void retractLeft(){
-    leftSol1.set(false);
-    leftSol2.set(false);
-  }
+      leftSol1.set(false);
+      leftSol2.set(false);
+    }
 
   @Override
   public void periodic() {
