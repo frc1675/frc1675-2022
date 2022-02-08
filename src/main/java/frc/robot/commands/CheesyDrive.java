@@ -15,11 +15,13 @@ public class CheesyDrive extends CommandBase {
   private final Drive drive;
   private final DoubleSupplier forwardPower;
   private final DoubleSupplier turnPower;
+  private final Double DriveMultiplier;
 
-  public CheesyDrive(Drive Drive, DoubleSupplier forwardPower, DoubleSupplier turnPower) {
+  public CheesyDrive(Drive Drive, DoubleSupplier forwardPower, DoubleSupplier turnPower, double DriveMultiplier) {
     drive = Drive;
     this.forwardPower = forwardPower;
     this.turnPower = turnPower;
+    this.DriveMultiplier = DriveMultiplier;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drive);
 
@@ -36,6 +38,9 @@ public class CheesyDrive extends CommandBase {
 
     double rightPower = forwardPower.getAsDouble() + -1 * turnPower.getAsDouble();
     double leftPower =  forwardPower.getAsDouble() +  turnPower.getAsDouble();
+
+    rightPower = rightPower * DriveMultiplier;
+    leftPower = leftPower * DriveMultiplier;
 
     drive.setRight(rightPower);
     drive.setLeft(leftPower);
