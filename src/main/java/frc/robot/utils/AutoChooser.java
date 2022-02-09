@@ -1,12 +1,19 @@
 package frc.robot.utils;
 
+import java.util.Map;
+
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.DriveToDistance;
+import frc.robot.commands.ExtendIntake;
+import frc.robot.commands.SetIntakeSpeed;
 import frc.robot.commands.TurnToAngle;
 import frc.robot.subsystems.Catapult;
 import frc.robot.subsystems.Drive;
@@ -38,6 +45,13 @@ public class AutoChooser {
     private SendableChooser<StartPosition> startPositionChooser = new SendableChooser<StartPosition>();
     private SendableChooser<SelectedBall> selectedBallsChooser = new SendableChooser<SelectedBall>();
 
+    private NetworkTableEntry waitSlider = autoTab.add("Wait time", 2)
+    .withWidget(BuiltInWidgets.kNumberSlider)
+    .withProperties(Map.of("min", 0, "max", 10, "block increment", .5))
+    .withSize(2, 1)
+    .withPosition(0, 0)
+    .getEntry();
+
     private String message;
 
     public AutoChooser(Drive drive, Intake intake, Catapult catapult) {
@@ -51,13 +65,19 @@ public class AutoChooser {
         startPositionChooser.addOption("Start area 2", StartPosition.AREA_2);
         startPositionChooser.addOption("Start area 3", StartPosition.AREA_3);
         startPositionChooser.addOption("Start area 4", StartPosition.AREA_4);
-        autoTab.add("Starting position", startPositionChooser).withWidget(BuiltInWidgets.kComboBoxChooser).withSize(2, 1).withPosition(0, 0);
+        autoTab.add("Starting position", startPositionChooser)
+        .withWidget(BuiltInWidgets.kComboBoxChooser)
+        .withSize(2, 1).
+        withPosition(0, 1);
 
         selectedBallsChooser.setDefaultOption("Get no balls", SelectedBall.NONE);
         selectedBallsChooser.addOption("Get ball 1", SelectedBall.BALL_1);
         selectedBallsChooser.addOption("Get ball 2", SelectedBall.BALL_2);
         selectedBallsChooser.addOption("Get ball 3", SelectedBall.BALL_3);
-        autoTab.add("Which ball to get", selectedBallsChooser).withWidget(BuiltInWidgets.kComboBoxChooser).withSize(2, 1).withPosition(0, 1);
+        autoTab.add("Which ball to get", selectedBallsChooser)
+        .withWidget(BuiltInWidgets.kComboBoxChooser)
+        .withSize(2, 1)
+        .withPosition(0, 2);
 
         autoTab.addString("Selected auto path", () -> message);
 
@@ -136,43 +156,131 @@ public class AutoChooser {
         StartPosition selectedStart = (StartPosition)startPositionChooser.getSelected();
         SelectedBall selectedBalls = (SelectedBall)selectedBallsChooser.getSelected();
 
+        auto.addCommands(new WaitCommand(waitSlider.getDouble(0)));
+
         //certain combinations of selectedStart and selectedBalls will add
         //commands to auto, but others will do nothing.
         switch (selectedStart) {
             case TOUCHING_HUB: switch (selectedBalls) {
-                case NONE:
+                case NONE: auto.addCommands(
+                    new SafeFireCatapultRight(catapult),
+                    new DriveToDistance(drive, 50, 0.5)
+                );
                 default: break;
             }
             break;
 
             case BEHIND_HUB: switch (selectedBalls) {
-                case NONE:
+                case NONE: auto.addCommands(
+                    new WaitCommand(5),
+                    new DriveToDistance(drive, -20, 0.5),
+                    new SafeFireCatapultRight(catapult),
+                    new DriveToDistance(drive, 50, 0.5)
+                );
                 default: break;
             }
             break;
 
             case AREA_1: switch (selectedBalls) {
-                case BALL_1:
+                case BALL_1: auto.addCommands(
+                    new ExtendIntake(intake),
+                    new ParallelCommandGroup(
+                        new DriveToDistance(drive, 50, 1),
+                        new SetIntakeSpeed(intake, 1)
+                    ),
+                    new SafeRetractIntake(intake),
+                    new TurnToAngle(drive, 180, 1),
+                    new DriveToDistance(drive, 100, 1),
+                    new ParallelCommandGroup(
+                        new SafeFireCatapultRight(catapult),
+                        new SafeFireCatapultLeft(catapult)
+                    )
+                );
                 default: break;
             }
             break;
 
             case AREA_2: switch (selectedBalls) {
-                case BALL_1:
-                case BALL_2:
+                case BALL_1: auto.addCommands(
+                    new ExtendIntake(intake),
+                    new ParallelCommandGroup(
+                        new DriveToDistance(drive, 50, 1),
+                        new SetIntakeSpeed(intake, 1)
+                    ),
+                    new SafeRetractIntake(intake),
+                    new TurnToAngle(drive, 180, 1),
+                    new DriveToDistance(drive, 100, 1),
+                    new ParallelCommandGroup(
+                        new SafeFireCatapultRight(catapult),
+                        new SafeFireCatapultLeft(catapult)
+                    )
+                );
+                case BALL_2: auto.addCommands(
+                    new ExtendIntake(intake),
+                    new ParallelCommandGroup(
+                        new DriveToDistance(drive, 50, 1),
+                        new SetIntakeSpeed(intake, 1)
+                    ),
+                    new SafeRetractIntake(intake),
+                    new TurnToAngle(drive, 180, 1),
+                    new DriveToDistance(drive, 100, 1),
+                    new ParallelCommandGroup(
+                        new SafeFireCatapultRight(catapult),
+                        new SafeFireCatapultLeft(catapult)
+                    )
+                );
                 default: break;
             }
             break;
 
             case AREA_3: switch (selectedBalls) {
-                case BALL_2:
-                case BALL_3:
+                case BALL_2: auto.addCommands(
+                    new ExtendIntake(intake),
+                    new ParallelCommandGroup(
+                        new DriveToDistance(drive, 50, 1),
+                        new SetIntakeSpeed(intake, 1)
+                    ),
+                    new SafeRetractIntake(intake),
+                    new TurnToAngle(drive, 180, 1),
+                    new DriveToDistance(drive, 100, 1),
+                    new ParallelCommandGroup(
+                        new SafeFireCatapultRight(catapult),
+                        new SafeFireCatapultLeft(catapult)
+                    )
+                );
+                case BALL_3: auto.addCommands(
+                    new ExtendIntake(intake),
+                    new ParallelCommandGroup(
+                        new DriveToDistance(drive, 50, 1),
+                        new SetIntakeSpeed(intake, 1)
+                    ),
+                    new SafeRetractIntake(intake),
+                    new TurnToAngle(drive, 180, 1),
+                    new DriveToDistance(drive, 100, 1),
+                    new ParallelCommandGroup(
+                        new SafeFireCatapultRight(catapult),
+                        new SafeFireCatapultLeft(catapult)
+                    )
+                );
                 default: break;
             }
             break;
 
             case AREA_4: switch (selectedBalls) {
-                case BALL_3:
+                case BALL_3: auto.addCommands(
+                    new ExtendIntake(intake),
+                    new ParallelCommandGroup(
+                        new DriveToDistance(drive, 50, 1),
+                        new SetIntakeSpeed(intake, 1)
+                    ),
+                    new SafeRetractIntake(intake),
+                    new TurnToAngle(drive, 180, 1),
+                    new DriveToDistance(drive, 100, 1),
+                    new ParallelCommandGroup(
+                        new SafeFireCatapultRight(catapult),
+                        new SafeFireCatapultLeft(catapult)
+                    )
+                );
                 default: break;
             }
             break;
