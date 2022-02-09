@@ -72,9 +72,9 @@ public class Catapult extends SubsystemBase {
 
   public boolean isExtended(){
     if(rightExtended || leftExtended){
-      return false;
+      return true;
     }
-    return true;
+    return false;
   }
 
   @Override
