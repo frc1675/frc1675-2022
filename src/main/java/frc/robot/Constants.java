@@ -55,7 +55,7 @@ public final class Constants {
     public static final double INTAKE_WAIT_TIME = 5.0;
 
     //cage constants
-    public static final int CAGE_SOLENOID = 9;
+    public static final int CAGE_SOLENOID = 8;
     public static final double CAGE_WAIT_TIME = 5.0;
 
     //controller constants

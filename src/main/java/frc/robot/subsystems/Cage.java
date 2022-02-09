@@ -18,34 +18,34 @@ public class Cage extends SubsystemBase {
   private Solenoid sol = new Solenoid(PneumaticsModuleType.REVPH, Constants.CAGE_SOLENOID);
   private ShuffleboardTab cageTab = Shuffleboard.getTab("Intake");
   private Timer timer = new Timer();
-  private boolean extended = false;
+  private boolean closed = false;
  
   public Cage() {
-    cageTab.addBoolean("Cage Extended?", () -> isExtended() );
+    cageTab.addBoolean("Cage Closed?", () -> isClosed() );
     
   }
 
-  public void extend(){
+  public void closed(){
     sol.set(true);
-    extended = true;
+    closed = true;
     timer.stop();
     timer.reset();
 
   }
 
-  public void retract(){
+  public void open(){
     sol.set(false);
     timer.start();
     }
 
-  public boolean isExtended(){
-    return extended;
+  public boolean isClosed(){
+    return closed;
   }
 
   @Override
   public void periodic() {
     if(timer.hasElapsed(Constants.CAGE_WAIT_TIME)){
-      extended = false;
+      closed = false;
       timer.stop();
       timer.reset();
 
