@@ -4,20 +4,17 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.CheesyDrive;
-import frc.robot.commands.ExtendIntake;
-import frc.robot.commands.FireCatapultRight;
 import frc.robot.commands.InvertRobotFront;
 import frc.robot.commands.PullUpRobot;
 import frc.robot.commands.ReleaseClimber;
-import frc.robot.commands.RetractIntake;
 import frc.robot.subsystems.Catapult;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drive;
@@ -51,6 +48,8 @@ public class RobotContainer {
   private final Intake intake = new Intake();
   private final Climber climber = new Climber();
   private final Catapult catapult = new Catapult();
+
+  UsbCamera camera = CameraServer.startAutomaticCapture();
 
   private double getDriverLeftY(){
     return -1 * DeadzoneCorrection.correctDeadzone(driverController.getRawAxis(Constants.LEFT_Y_AXIS));
