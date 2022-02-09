@@ -17,7 +17,7 @@ import frc.robot.commands.auto.Area3GetBall2;
 import frc.robot.commands.auto.Area3GetBall3;
 import frc.robot.commands.auto.Area4GetBall3;
 import frc.robot.commands.auto.ScoreThenTaxi;
-import frc.robot.commands.auto.WaitThenScore;
+import frc.robot.commands.auto.DriveThenScoreThenTaxi;
 import frc.robot.subsystems.Catapult;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Intake;
@@ -166,38 +166,46 @@ public class AutoChooser {
         switch (selectedStart) {
             case TOUCHING_HUB: switch (selectedBalls) {
                 case NONE: auto.addCommands(new ScoreThenTaxi(drive, catapult));
+                break;
                 default: break;
             }
             break;
 
             case BEHIND_HUB: switch (selectedBalls) {
-                case NONE: auto.addCommands(new WaitThenScore(drive, catapult));
+                case NONE: auto.addCommands(new DriveThenScoreThenTaxi(drive, catapult));
+                break;
                 default: break;
             }
             break;
 
             case AREA_1: switch (selectedBalls) {
                 case BALL_1: auto.addCommands(new Area1GetBall1(drive, intake, catapult));
+                break;
                 default: break;
             }
             break;
 
             case AREA_2: switch (selectedBalls) {
                 case BALL_1: auto.addCommands(new Area2GetBall1(drive, intake, catapult));
+                break;
                 case BALL_2: auto.addCommands(new Area2GetBall2(drive, intake, catapult));
+                break;
                 default: break;
             }
             break;
 
             case AREA_3: switch (selectedBalls) {
                 case BALL_2: auto.addCommands(new Area3GetBall2(drive, intake, catapult));
+                break;
                 case BALL_3: auto.addCommands(new Area3GetBall3(drive, intake, catapult));
+                break;
                 default: break;
             }
             break;
 
             case AREA_4: switch (selectedBalls) {
                 case BALL_3: auto.addCommands(new Area4GetBall3(drive, intake, catapult));
+                break;
                 default: break;
             }
             break;

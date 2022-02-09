@@ -5,6 +5,7 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.DriveToDistance;
 import frc.robot.commands.ExtendIntake;
@@ -24,7 +25,7 @@ public class Area3GetBall2 extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new ExtendIntake(intake),
-      new ParallelCommandGroup(
+      new ParallelDeadlineGroup(
           new DriveToDistance(drive, 50, 1).withTimeout(3),
           new SetIntakeSpeed(intake, 1)
       ),
