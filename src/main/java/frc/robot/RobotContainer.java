@@ -65,7 +65,6 @@ public class RobotContainer {
     return DeadzoneCorrection.correctDeadzone(driverController.getRawAxis(Constants.RIGHT_X_AXIS));
   }
 
-
   private final AutoChooser autoChooser = new AutoChooser(drive, intake, catapult);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -84,9 +83,14 @@ public class RobotContainer {
     drive.setDefaultCommand(new CheesyDrive(drive, () -> getDriverLeftY(), () -> getDriverRightX(), 1.0 ));
     //driverControllerStartButton.toggleWhenPressed(new CheesyDrivePID(drive, () -> getDriverLeftY(), () -> getDriverRightX() ));
     driverControllerBButton.toggleWhenPressed(new InvertRobotFront(drive));
-    /**
+    /*
     operatorControllerXButton.whenHeld(new PullUpRobot(climber));
-    operatorControllerBackButton.and(operatorControllerLeftBumper).and(operatorControllerRightBumper).whenActive(new ReleaseClimber(climber).alongWith(new CheesyDrive(drive, () -> getDriverLeftY(), () -> getDriverRightX(), Constants.CLIMBER_DRIVE_MULTIPLIER )));
+    
+    operatorControllerBackButton
+    .and(operatorControllerLeftBumper)
+    .and(operatorControllerRightBumper)
+    .whenActive(new ReleaseClimber(climber)
+    .alongWith(new CheesyDrive(drive, () -> getDriverLeftY(), () -> getDriverRightX(), Constants.CLIMBER_DRIVE_MULTIPLIER )));
 
     operatorControllerLeftBumper.whenPressed(new ConditionalCommand(new PrintCommand("Intake disabled while either catapult is extended"), new ExtendIntake(intake), ()-> catapult.isExtended() ));
     operatorControllerRightBumper.whenPressed(new ConditionalCommand(new PrintCommand("Intake disabled while either catapult is extended"), new RetractIntake(intake), ()-> catapult.isExtended() ));
@@ -94,7 +98,6 @@ public class RobotContainer {
     operatorControllerYButton.whenPressed(new ConditionalCommand( new FireCatapultRight(catapult), new PrintCommand("Catapult disabled while intake is not extended."), ()-> intake.isExtended()));
     operatorControllerBButton.whenPressed(new ConditionalCommand( new RetractCatapultRight(catapult), new PrintCommand("Catapult disabled while intake is not extended."), ()-> intake.isExtended()));
      */
-    
   }
 
   /**
