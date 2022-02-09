@@ -15,6 +15,8 @@ import frc.robot.commands.DriveToDistance;
 import frc.robot.commands.ExtendIntake;
 import frc.robot.commands.SetIntakeSpeed;
 import frc.robot.commands.TurnToAngle;
+import frc.robot.commands.auto.ScoreThenTaxi;
+import frc.robot.commands.auto.WaitThenScore;
 import frc.robot.subsystems.Catapult;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Intake;
@@ -162,40 +164,19 @@ public class AutoChooser {
         //commands to auto, but others will do nothing.
         switch (selectedStart) {
             case TOUCHING_HUB: switch (selectedBalls) {
-                case NONE: auto.addCommands(
-                    new SafeFireCatapultRight(catapult),
-                    new DriveToDistance(drive, 50, 0.5)
-                );
+                case NONE: auto.addCommands(new ScoreThenTaxi(drive, catapult));
                 default: break;
             }
             break;
 
             case BEHIND_HUB: switch (selectedBalls) {
-                case NONE: auto.addCommands(
-                    new WaitCommand(5),
-                    new DriveToDistance(drive, -20, 0.5),
-                    new SafeFireCatapultRight(catapult),
-                    new DriveToDistance(drive, 50, 0.5)
-                );
+                case NONE: auto.addCommands(new WaitThenScore(drive, catapult));
                 default: break;
             }
             break;
 
             case AREA_1: switch (selectedBalls) {
-                case BALL_1: auto.addCommands(
-                    new ExtendIntake(intake),
-                    new ParallelCommandGroup(
-                        new DriveToDistance(drive, 50, 1),
-                        new SetIntakeSpeed(intake, 1)
-                    ),
-                    new SafeRetractIntake(intake),
-                    new TurnToAngle(drive, 180, 1),
-                    new DriveToDistance(drive, 100, 1),
-                    new ParallelCommandGroup(
-                        new SafeFireCatapultRight(catapult),
-                        new SafeFireCatapultLeft(catapult)
-                    )
-                );
+                case BALL_1: auto.addCommands(new Area1GetBall1(drive, intake, catapult));
                 default: break;
             }
             break;
