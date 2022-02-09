@@ -25,7 +25,7 @@ public class Cage extends SubsystemBase {
     
   }
 
-  public void closed(){
+  public void close(){
     sol.set(true);
     closed = true;
     timer.stop();

@@ -20,7 +20,7 @@ public class OpenCage extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    cage.retract();
+    cage.open();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
