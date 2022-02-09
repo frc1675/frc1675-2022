@@ -54,6 +54,10 @@ public final class Constants {
     public static final int INTAKE_LEFT_SOLENOID = 7;
     public static final double INTAKE_WAIT_TIME = 5.0;
 
+    //cage constants
+    public static final int CAGE_SOLENOID = 9;
+    public static final double CAGE_WAIT_TIME = 5.0;
+
     //controller constants
     public static final int DRIVER_CONTROLLER = 0;
     public static final int OPERATOR_CONTROLLER = 1;
