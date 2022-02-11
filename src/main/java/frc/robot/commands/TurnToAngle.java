@@ -57,7 +57,7 @@ public class TurnToAngle extends PIDCommand {
   @Override
   public boolean isFinished() {
     if (getController().atSetpoint()) {
-      count ++;
+      count++;
     } else {
       count = 0;
     }

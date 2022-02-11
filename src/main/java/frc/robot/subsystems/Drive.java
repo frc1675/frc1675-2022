@@ -12,7 +12,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 
 import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -27,7 +27,7 @@ public class Drive extends SubsystemBase {
   private CANSparkMax leftMain = new CANSparkMax(Constants.LEFT_FRONT, MotorType.kBrushless);
   private CANSparkMax leftFollower = new CANSparkMax(Constants.LEFT_BACK, MotorType.kBrushless);
 
-  private AHRS navx = new AHRS(I2C.Port.kMXP);
+  private AHRS navx = new AHRS(SerialPort.Port.kMXP);
 
   private RelativeEncoder rightEncoder = rightMain.getEncoder();
   private RelativeEncoder leftEncoder = leftMain.getEncoder();
