@@ -2,25 +2,25 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.catapult;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Cage;
+import frc.robot.subsystems.Catapult;
 
-public class OpenCage extends CommandBase {
-  private final Cage cage;
+public class RetractCatapultLeft extends CommandBase {
+  private final Catapult catapult;
 
   /** Creates a new PullUpRobot. */
-  public OpenCage(Cage cage) {
+  public RetractCatapultLeft(Catapult catapult) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.cage = cage;
-    addRequirements(this.cage);
+    this.catapult = catapult;
+    addRequirements(this.catapult);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    cage.open();
+    catapult.retractLeft();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

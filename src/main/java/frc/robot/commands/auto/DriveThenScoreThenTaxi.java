@@ -5,7 +5,6 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.DriveToDistance;
 import frc.robot.subsystems.Catapult;
 import frc.robot.subsystems.Drive;
 
