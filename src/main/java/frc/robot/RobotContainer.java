@@ -8,16 +8,13 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.CheesyDrive;
-import frc.robot.commands.ExtendIntake;
-import frc.robot.commands.FireCatapultRight;
-import frc.robot.commands.InvertRobotFront;
-import frc.robot.commands.PullUpRobot;
-import frc.robot.commands.ReleaseClimber;
-import frc.robot.commands.RetractIntake;
+import frc.robot.commands.catapult.RetractCatapultRight;
+import frc.robot.commands.climber.PullUpRobot;
+import frc.robot.commands.climber.ReleaseClimber;
+import frc.robot.commands.drive.CheesyDrive;
+import frc.robot.commands.drive.InvertRobotFront;
+import frc.robot.commands.intake.RetractIntake;
 import frc.robot.subsystems.Catapult;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drive;
@@ -86,6 +83,7 @@ public class RobotContainer {
     drive.setDefaultCommand(new CheesyDrive(drive, () -> getDriverLeftY(), () -> getDriverRightX(), 1.0 ));
     //driverControllerStartButton.toggleWhenPressed(new CheesyDrivePID(drive, () -> getDriverLeftY(), () -> getDriverRightX() ));
     driverControllerBButton.toggleWhenPressed(new InvertRobotFront(drive));
+    /*
     operatorControllerXButton.whenHeld(new PullUpRobot(climber));
     
     operatorControllerBackButton
@@ -93,10 +91,13 @@ public class RobotContainer {
     .and(operatorControllerRightBumper)
     .whenActive(new ReleaseClimber(climber)
     .alongWith(new CheesyDrive(drive, () -> getDriverLeftY(), () -> getDriverRightX(), Constants.CLIMBER_DRIVE_MULTIPLIER )));
-    //operatorControllerLeftBumper.whenPressed(new ExtendIntake(intake));
-    //operatorControllerRightBumper.whenPressed(new RetractIntake(intake));
-    //operatorControllerXButton.whenPressed(new ConditionalCommand
-    //(new FireCatapultRight(catapult), new PrintCommand("Catapult disabled while intake is not extended."), () -> intake.isExtended()));  
+
+    operatorControllerLeftBumper.whenPressed(new ConditionalCommand(new PrintCommand("Intake disabled while either catapult is extended"), new ExtendIntake(intake), ()-> catapult.isExtended() ));
+    operatorControllerRightBumper.whenPressed(new ConditionalCommand(new PrintCommand("Intake disabled while either catapult is extended"), new RetractIntake(intake), ()-> catapult.isExtended() ));
+
+    operatorControllerYButton.whenPressed(new ConditionalCommand( new FireCatapultRight(catapult), new PrintCommand("Catapult disabled while intake is not extended."), ()-> intake.isExtended()));
+    operatorControllerBButton.whenPressed(new ConditionalCommand( new RetractCatapultRight(catapult), new PrintCommand("Catapult disabled while intake is not extended."), ()-> intake.isExtended()));
+     */
   }
 
   /**

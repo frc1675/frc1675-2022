@@ -2,24 +2,25 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.catapult;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Catapult;
 
-public class InvertRobotFront extends CommandBase {
-  private final Drive drive;
+public class RetractCatapultLeft extends CommandBase {
+  private final Catapult catapult;
 
-  public InvertRobotFront(Drive drive) {
+  /** Creates a new PullUpRobot. */
+  public RetractCatapultLeft(Catapult catapult) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.drive = drive;
-    addRequirements(this.drive);
+    this.catapult = catapult;
+    addRequirements(this.catapult);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    drive.invertFront();
+    catapult.retractLeft();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

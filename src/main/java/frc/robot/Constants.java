@@ -46,12 +46,17 @@ public final class Constants {
     public static final int CATAPULT_RIGHT_SOLENOID_2 = 3;
     public static final int CATAPULT_LEFT_SOLENOID_1 = 4;
     public static final int CATAPULT_LEFT_SOLENOID_2 = 5;
+    public static final double CATAPULT_WAIT_TIME = 5.0;
 
     //intake constants
     public static final int INTAKE_MOTOR = 7;
     public static final int INTAKE_RIGHT_SOLENOID = 6;
     public static final int INTAKE_LEFT_SOLENOID = 7;
     public static final double INTAKE_WAIT_TIME = 5.0;
+
+    //cage constants
+    public static final int CAGE_SOLENOID = 8;
+    public static final double CAGE_WAIT_TIME = 5.0;
 
     //controller constants
     public static final int DRIVER_CONTROLLER = 0;

@@ -2,25 +2,25 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Catapult;
+import frc.robot.subsystems.Climber;
 
-public class RetractCatapultRight extends CommandBase {
-  private final Catapult catapult;
+public class ReleaseClimber extends CommandBase {
+  private final Climber climber;
 
-  /** Creates a new PullUpRobot. */
-  public RetractCatapultRight(Catapult catapult) {
+  /** Creates a new ReleaseClimber. */
+  public ReleaseClimber(Climber climber) {
+    this.climber = climber;
     // Use addRequirements() here to declare subsystem dependencies.
-    this.catapult = catapult;
-    addRequirements(this.catapult);
+    addRequirements(this.climber);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    catapult.retractRight();
+    climber.release();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

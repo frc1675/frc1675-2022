@@ -2,25 +2,25 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
-
+package frc.robot.commands.intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Intake;
 
-public class ReleaseClimber extends CommandBase {
-  private final Climber climber;
+public class SetIntakeSpeed extends CommandBase {
+  private final Intake intake;
+  private final double speed;
 
-  /** Creates a new ReleaseClimber. */
-  public ReleaseClimber(Climber climber) {
-    this.climber = climber;
+  public SetIntakeSpeed(Intake intake, double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(this.climber);
+    this.intake = intake;
+    this.speed= speed;
+    addRequirements(this.intake);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    climber.release();
+    intake.setIntakeSpeed(speed);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -29,11 +29,13 @@ public class ReleaseClimber extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    intake.setIntakeSpeed(0);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }
