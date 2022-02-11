@@ -7,7 +7,7 @@ package frc.robot.commands.intake;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Constants;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.subsystems.Intake;
 
 public class ExtendRunIntake extends SequentialCommandGroup {
@@ -16,9 +16,10 @@ public class ExtendRunIntake extends SequentialCommandGroup {
 
       new ConditionalCommand(
           new PrintCommand("Intake is already extended."),
-          new ExtendIntake(intake).withTimeout(Constants.INTAKE_WAIT_TIME),
+          new ExtendIntake(intake),
           () -> intake.isExtended()
         ),
+      new WaitUntilCommand(()-> intake.isExtended()),
       new SetIntakeSpeed(intake, intakeSpeed)
     );
   }
