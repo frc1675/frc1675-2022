@@ -17,7 +17,7 @@ public class ScoreThenTaxi extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new SafeFireCatapultRight(catapult),
+      //new SafeFireCatapultRight(catapult),
       new DriveToDistance(drive, 50, 0.5).withTimeout(2)
     );
   }
