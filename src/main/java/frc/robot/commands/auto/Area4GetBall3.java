@@ -26,14 +26,14 @@ public class Area4GetBall3 extends SequentialCommandGroup {
       new ParallelDeadlineGroup(
           new DriveToDistance(drive, 50, 1).withTimeout(3),
           new SetIntakeSpeed(intake, 1)
-      ),
+      )/*,
       new SafeRetractIntake(intake),
       new TurnToAngle(drive, 180, 1).withTimeout(2),
       new DriveToDistance(drive, 100, 1).withTimeout(3),
       new ParallelCommandGroup(
           new SafeFireCatapultRight(catapult),
           new SafeFireCatapultLeft(catapult)
-      )
+      )*/
     );
   }
 }

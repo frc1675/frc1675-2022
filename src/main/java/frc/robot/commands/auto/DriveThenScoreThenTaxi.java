@@ -18,7 +18,7 @@ public class DriveThenScoreThenTaxi extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new DriveToDistance(drive, -20, 0.5).withTimeout(3),
-      new SafeFireCatapultRight(catapult),
+      //new SafeFireCatapultRight(catapult),
       new DriveToDistance(drive, 50, 0.5).withTimeout(3)
     );
   }
