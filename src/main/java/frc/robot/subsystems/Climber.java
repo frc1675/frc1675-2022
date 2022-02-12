@@ -72,6 +72,10 @@ public class Climber extends SubsystemBase {
     // This method will be called once per scheduler run
     if(timer.hasElapsed(Constants.CLIMBER_WAIT_TIME)){
       isExtended = true;
+      encoder1.setPosition(0);
+      encoder2.setPosition(0);
+      timer.stop();
+      timer.reset();
     }
   }
 }
