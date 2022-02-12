@@ -21,6 +21,7 @@ public class Intake extends SubsystemBase {
   private Solenoid rightSolenoid = new Solenoid(PneumaticsModuleType.REVPH, Constants.INTAKE_RIGHT_SOLENOID);
   private Solenoid leftSolenoid = new Solenoid(PneumaticsModuleType.REVPH, Constants.INTAKE_LEFT_SOLENOID);
   private boolean intakeExtended = false;
+  private double currentSpeed = 0;
 
   private ShuffleboardTab IntakeTab = Shuffleboard.getTab("Intake");
 
@@ -28,11 +29,13 @@ public class Intake extends SubsystemBase {
  
   public Intake() {
     IntakeTab.addBoolean("Intake Extended?", () -> isExtended());
+    IntakeTab.addNumber("Intake Speed", ()-> motorSpeed());
     
   }
 
   public void setIntakeSpeed(double speed){
     intakeMotor.set(speed);
+    currentSpeed = speed;
   }
 
   public void extendIntake(){
@@ -52,6 +55,10 @@ public class Intake extends SubsystemBase {
 
   public boolean isExtended(){
     return intakeExtended;
+  }
+
+  public double motorSpeed(){
+    return currentSpeed;
   }
 
   @Override

@@ -28,7 +28,11 @@ public class SetIntakeSpeed extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.setIntakeSpeed(speed.getAsDouble());
+    if(speed.getAsDouble() == 0.0){
+      intake.setIntakeSpeed(1);
+    }else{
+      intake.setIntakeSpeed(speed.getAsDouble());
+    }
   }
 
   // Called once the command ends or is interrupted.
