@@ -67,6 +67,8 @@ public class RobotContainer {
 
   private final AutoChooser autoChooser = new AutoChooser(drive, intake, catapult);
 
+  private final CheesyDrive slowDrive = new CheesyDrive(drive, ()-> getDriverLeftY(), ()-> getDriverRightX() , Constants.CLIMBER_DRIVE_MULTIPLIER);
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
