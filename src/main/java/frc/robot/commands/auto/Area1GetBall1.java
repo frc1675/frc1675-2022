@@ -26,7 +26,7 @@ public class Area1GetBall1 extends SequentialCommandGroup {
       //parallel deadline group ends when the first command ends
       new ParallelDeadlineGroup(
           new DriveToDistance(drive, 50, 1).withTimeout(3),
-          new SetIntakeSpeed(intake, 1)
+          new SetIntakeSpeed(intake, () -> {return 1.0;})
       )//,
       /*
       new SafeRetractIntake(intake),
