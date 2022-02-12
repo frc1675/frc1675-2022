@@ -35,8 +35,7 @@ public class Climber extends SubsystemBase {
     encoder2.setPosition(0);
 
     climberTab.addBoolean("Extended?", () -> isExtended);
-    double averageEncoderPosition = (encoder1.getPosition() + encoder2.getPosition()) / 2;
-    climberTab.addNumber("Average climber position", () -> averageEncoderPosition);
+    climberTab.addNumber("Average climber position", () -> averageEncoderPosition());
 
     
   }
@@ -65,6 +64,10 @@ public class Climber extends SubsystemBase {
 
   public boolean getIsExtended() {
     return isExtended;
+  }
+
+  public double averageEncoderPosition(){
+    return (encoder1.getPosition() + encoder2.getPosition()) / 2;
   }
 
   @Override
