@@ -14,15 +14,15 @@ import frc.robot.commands.intake.SetIntakeSpeed;
 import frc.robot.subsystems.Cage;
 import frc.robot.subsystems.Intake;
 
-public class ExtendRunIntake extends SequentialCommandGroup {
-  public ExtendRunIntake(Intake intake, Cage cage, double intakeSpeed) {
+public class ExtendThenRunIntake extends SequentialCommandGroup {
+  public ExtendThenRunIntake(Intake intake, Cage cage, double intakeSpeed) {
     addCommands(
 
       new ConditionalCommand(
-          new PrintCommand("Intake is already extended."),
-          new ExtendIntake(intake),
-          () -> intake.isExtended()
-        ),
+        new PrintCommand("Intake is already extended."),
+        new ExtendIntake(intake),
+        () -> intake.isExtended()
+      ),
       new WaitUntilCommand(()-> intake.isExtended()),
       new CloseCage(cage), 
       new WaitUntilCommand(() -> cage.isClosed()),

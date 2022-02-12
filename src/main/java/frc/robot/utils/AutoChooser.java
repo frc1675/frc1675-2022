@@ -17,7 +17,9 @@ import frc.robot.commands.auto.Area3GetBall2;
 import frc.robot.commands.auto.Area3GetBall3;
 import frc.robot.commands.auto.Area4GetBall3;
 import frc.robot.commands.auto.ScoreThenTaxi;
+import frc.robot.commands.auto.TurnToAngle;
 import frc.robot.commands.auto.DriveThenScoreThenTaxi;
+import frc.robot.subsystems.Cage;
 import frc.robot.subsystems.Catapult;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Intake;
@@ -41,6 +43,7 @@ public class AutoChooser {
 
     private Drive drive;
     private Intake intake;
+    private Cage cage;
     private Catapult catapult;
 
     private ShuffleboardTab autoTab = Shuffleboard.getTab("Choose auto routine");
@@ -57,9 +60,10 @@ public class AutoChooser {
 
     private String message;
 
-    public AutoChooser(Drive drive, Intake intake, Catapult catapult) {
+    public AutoChooser(Drive drive, Intake intake, Cage cage, Catapult catapult) {
         this.drive = drive;
         this.intake = intake;
+        this.cage = cage;
         this.catapult = catapult;
 
         startPositionChooser.setDefaultOption("Touching hub", StartPosition.TOUCHING_HUB);
@@ -155,6 +159,7 @@ public class AutoChooser {
 
     public SequentialCommandGroup generateAuto() {
         SequentialCommandGroup auto = new SequentialCommandGroup();
+        auto.addCommands(new TurnToAngle(drive, 90, 0.1));
 
         StartPosition selectedStart = (StartPosition)startPositionChooser.getSelected();
         SelectedBall selectedBalls = (SelectedBall)selectedBallsChooser.getSelected();
@@ -165,46 +170,46 @@ public class AutoChooser {
         //commands to auto, but others will do nothing.
         switch (selectedStart) {
             case TOUCHING_HUB: switch (selectedBalls) {
-                case NONE: auto.addCommands(new ScoreThenTaxi(drive, catapult));
+                case NONE: auto.addCommands(new ScoreThenTaxi(drive, intake, cage, catapult));
                 break;
                 default: break;
             }
             break;
 
             case BEHIND_HUB: switch (selectedBalls) {
-                case NONE: auto.addCommands(new DriveThenScoreThenTaxi(drive, catapult));
+                case NONE: auto.addCommands(new DriveThenScoreThenTaxi(drive, intake, cage, catapult));
                 break;
                 default: break;
             }
             break;
 
             case AREA_1: switch (selectedBalls) {
-                case BALL_1: auto.addCommands(new Area1GetBall1(drive, intake, catapult));
+                case BALL_1: auto.addCommands(new Area1GetBall1(drive, intake, cage, catapult));
                 break;
                 default: break;
             }
             break;
 
             case AREA_2: switch (selectedBalls) {
-                case BALL_1: auto.addCommands(new Area2GetBall1(drive, intake, catapult));
+                case BALL_1: auto.addCommands(new Area2GetBall1(drive, intake, cage, catapult));
                 break;
-                case BALL_2: auto.addCommands(new Area2GetBall2(drive, intake, catapult));
+                case BALL_2: auto.addCommands(new Area2GetBall2(drive, intake, cage, catapult));
                 break;
                 default: break;
             }
             break;
 
             case AREA_3: switch (selectedBalls) {
-                case BALL_2: auto.addCommands(new Area3GetBall2(drive, intake, catapult));
+                case BALL_2: auto.addCommands(new Area3GetBall2(drive, intake, cage, catapult));
                 break;
-                case BALL_3: auto.addCommands(new Area3GetBall3(drive, intake, catapult));
+                case BALL_3: auto.addCommands(new Area3GetBall3(drive, intake, cage, catapult));
                 break;
                 default: break;
             }
             break;
 
             case AREA_4: switch (selectedBalls) {
-                case BALL_3: auto.addCommands(new Area4GetBall3(drive, intake, catapult));
+                case BALL_3: auto.addCommands(new Area4GetBall3(drive, intake, cage, catapult));
                 break;
                 default: break;
             }

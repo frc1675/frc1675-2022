@@ -20,8 +20,8 @@ import frc.robot.subsystems.Cage;
 import frc.robot.subsystems.Catapult;
 import frc.robot.subsystems.Intake;
 
-public class FireCatapults extends SequentialCommandGroup {
-  public FireCatapults(Intake intake, Cage cage, Catapult catapult, boolean fireRight, boolean fireLeft) {
+public class FireAnyCatapultsSafe extends SequentialCommandGroup {
+  public FireAnyCatapultsSafe(Intake intake, Cage cage, Catapult catapult, boolean fireRight, boolean fireLeft) {
     addCommands(
       new ExtendIntake(intake),
       new WaitUntilCommand( ()-> intake.isExtended()),
@@ -29,13 +29,23 @@ public class FireCatapults extends SequentialCommandGroup {
       new OpenCage(cage),
       new WaitUntilCommand( ()-> {return !cage.isClosed();}),
 
-      new ConditionalCommand(new FireCatapultRight(catapult), new PrintCommand("Right catapult not set to fire"), ()-> fireRight),
+      new ConditionalCommand(
+        new FireCatapultRight(catapult),
+        new PrintCommand("Right catapult not set to fire"),
+        () -> fireRight
+      ),
       new WaitCommand(Constants.CATAPULT_WAIT_BETWEEN_TIME),
-      new ConditionalCommand(new FireCatapultLeft(catapult), new PrintCommand("Left catapult not set to fire"), ()-> fireLeft),
+      new ConditionalCommand(
+        new FireCatapultLeft(catapult),
+        new PrintCommand("Left catapult not set to fire"),
+        () -> fireLeft
+      ),
 
       new WaitUntilCommand(()-> catapult.isExtended()),
       new WaitCommand(Constants.CATAPULT_FOLLOW_THROUGH_TIME),
-      //wait an additional x amount of seconds to provide enough follow through for balls to get good launch. Set to zero in Constants if this behavior is not desired
+      //wait an additional x amount of seconds to provide enough
+      //follow through for balls to get good launch. Set to zero
+      //in Constants if this behavior is not desired.
 
       new RetractCatapultRight(catapult),
       new RetractCatapultLeft(catapult),

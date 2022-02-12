@@ -14,18 +14,18 @@ import frc.robot.subsystems.Cage;
 import frc.robot.subsystems.Catapult;
 import frc.robot.subsystems.Intake;
 
-public class IntakeRetractSafe extends SequentialCommandGroup {
-  public IntakeRetractSafe(Intake intake, Cage cage, Catapult catapult) {
+public class RetractIntakeSafe extends SequentialCommandGroup {
+  public RetractIntakeSafe(Intake intake, Cage cage, Catapult catapult) {
     addCommands(
       new OpenCage(cage),
-      new WaitUntilCommand( ()-> {return !cage.isClosed();} ),
+      new WaitUntilCommand(()-> {return !cage.isClosed();}),
 
       new RetractCatapultRight(catapult),
       new RetractCatapultLeft(catapult),
-      new WaitUntilCommand( ()-> {return !catapult.isExtended();} ),
+      new WaitUntilCommand(()-> {return !catapult.isExtended();}),
 
       new RetractIntake(intake),
-      new WaitUntilCommand(()-> {return !intake.isExtended(); } )
+      new WaitUntilCommand(()-> {return !intake.isExtended();})
       );
   }
 }
