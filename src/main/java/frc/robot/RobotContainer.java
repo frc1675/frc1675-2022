@@ -69,11 +69,11 @@ public class RobotContainer {
   private double getDriverRightX(){
     return DeadzoneCorrection.correctDeadzone(driverController.getRawAxis(Constants.RIGHT_X_AXIS));
   }
-
+/*
   private double getOperatorLeftY(){
     return -1 * DeadzoneCorrection.correctDeadzone(operatorController.getRawAxis(Constants.LEFT_Y_AXIS));
   }
-
+*/
   private final AutoChooser autoChooser = new AutoChooser(drive, intake, catapult);
 
   private final CheesyDrive slowDrive = new CheesyDrive(drive, ()-> getDriverLeftY(), ()-> getDriverRightX() , Constants.CLIMBER_DRIVE_MULTIPLIER);
@@ -107,7 +107,7 @@ public class RobotContainer {
     operatorControllerRightBumper.whenPressed(new FireCatapults(intake, cage, catapult, true, false));
     operatorControllerLeftBumper.whenPressed(new FireCatapults(intake, cage, catapult, false, true));
     operatorControllerXButton.whenPressed(new IntakeRetractSafe(intake, cage, catapult));
-    operatorControllerBButton.whenPressed(new ExtendRunIntake(intake, cage, () -> getOperatorLeftY() ));
+    operatorControllerBButton.whenHeld(new ExtendRunIntake(intake, cage, () -> {return Constants.INTAKE_CONSTANT_SPEED;} ));
 
   }
 
