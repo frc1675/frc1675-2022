@@ -35,8 +35,7 @@ public class Climber extends SubsystemBase {
     encoder2.setPosition(0);
 
     climberTab.addBoolean("Extended?", () -> isExtended);
-    double averageEncoderPosition = (encoder1.getPosition() + encoder2.getPosition()) / 2;
-    climberTab.addNumber("Average climber position", () -> averageEncoderPosition);
+    climberTab.addNumber("Average climber position", () -> averageEncoderPosition());
 
     
   }
@@ -67,11 +66,19 @@ public class Climber extends SubsystemBase {
     return isExtended;
   }
 
+  public double averageEncoderPosition(){
+    return (encoder1.getPosition() + encoder2.getPosition()) / 2;
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     if(timer.hasElapsed(Constants.CLIMBER_WAIT_TIME)){
       isExtended = true;
+      encoder1.setPosition(0);
+      encoder2.setPosition(0);
+      timer.stop();
+      timer.reset();
     }
   }
 }
