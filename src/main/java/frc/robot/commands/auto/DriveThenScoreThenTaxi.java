@@ -21,13 +21,13 @@ public class DriveThenScoreThenTaxi extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new DriveToDistance(drive, 117, 1),
+      new DriveToDistanceWithTimeout(drive, 117, 1),
       new WaitCommand(waitTime),
-      new DriveToDistance(drive, -117, 1),
-      new TurnToAngle(drive, -90, 1),
-      new DriveToDistance(drive, -42, 1),
+      new DriveToDistanceWithTimeout(drive, -117, 1),
+      new TurnToAngleWithTimeout(drive, -90, 1),
+      new DriveToDistanceWithTimeout(drive, -42, 1),
       new FireAnyCatapultsSafe(intake, cage, catapult, true, true),
-      new DriveToDistance(drive, 62, 1)
+      new DriveToDistanceWithTimeout(drive, 62, 1)
     );
   }
 }

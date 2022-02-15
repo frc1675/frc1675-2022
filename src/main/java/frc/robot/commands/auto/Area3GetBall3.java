@@ -24,16 +24,17 @@ public class Area3GetBall3 extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new TurnToAngle(drive, -67, 1),
+      new TurnToAngleWithTimeout(drive, -67, 1),
       new ExtendIntake(intake),
       new ParallelDeadlineGroup(
-        new DriveToDistance(drive, 63, 1),
+        new DriveToDistanceWithTimeout(drive, 63, 1),
         new SetIntakeSpeed(intake, 1)
       ),
-      new TurnToAngle(drive, 40.5, 1),
-      new DriveToDistance(drive, -76.5, 1),
+      new RetractIntakeSafe(intake, cage, catapult),
+      new TurnToAngleWithTimeout(drive, 40.5, 1),
+      new DriveToDistanceWithTimeout(drive, -76.5, 1),
       new FireAnyCatapultsSafe(intake, cage, catapult, true, true),
-      new DriveToDistance(drive, 63, 1)
+      new DriveToDistanceWithTimeout(drive, 63, 1)
     );
   }
 }

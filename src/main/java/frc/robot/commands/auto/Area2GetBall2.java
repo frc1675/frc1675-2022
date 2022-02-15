@@ -24,19 +24,19 @@ public class Area2GetBall2 extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new TurnToAngle(drive, -17, 1),
+      new TurnToAngleWithTimeout(drive, -17, 1),
       new ExtendIntake(intake),
       new ParallelDeadlineGroup(
-        new DriveToDistance(drive, 40.5, 1),
+        new DriveToDistanceWithTimeout(drive, 40.5, 1),
         new SetIntakeSpeed(intake, 1)
       ),
       new RetractIntakeSafe(intake, cage, catapult),
-      new TurnToAngle(drive, -14, 1),
-      new DriveToDistance(drive, -76.5, 1),
-      new TurnToAngle(drive, 50, 1),
-      new DriveToDistance(drive, -18, 12),
+      new TurnToAngleWithTimeout(drive, -14, 1),
+      new DriveToDistanceWithTimeout(drive, -76.5, 1),
+      new TurnToAngleWithTimeout(drive, 50, 1),
+      new DriveToDistanceWithTimeout(drive, -18, 12),
       new FireAnyCatapultsSafe(intake, cage, catapult, true, true),
-      new DriveToDistance(drive, 63, 1)
+      new DriveToDistanceWithTimeout(drive, 63, 1)
     );
   }
 }
