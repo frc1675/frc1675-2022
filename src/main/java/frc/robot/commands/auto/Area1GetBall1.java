@@ -28,6 +28,8 @@ public class Area1GetBall1 extends SequentialCommandGroup {
       new DriveToDistance(drive, 37.5, 1),
       new TurnToAngle(drive, 62, 1),
       new ExtendIntake(intake),
+      //ParallelDeadlineGroup ends when the first command
+      //ends, and interrupts the others.
       new ParallelDeadlineGroup(
         new DriveToDistance(drive, 22.5, 1),
         new SetIntakeSpeed(intake, 1)

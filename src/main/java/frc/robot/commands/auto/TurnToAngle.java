@@ -17,6 +17,7 @@ public class TurnToAngle extends PIDCommand {
   private int count = 0;
 
   /** Creates a new TurnToAngle. */
+  //positive angles turn counterclockwise, negative clockwise.
   public TurnToAngle(Drive drive, double angle, double maxSpeed) {
     super(
       // The controller that the command will use
