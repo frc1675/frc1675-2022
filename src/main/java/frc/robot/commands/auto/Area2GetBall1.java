@@ -35,7 +35,7 @@ public class Area2GetBall1 extends SequentialCommandGroup {
       new RetractIntakeSafe(intake, cage, catapult),
       new DriveToDistance(drive, -60.75, 1),
       new TurnToAngle(drive, -23, 1),
-      new DriveToDistance(drive, 18, 12),
+      new DriveToDistance(drive, -18, 12),
       new FireAnyCatapultsSafe(intake, cage, catapult, true, true),
       new DriveToDistance(drive, 63, 1)
     );

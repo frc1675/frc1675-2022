@@ -34,7 +34,7 @@ public class Area2GetBall2 extends SequentialCommandGroup {
       new TurnToAngle(drive, -14, 1),
       new DriveToDistance(drive, -76.5, 1),
       new TurnToAngle(drive, 50, 1),
-      new DriveToDistance(drive, 18, 12),
+      new DriveToDistance(drive, -18, 12),
       new FireAnyCatapultsSafe(intake, cage, catapult, true, true),
       new DriveToDistance(drive, 63, 1)
     );
