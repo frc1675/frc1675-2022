@@ -147,7 +147,7 @@ public class Drive extends SubsystemBase {
   }
   
   public double getHeading() {
-    return navx.getPitch() % 360;
+    return navx.getAngle() % 360;
   }
 
   @Override
