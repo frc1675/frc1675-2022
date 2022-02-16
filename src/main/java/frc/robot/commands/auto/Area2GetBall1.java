@@ -4,11 +4,13 @@
 
 package frc.robot.commands.auto;
 
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.commandGroups.FireAnyCatapultsSafe;
+import frc.robot.commands.commandGroups.RetractIntakeSafe;
 import frc.robot.commands.intake.ExtendIntake;
 import frc.robot.commands.intake.SetIntakeSpeed;
+import frc.robot.subsystems.Cage;
 import frc.robot.subsystems.Catapult;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Intake;
@@ -18,22 +20,24 @@ import frc.robot.subsystems.Intake;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class Area2GetBall1 extends SequentialCommandGroup {
   /** Creates a new Area2GetBall1. */
-  public Area2GetBall1(Drive drive, Intake intake, Catapult catapult) {
+  public Area2GetBall1(Drive drive, Intake intake, Cage cage, Catapult catapult) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
+      new TurnToAngleWithTimeout(drive, 90, 1),
+      new DriveToDistanceWithTimeout(drive, 52.5, 1),
+      new TurnToAngleWithTimeout(drive, -49, 1),
       new ExtendIntake(intake),
       new ParallelDeadlineGroup(
-          new DriveToDistance(drive, 50, 1).withTimeout(3),
-          new SetIntakeSpeed(intake, 1)
-      )/*,
-      new SafeRetractIntake(intake),
-      new TurnToAngle(drive, 180, 1).withTimeout(2),
-      new DriveToDistance(drive, 100, 1).withTimeout(3),
-      new ParallelCommandGroup(
-          new SafeFireCatapultRight(catapult),
-          new SafeFireCatapultLeft(catapult)
-      )*/
+        new DriveToDistanceWithTimeout(drive, 22.5, 1),
+        new SetIntakeSpeed(intake, 1)
+      ),
+      new RetractIntakeSafe(intake, cage, catapult),
+      new DriveToDistanceWithTimeout(drive, -60.75, 1),
+      new TurnToAngleWithTimeout(drive, -23, 1),
+      new DriveToDistanceWithTimeout(drive, -18, 12),
+      new FireAnyCatapultsSafe(intake, cage, catapult, true, true),
+      new DriveToDistanceWithTimeout(drive, 63, 1)
     );
   }
 }

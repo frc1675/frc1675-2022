@@ -15,6 +15,7 @@ import frc.robot.commands.climber.ReleaseClimber;
 import frc.robot.commands.drive.CheesyDrive;
 import frc.robot.commands.drive.InvertRobotFront;
 import frc.robot.commands.intake.RetractIntake;
+import frc.robot.subsystems.Cage;
 import frc.robot.subsystems.Catapult;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drive;
@@ -44,6 +45,7 @@ public class RobotContainer {
   private final JoystickButton operatorControllerLeftBumper = new JoystickButton(operatorController, Constants.LEFT_BUMPER);
   private final JoystickButton operatorControllerBackButton = new JoystickButton(operatorController, Constants.BACK_BUTTON);
 
+  private final Cage cage = new Cage();
   private final Drive drive = new Drive();
   private final Intake intake = new Intake();
   private final Climber climber = new Climber();
@@ -65,7 +67,7 @@ public class RobotContainer {
     return DeadzoneCorrection.correctDeadzone(driverController.getRawAxis(Constants.RIGHT_X_AXIS));
   }
 
-  private final AutoChooser autoChooser = new AutoChooser(drive, intake, catapult);
+  private final AutoChooser autoChooser = new AutoChooser(drive, intake, cage, catapult);
 
   private final CheesyDrive slowDrive = new CheesyDrive(drive, ()-> getDriverLeftY(), ()-> getDriverRightX() , Constants.CLIMBER_DRIVE_MULTIPLIER);
 
