@@ -23,7 +23,7 @@ public class Area3GetBall3 extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new TurnToAngleWithTimeout(drive, -67, 1),
+      new TurnToAngleWithTimeout(drive, 23, 1),
       new ParallelDeadlineGroup(
         new DriveToDistanceWithTimeout(drive, 63, 1),
         new ExtendThenRunIntake(intake, cage, 1)

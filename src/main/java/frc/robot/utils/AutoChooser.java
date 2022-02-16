@@ -17,7 +17,6 @@ import frc.robot.commands.auto.Area3GetBall2;
 import frc.robot.commands.auto.Area3GetBall3;
 import frc.robot.commands.auto.Area4GetBall3;
 import frc.robot.commands.auto.ScoreThenTaxi;
-import frc.robot.commands.auto.DriveThenScoreThenTaxi;
 import frc.robot.subsystems.Cage;
 import frc.robot.subsystems.Catapult;
 import frc.robot.subsystems.Drive;
@@ -26,7 +25,6 @@ import frc.robot.subsystems.Intake;
 public class AutoChooser {
     public enum StartPosition {
         TOUCHING_HUB,
-        SIDEWAYS,
         AREA_1,
         AREA_2,
         AREA_3,
@@ -66,7 +64,6 @@ public class AutoChooser {
         this.catapult = catapult;
 
         startPositionChooser.setDefaultOption("Touching hub", StartPosition.TOUCHING_HUB);
-        startPositionChooser.addOption("Robot in front of us touching hub", StartPosition.SIDEWAYS);
         startPositionChooser.addOption("Start area 1", StartPosition.AREA_1);
         startPositionChooser.addOption("Start area 2", StartPosition.AREA_2);
         startPositionChooser.addOption("Start area 3", StartPosition.AREA_3);
@@ -101,14 +98,6 @@ public class AutoChooser {
         switch (selectedStart) {
             case TOUCHING_HUB: switch (selectedBalls) {
                 case NONE: message = "Shoot immediately, drive off tarmac";
-                    break;
-                default: message = "We do not have an auto routine programmed for this combination. DO NOT START THE MATCH WITH THIS COMBINATION.";
-                    break;
-            }
-            break;
-
-            case SIDEWAYS: switch (selectedBalls) {
-                case NONE: message = "Wait for team robot, drive to hub, shoot, drive off tarmac";
                     break;
                 default: message = "We do not have an auto routine programmed for this combination. DO NOT START THE MATCH WITH THIS COMBINATION.";
                     break;
@@ -169,46 +158,39 @@ public class AutoChooser {
         switch (selectedStart) {
             case TOUCHING_HUB: switch (selectedBalls) {
                 case NONE: auto.addCommands(new ScoreThenTaxi(drive, intake, cage, catapult));
-                break;
-                default: break;
-            }
-            break;
-
-            case SIDEWAYS: switch (selectedBalls) {
-                case NONE: auto.addCommands(new DriveThenScoreThenTaxi(drive, intake, cage, catapult, 7));
-                break;
+                    break;
                 default: break;
             }
             break;
 
             case AREA_1: switch (selectedBalls) {
                 case BALL_1: auto.addCommands(new Area1GetBall1(drive, intake, cage, catapult));
-                break;
+                    break;
                 default: break;
             }
             break;
 
             case AREA_2: switch (selectedBalls) {
                 case BALL_1: auto.addCommands(new Area2GetBall1(drive, intake, cage, catapult));
-                break;
+                    break;
                 case BALL_2: auto.addCommands(new Area2GetBall2(drive, intake, cage, catapult));
-                break;
+                    break;
                 default: break;
             }
             break;
 
             case AREA_3: switch (selectedBalls) {
                 case BALL_2: auto.addCommands(new Area3GetBall2(drive, intake, cage, catapult));
-                break;
+                    break;
                 case BALL_3: auto.addCommands(new Area3GetBall3(drive, intake, cage, catapult));
-                break;
+                    break;
                 default: break;
             }
             break;
 
             case AREA_4: switch (selectedBalls) {
                 case BALL_3: auto.addCommands(new Area4GetBall3(drive, intake, cage, catapult));
-                break;
+                    break;
                 default: break;
             }
             break;
