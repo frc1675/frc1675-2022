@@ -11,9 +11,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.climber.PullUpRobot;
 import frc.robot.commands.commandGroups.ClimberReleaseSafe;
-import frc.robot.commands.commandGroups.ExtendRunIntake;
-import frc.robot.commands.commandGroups.FireCatapults;
-import frc.robot.commands.commandGroups.IntakeRetractSafe;
+import frc.robot.commands.commandGroups.ExtendThenRunIntake;
+import frc.robot.commands.commandGroups.FireAnyCatapultsSafe;
+import frc.robot.commands.commandGroups.RetractIntakeSafe;
 import frc.robot.commands.drive.CheesyDrive;
 import frc.robot.commands.drive.InvertRobotFront;
 import frc.robot.subsystems.Cage;
@@ -47,11 +47,11 @@ public class RobotContainer {
   private final JoystickButton operatorControllerRightBumper = new JoystickButton(operatorController, Constants.RIGHT_BUMPER);
   private final JoystickButton operatorControllerLeftBumper = new JoystickButton(operatorController, Constants.LEFT_BUMPER);
 
+  private final Cage cage = new Cage();
   private final Drive drive = new Drive();
   private final Intake intake = new Intake();
   private final Climber climber = new Climber();
   private final Catapult catapult = new Catapult();
-  private final Cage cage = new Cage();
 
   private double getDriverLeftY(){
     return -1 * DeadzoneCorrection.correctDeadzone(driverController.getRawAxis(Constants.LEFT_Y_AXIS));
@@ -74,7 +74,7 @@ public class RobotContainer {
     return -1 * DeadzoneCorrection.correctDeadzone(operatorController.getRawAxis(Constants.LEFT_Y_AXIS));
   }
 */
-  private final AutoChooser autoChooser = new AutoChooser(drive, intake, catapult);
+  private final AutoChooser autoChooser = new AutoChooser(drive, intake, cage, catapult);
 
   private final CheesyDrive slowDrive = new CheesyDrive(drive, ()-> getDriverLeftY(), ()-> getDriverRightX() , Constants.CLIMBER_DRIVE_MULTIPLIER);
 
@@ -104,10 +104,10 @@ public class RobotContainer {
     //driverControllerStartButton.toggleWhenPressed(new CheesyDrivePID(drive, () -> getDriverLeftY(), () -> getDriverRightX() ));
 
     //operator controller
-    operatorControllerRightBumper.whenPressed(new FireCatapults(intake, cage, catapult, true, false));
-    operatorControllerLeftBumper.whenPressed(new FireCatapults(intake, cage, catapult, false, true));
-    operatorControllerXButton.whenPressed(new IntakeRetractSafe(intake, cage, catapult));
-    operatorControllerBButton.whenHeld(new ExtendRunIntake(intake, cage, () -> {return Constants.INTAKE_CONSTANT_SPEED;} ));
+    operatorControllerRightBumper.whenPressed(new FireAnyCatapultsSafe(intake, cage, catapult, true, false));
+    operatorControllerLeftBumper.whenPressed(new FireAnyCatapultsSafe(intake, cage, catapult, false, true));
+    operatorControllerXButton.whenPressed(new RetractIntakeSafe(intake, cage, catapult));
+    operatorControllerBButton.whenHeld(new ExtendThenRunIntake(intake, cage, () -> {return Constants.INTAKE_CONSTANT_SPEED;} ));
 
   }
 
