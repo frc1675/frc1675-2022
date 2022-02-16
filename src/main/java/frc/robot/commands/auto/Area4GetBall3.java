@@ -6,10 +6,9 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.commandGroups.ExtendThenRunIntake;
 import frc.robot.commands.commandGroups.FireAnyCatapultsSafe;
 import frc.robot.commands.commandGroups.RetractIntakeSafe;
-import frc.robot.commands.intake.ExtendIntake;
-import frc.robot.commands.intake.SetIntakeSpeed;
 import frc.robot.subsystems.Cage;
 import frc.robot.subsystems.Catapult;
 import frc.robot.subsystems.Drive;
@@ -25,10 +24,9 @@ public class Area4GetBall3 extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new TurnToAngleWithTimeout(drive, 37, 1),
-      new ExtendIntake(intake),
       new ParallelDeadlineGroup(
         new DriveToDistanceWithTimeout(drive, 48, 1),
-        new SetIntakeSpeed(intake, 1)
+        new ExtendThenRunIntake(intake, cage, 1)
       ),
       new RetractIntakeSafe(intake, cage, catapult),
       new TurnToAngleWithTimeout(drive, -44, 1),

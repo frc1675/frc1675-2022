@@ -26,7 +26,7 @@ import frc.robot.subsystems.Intake;
 public class AutoChooser {
     public enum StartPosition {
         TOUCHING_HUB,
-        BEHIND_HUB,
+        SIDEWAYS,
         AREA_1,
         AREA_2,
         AREA_3,
@@ -66,7 +66,7 @@ public class AutoChooser {
         this.catapult = catapult;
 
         startPositionChooser.setDefaultOption("Touching hub", StartPosition.TOUCHING_HUB);
-        startPositionChooser.addOption("Robot in front of us touching hub", StartPosition.BEHIND_HUB);
+        startPositionChooser.addOption("Robot in front of us touching hub", StartPosition.SIDEWAYS);
         startPositionChooser.addOption("Start area 1", StartPosition.AREA_1);
         startPositionChooser.addOption("Start area 2", StartPosition.AREA_2);
         startPositionChooser.addOption("Start area 3", StartPosition.AREA_3);
@@ -107,7 +107,7 @@ public class AutoChooser {
             }
             break;
 
-            case BEHIND_HUB: switch (selectedBalls) {
+            case SIDEWAYS: switch (selectedBalls) {
                 case NONE: message = "Wait for team robot, drive to hub, shoot, drive off tarmac";
                     break;
                 default: message = "We do not have an auto routine programmed for this combination. DO NOT START THE MATCH WITH THIS COMBINATION.";
@@ -174,7 +174,7 @@ public class AutoChooser {
             }
             break;
 
-            case BEHIND_HUB: switch (selectedBalls) {
+            case SIDEWAYS: switch (selectedBalls) {
                 case NONE: auto.addCommands(new DriveThenScoreThenTaxi(drive, intake, cage, catapult, 7));
                 break;
                 default: break;
