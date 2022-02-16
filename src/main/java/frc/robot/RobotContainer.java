@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.climber.PullUpRobot;
 import frc.robot.commands.commandGroups.ClimberReleaseSafe;
 import frc.robot.commands.commandGroups.ExtendThenRunIntake;
@@ -39,6 +40,7 @@ public class RobotContainer {
   //private final JoystickButton driverControllerStartButton = new JoystickButton(driverController, Constants.START_BUTTON);
   private final JoystickButton driverControllerRightBumper = new JoystickButton(driverController, Constants.RIGHT_BUMPER);
   private final JoystickButton driverControllerLeftBumper = new JoystickButton(driverController, Constants.LEFT_BUMPER);
+  private final Trigger driverControllerClimberButtons = driverControllerBackButton.and(driverControllerRightBumper).and(driverControllerLeftBumper);
 
   //operator controller
   private final Joystick operatorController = new Joystick(Constants.OPERATOR_CONTROLLER);
@@ -94,10 +96,9 @@ public class RobotContainer {
     drive.setDefaultCommand(new CheesyDrive(drive, () -> getDriverLeftY(), () -> getDriverRightX(), 1.0 ));
 
     //driver controller
-    driverControllerBackButton
-    .and(driverControllerRightBumper)
-    .and(driverControllerLeftBumper)
-    .whenActive(new ClimberReleaseSafe(intake, cage, climber, catapult, slowDrive));
+    driverControllerClimberButtons.whenActive(new ClimberReleaseSafe(intake, cage, climber, catapult));
+    driverControllerClimberButtons.whenActive(slowDrive);
+
 
     driverControllerBButton.whenHeld(new PullUpRobot(climber));
     driverControllerAButton.toggleWhenPressed(new InvertRobotFront(drive));
