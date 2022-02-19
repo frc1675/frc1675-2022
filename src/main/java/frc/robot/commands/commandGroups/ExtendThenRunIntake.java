@@ -4,7 +4,10 @@
 
 package frc.robot.commands.commandGroups;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.PerpetualCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
@@ -15,7 +18,7 @@ import frc.robot.subsystems.Cage;
 import frc.robot.subsystems.Intake;
 
 public class ExtendThenRunIntake extends SequentialCommandGroup {
-  public ExtendThenRunIntake(Intake intake, Cage cage, double intakeSpeed) {
+  public ExtendThenRunIntake(Intake intake, Cage cage, DoubleSupplier intakeSpeed) {
     addCommands(
 
       new ConditionalCommand(
@@ -26,7 +29,7 @@ public class ExtendThenRunIntake extends SequentialCommandGroup {
       new WaitUntilCommand(()-> intake.isExtended()),
       new CloseCage(cage), 
       new WaitUntilCommand(() -> cage.isClosed()),
-      new SetIntakeSpeed(intake, intakeSpeed)
+      new PerpetualCommand(new SetIntakeSpeed(intake, intakeSpeed))
     );
   }
 }
