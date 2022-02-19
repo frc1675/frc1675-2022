@@ -86,7 +86,7 @@ public class Drive extends SubsystemBase {
     .withPosition(0, 0);
     driveTab.addNumber("Left position", () -> leftEncoder.getPosition())
     .withSize(1, 1)
-    .withPosition(0, 2);
+    .withPosition(0, 1);
     driveTab.addNumber("Right position inches", () -> {return rightEncoder.getPosition() / Constants.ROTATIONS_PER_INCH;})
     .withSize(2, 1)
     .withPosition(1, 0);
