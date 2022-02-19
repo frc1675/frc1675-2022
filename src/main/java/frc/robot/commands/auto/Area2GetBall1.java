@@ -29,7 +29,7 @@ public class Area2GetBall1 extends SequentialCommandGroup {
       new TurnToAngleWithTimeout(drive, -49, 1),
       new ParallelDeadlineGroup(
         new DriveToDistanceWithTimeout(drive, 22.5, 1),
-        new ExtendThenRunIntake(intake, cage,  () -> {return Constants.INTAKE_CONSTANT_SPEED;})
+        new ExtendThenRunIntake(intake, cage, rightCatapult, leftCatapult, () -> {return Constants.INTAKE_CONSTANT_SPEED;})
       ),
       new RetractIntakeSafe(intake, cage, rightCatapult, leftCatapult),
       new DriveToDistanceWithTimeout(drive, -60.75, 1),
