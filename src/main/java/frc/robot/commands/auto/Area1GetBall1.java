@@ -7,10 +7,10 @@ package frc.robot.commands.auto;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
+import frc.robot.commands.commandGroups.ExtendThenRunIntake;
 import frc.robot.commands.commandGroups.FireBothCatapultsSafe;
 import frc.robot.commands.commandGroups.PrepareCatapultFire;
 import frc.robot.commands.commandGroups.RetractIntakeSafe;
-import frc.robot.commands.intake.SetIntakeSpeed;
 import frc.robot.subsystems.Cage;
 import frc.robot.subsystems.Catapult;
 import frc.robot.subsystems.Drive;
@@ -31,8 +31,8 @@ public class Area1GetBall1 extends SequentialCommandGroup {
       //ParallelDeadlineGroup ends when the first command
       //ends, and interrupts the others.
       new ParallelDeadlineGroup(
-        new DriveToDistance(drive, 50, 1).withTimeout(3),
-        new SetIntakeSpeed(intake, () -> {return Constants.INTAKE_CONSTANT_SPEED;})
+        new DriveToDistanceWithTimeout(drive, 22.5, 1),
+        new ExtendThenRunIntake(intake, cage, () -> {return Constants.INTAKE_CONSTANT_SPEED;})
       ),
       new RetractIntakeSafe(intake, cage, rightCatapult, leftCatapult),
       new DriveToDistanceWithTimeout(drive, -60.75, 1),
