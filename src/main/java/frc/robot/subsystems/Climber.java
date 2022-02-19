@@ -34,10 +34,12 @@ public class Climber extends SubsystemBase {
     encoder1.setPosition(0);
     encoder2.setPosition(0);
 
-    climberTab.addBoolean("Extended?", () -> isExtended);
-    climberTab.addNumber("Average climber position", () -> averageEncoderPosition());
-
-    
+    climberTab.addBoolean("Extended?", () -> isExtended)
+    .withSize(1, 1)
+    .withPosition(0, 0);
+    climberTab.addNumber("Average climber position", () -> averageEncoderPosition())
+    .withSize(2, 1)
+    .withPosition(1, 0);
   }
 
   public void release() {

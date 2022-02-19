@@ -48,9 +48,9 @@ public class AutoChooser {
     private SendableChooser<StartPosition> startPositionChooser = new SendableChooser<StartPosition>();
     private SendableChooser<SelectedBall> selectedBallsChooser = new SendableChooser<SelectedBall>();
 
-    private NetworkTableEntry waitSlider = autoTab.add("Wait time", 2)
+    private NetworkTableEntry waitSlider = autoTab.add("Wait time", 0)
     .withWidget(BuiltInWidgets.kNumberSlider)
-    .withProperties(Map.of("min", 0, "max", 10, "block increment", .5))
+    .withProperties(Map.of("min", 0, "max", 10, "block increment", 0.5))
     .withSize(2, 1)
     .withPosition(0, 0)
     .getEntry();
@@ -70,8 +70,8 @@ public class AutoChooser {
         startPositionChooser.addOption("Start area 4", StartPosition.AREA_4);
         autoTab.add("Starting position", startPositionChooser)
         .withWidget(BuiltInWidgets.kComboBoxChooser)
-        .withSize(2, 1).
-        withPosition(0, 1);
+        .withSize(2, 1)
+        .withPosition(0, 1);
 
         selectedBallsChooser.setDefaultOption("Get no balls", SelectedBall.NONE);
         selectedBallsChooser.addOption("Get ball 1", SelectedBall.BALL_1);
@@ -82,7 +82,9 @@ public class AutoChooser {
         .withSize(2, 1)
         .withPosition(0, 2);
 
-        autoTab.addString("Selected auto path", () -> message);
+        autoTab.addString("Selected auto path", () -> message)
+        .withSize(4, 1)
+        .withPosition(0, 3);
 
         SmartDashboard.putData(startPositionChooser);
         SmartDashboard.putData(selectedBallsChooser);
