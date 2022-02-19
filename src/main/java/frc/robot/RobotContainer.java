@@ -8,12 +8,15 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.climber.PullUpRobot;
 import frc.robot.commands.commandGroups.ClimberReleaseSafe;
 import frc.robot.commands.commandGroups.ExtendThenRunIntake;
 import frc.robot.commands.commandGroups.FireAnyCatapultsSafe;
+import frc.robot.commands.commandGroups.PrepareCatapultFire;
 import frc.robot.commands.commandGroups.RetractIntakeSafe;
 import frc.robot.commands.drive.CheesyDrive;
 import frc.robot.commands.drive.InvertRobotFront;
@@ -45,6 +48,7 @@ public class RobotContainer {
   //operator controller
   private final Joystick operatorController = new Joystick(Constants.OPERATOR_CONTROLLER);
   private final JoystickButton operatorControllerXButton = new JoystickButton(operatorController, Constants.X_BUTTON);
+  private final JoystickButton operatorControllerAButton = new JoystickButton(operatorController, Constants.A_BUTTON);
   private final JoystickButton operatorControllerBButton = new JoystickButton(operatorController, Constants.B_BUTTON);
   private final JoystickButton operatorControllerRightBumper = new JoystickButton(operatorController, Constants.RIGHT_BUMPER);
   private final JoystickButton operatorControllerLeftBumper = new JoystickButton(operatorController, Constants.LEFT_BUMPER);
@@ -54,6 +58,10 @@ public class RobotContainer {
   private final Intake intake = new Intake();
   private final Climber climber = new Climber();
   private final Catapult catapult = new Catapult();
+
+  private boolean isCatapultPrepared(){
+    return intake.isExtended() && !cage.isClosed();
+  }
 
   private double getDriverLeftY(){
     return -1 * DeadzoneCorrection.correctDeadzone(driverController.getRawAxis(Constants.LEFT_Y_AXIS));
@@ -105,8 +113,9 @@ public class RobotContainer {
     //driverControllerStartButton.toggleWhenPressed(new CheesyDrivePID(drive, () -> getDriverLeftY(), () -> getDriverRightX() ));
 
     //operator controller
-    operatorControllerRightBumper.whenPressed(new FireAnyCatapultsSafe(intake, cage, catapult, true, false));
-    operatorControllerLeftBumper.whenPressed(new FireAnyCatapultsSafe(intake, cage, catapult, false, true));
+    operatorControllerRightBumper.whenPressed(new ConditionalCommand( new FireAnyCatapultsSafe(catapult, true, false), new PrintCommand("Catapult not prepared to fire."), () -> isCatapultPrepared() ));
+    operatorControllerLeftBumper.whenPressed(new ConditionalCommand( new FireAnyCatapultsSafe(catapult, false, true), new PrintCommand("Catapult not prepared to fire."), () -> isCatapultPrepared() ));
+    operatorControllerAButton.whenPressed(new PrepareCatapultFire(intake, cage));
     operatorControllerXButton.whenPressed(new RetractIntakeSafe(intake, cage, catapult));
     operatorControllerBButton.whenHeld(new ExtendThenRunIntake(intake, cage, () -> {return Constants.INTAKE_CONSTANT_SPEED;} ));
 

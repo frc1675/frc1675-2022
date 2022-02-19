@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.commands.commandGroups.FireAnyCatapultsSafe;
+import frc.robot.commands.commandGroups.PrepareCatapultFire;
 import frc.robot.commands.commandGroups.RetractIntakeSafe;
 import frc.robot.commands.intake.ExtendIntake;
 import frc.robot.commands.intake.SetIntakeSpeed;
@@ -34,8 +35,9 @@ public class Area4GetBall3 extends SequentialCommandGroup {
         new TurnToAngleWithTimeout(drive, -44, 1),
         new DriveToDistanceWithTimeout(drive, -48, 1),
         new TurnToAngleWithTimeout(drive, 27, 1),
-        new DriveToDistanceWithTimeout(drive, -31.5, 1),
-        new FireAnyCatapultsSafe(intake, cage, catapult, true, true),
+        new DriveToDistanceWithTimeout(drive, -31.5, 1), 
+        new PrepareCatapultFire(intake, cage),
+        new FireAnyCatapultsSafe(catapult, true, true),
         new DriveToDistanceWithTimeout(drive, 63, 1)
     );
   }

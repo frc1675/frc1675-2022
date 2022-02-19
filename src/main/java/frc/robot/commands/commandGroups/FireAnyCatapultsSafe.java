@@ -10,25 +10,15 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants;
-import frc.robot.commands.cage.OpenCage;
 import frc.robot.commands.catapult.FireCatapultLeft;
 import frc.robot.commands.catapult.FireCatapultRight;
 import frc.robot.commands.catapult.RetractCatapultLeft;
 import frc.robot.commands.catapult.RetractCatapultRight;
-import frc.robot.commands.intake.ExtendIntake;
-import frc.robot.subsystems.Cage;
 import frc.robot.subsystems.Catapult;
-import frc.robot.subsystems.Intake;
 
 public class FireAnyCatapultsSafe extends SequentialCommandGroup {
-  public FireAnyCatapultsSafe(Intake intake, Cage cage, Catapult catapult, boolean fireRight, boolean fireLeft) {
+  public FireAnyCatapultsSafe(Catapult catapult, boolean fireRight, boolean fireLeft) {
     addCommands(
-      new ExtendIntake(intake),
-      new WaitUntilCommand( ()-> intake.isExtended()),
-      
-      new OpenCage(cage),
-      new WaitUntilCommand( ()-> {return !cage.isClosed();}),
-
       new ConditionalCommand(
         new FireCatapultRight(catapult),
         new PrintCommand("Right catapult not set to fire"),

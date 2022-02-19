@@ -7,6 +7,7 @@ package frc.robot.commands.auto;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.commandGroups.FireAnyCatapultsSafe;
+import frc.robot.commands.commandGroups.PrepareCatapultFire;
 import frc.robot.subsystems.Cage;
 import frc.robot.subsystems.Catapult;
 import frc.robot.subsystems.Drive;
@@ -26,7 +27,8 @@ public class DriveThenScoreThenTaxi extends SequentialCommandGroup {
       new DriveToDistanceWithTimeout(drive, -117, 1),
       new TurnToAngleWithTimeout(drive, -90, 1),
       new DriveToDistanceWithTimeout(drive, -42, 1),
-      new FireAnyCatapultsSafe(intake, cage, catapult, true, true),
+      new PrepareCatapultFire(intake, cage), 
+      new FireAnyCatapultsSafe(catapult, true, true),
       new DriveToDistanceWithTimeout(drive, 62, 1)
     );
   }
