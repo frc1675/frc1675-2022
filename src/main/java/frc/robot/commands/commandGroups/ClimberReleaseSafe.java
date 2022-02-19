@@ -18,7 +18,6 @@ public class ClimberReleaseSafe extends SequentialCommandGroup {
       new RetractIntakeSafe(intake, cage, rightCatapult, lefCatapult),
       new ReleaseClimber(climber),
       new WaitUntilCommand(()-> climber.getIsExtended())
-
     );
   }
 }

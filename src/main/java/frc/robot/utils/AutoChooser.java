@@ -17,7 +17,6 @@ import frc.robot.commands.auto.Area3GetBall2;
 import frc.robot.commands.auto.Area3GetBall3;
 import frc.robot.commands.auto.Area4GetBall3;
 import frc.robot.commands.auto.ScoreThenTaxi;
-import frc.robot.commands.auto.DriveThenScoreThenTaxi;
 import frc.robot.subsystems.Cage;
 import frc.robot.subsystems.Catapult;
 import frc.robot.subsystems.Drive;
@@ -26,7 +25,6 @@ import frc.robot.subsystems.Intake;
 public class AutoChooser {
     public enum StartPosition {
         TOUCHING_HUB,
-        BEHIND_HUB,
         AREA_1,
         AREA_2,
         AREA_3,
@@ -51,9 +49,9 @@ public class AutoChooser {
     private SendableChooser<StartPosition> startPositionChooser = new SendableChooser<StartPosition>();
     private SendableChooser<SelectedBall> selectedBallsChooser = new SendableChooser<SelectedBall>();
 
-    private NetworkTableEntry waitSlider = autoTab.add("Wait time", 2)
+    private NetworkTableEntry waitSlider = autoTab.add("Wait time", 0)
     .withWidget(BuiltInWidgets.kNumberSlider)
-    .withProperties(Map.of("min", 0, "max", 10, "block increment", .5))
+    .withProperties(Map.of("min", 0, "max", 10, "block increment", 0.5))
     .withSize(2, 1)
     .withPosition(0, 0)
     .getEntry();
@@ -68,15 +66,14 @@ public class AutoChooser {
         this.leftCatapult = leftCatapult;
 
         startPositionChooser.setDefaultOption("Touching hub", StartPosition.TOUCHING_HUB);
-        startPositionChooser.addOption("Robot in front of us touching hub", StartPosition.BEHIND_HUB);
         startPositionChooser.addOption("Start area 1", StartPosition.AREA_1);
         startPositionChooser.addOption("Start area 2", StartPosition.AREA_2);
         startPositionChooser.addOption("Start area 3", StartPosition.AREA_3);
         startPositionChooser.addOption("Start area 4", StartPosition.AREA_4);
         autoTab.add("Starting position", startPositionChooser)
         .withWidget(BuiltInWidgets.kComboBoxChooser)
-        .withSize(2, 1).
-        withPosition(0, 1);
+        .withSize(2, 1)
+        .withPosition(0, 1);
 
         selectedBallsChooser.setDefaultOption("Get no balls", SelectedBall.NONE);
         selectedBallsChooser.addOption("Get ball 1", SelectedBall.BALL_1);
@@ -87,7 +84,9 @@ public class AutoChooser {
         .withSize(2, 1)
         .withPosition(0, 2);
 
-        autoTab.addString("Selected auto path", () -> message);
+        autoTab.addString("Selected auto path", () -> message)
+        .withSize(4, 1)
+        .withPosition(0, 3);
 
         SmartDashboard.putData(startPositionChooser);
         SmartDashboard.putData(selectedBallsChooser);
@@ -103,14 +102,6 @@ public class AutoChooser {
         switch (selectedStart) {
             case TOUCHING_HUB: switch (selectedBalls) {
                 case NONE: message = "Shoot immediately, drive off tarmac";
-                    break;
-                default: message = "We do not have an auto routine programmed for this combination. DO NOT START THE MATCH WITH THIS COMBINATION.";
-                    break;
-            }
-            break;
-
-            case BEHIND_HUB: switch (selectedBalls) {
-                case NONE: message = "Wait for team robot, drive to hub, shoot, drive off tarmac";
                     break;
                 default: message = "We do not have an auto routine programmed for this combination. DO NOT START THE MATCH WITH THIS COMBINATION.";
                     break;
@@ -171,13 +162,6 @@ public class AutoChooser {
         switch (selectedStart) {
             case TOUCHING_HUB: switch (selectedBalls) {
                 case NONE: auto.addCommands(new ScoreThenTaxi(drive, intake, cage, rightCatapult, leftCatapult));
-                break;
-                default: break;
-            }
-            break;
-
-            case BEHIND_HUB: switch (selectedBalls) {
-                case NONE: auto.addCommands(new DriveThenScoreThenTaxi(drive, intake, cage, rightCatapult, leftCatapult, 7));
                 break;
                 default: break;
             }

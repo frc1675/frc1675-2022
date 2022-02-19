@@ -81,11 +81,21 @@ public class Drive extends SubsystemBase {
     leftPIDController.setFF(Constants.DRIVE_VELOCITY_FF, Constants.VELOCITY_PID_SLOT);
     leftPIDController.setOutputRange(-1 * Constants.DRIVE_MAX_ACCELERATION, Constants.DRIVE_MAX_ACCELERATION, Constants.VELOCITY_PID_SLOT);
 
-    driveTab.addNumber("Right position", () -> rightEncoder.getPosition());
-    driveTab.addNumber("Left position", () -> leftEncoder.getPosition());
-    driveTab.addNumber("Right position inches", () -> {return rightEncoder.getPosition() / Constants.ROTATIONS_PER_INCH;});
-    driveTab.addNumber("Left position inches", () -> {return leftEncoder.getPosition() / Constants.ROTATIONS_PER_INCH;});
-    driveTab.addNumber("Heading", () -> getHeading());
+    driveTab.addNumber("Right position", () -> rightEncoder.getPosition())
+    .withSize(1, 1)
+    .withPosition(0, 0);
+    driveTab.addNumber("Left position", () -> leftEncoder.getPosition())
+    .withSize(1, 1)
+    .withPosition(0, 1);
+    driveTab.addNumber("Right position inches", () -> {return rightEncoder.getPosition() / Constants.ROTATIONS_PER_INCH;})
+    .withSize(2, 1)
+    .withPosition(1, 0);
+    driveTab.addNumber("Left position inches", () -> {return leftEncoder.getPosition() / Constants.ROTATIONS_PER_INCH;})
+    .withSize(2, 1)
+    .withPosition(1, 1);
+    driveTab.addNumber("Heading", () -> getHeading())
+    .withSize(1, 1)
+    .withPosition(0, 2);
   }
 
   public void setRight(double speed){
