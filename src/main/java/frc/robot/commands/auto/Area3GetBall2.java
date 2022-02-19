@@ -7,7 +7,7 @@ package frc.robot.commands.auto;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
-import frc.robot.commands.commandGroups.FireAnyCatapultsSafe;
+import frc.robot.commands.commandGroups.FireBothCatapultsSafe;
 import frc.robot.commands.commandGroups.PrepareCatapultFire;
 import frc.robot.commands.commandGroups.RetractIntakeSafe;
 import frc.robot.commands.intake.ExtendIntake;
@@ -22,7 +22,7 @@ import frc.robot.subsystems.Intake;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class Area3GetBall2 extends SequentialCommandGroup {
   /** Creates a new Area3GetBall2. */
-  public Area3GetBall2(Drive drive, Intake intake, Cage cage, Catapult catapult) {
+  public Area3GetBall2(Drive drive, Intake intake, Cage cage, Catapult rightCatapult, Catapult leftCatapult) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
@@ -31,13 +31,13 @@ public class Area3GetBall2 extends SequentialCommandGroup {
       new ParallelDeadlineGroup(
         new DriveToDistance(drive, 50, 1).withTimeout(3),
         new SetIntakeSpeed(intake, () -> {return Constants.INTAKE_CONSTANT_SPEED;})),
-        new RetractIntakeSafe(intake, cage, catapult),
+        new RetractIntakeSafe(intake, cage, rightCatapult, leftCatapult),
         new TurnToAngleWithTimeout(drive, -70, 1),
         new DriveToDistanceWithTimeout(drive, -87, 1),
         new TurnToAngleWithTimeout(drive, 59, 1),
         new DriveToDistanceWithTimeout(drive, -18, 12),
         new PrepareCatapultFire(intake, cage),
-        new FireAnyCatapultsSafe(catapult, true, true),
+        new FireBothCatapultsSafe(rightCatapult, leftCatapult),
         new DriveToDistanceWithTimeout(drive, 63, 1)
     );
   }

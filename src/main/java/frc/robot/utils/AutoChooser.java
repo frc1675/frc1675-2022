@@ -43,7 +43,8 @@ public class AutoChooser {
     private Drive drive;
     private Intake intake;
     private Cage cage;
-    private Catapult catapult;
+    private Catapult rightCatapult;
+    private Catapult leftCatapult;
 
     private ShuffleboardTab autoTab = Shuffleboard.getTab("Choose auto routine");
 
@@ -59,11 +60,12 @@ public class AutoChooser {
 
     private String message;
 
-    public AutoChooser(Drive drive, Intake intake, Cage cage, Catapult catapult) {
+    public AutoChooser(Drive drive, Intake intake, Cage cage, Catapult rightCatapult, Catapult letfCatapult) {
         this.drive = drive;
         this.intake = intake;
         this.cage = cage;
-        this.catapult = catapult;
+        this.rightCatapult = rightCatapult;
+        this.leftCatapult = leftCatapult;
 
         startPositionChooser.setDefaultOption("Touching hub", StartPosition.TOUCHING_HUB);
         startPositionChooser.addOption("Robot in front of us touching hub", StartPosition.BEHIND_HUB);
@@ -168,46 +170,46 @@ public class AutoChooser {
         //commands to auto, but others will do nothing.
         switch (selectedStart) {
             case TOUCHING_HUB: switch (selectedBalls) {
-                case NONE: auto.addCommands(new ScoreThenTaxi(drive, intake, cage, catapult));
+                case NONE: auto.addCommands(new ScoreThenTaxi(drive, intake, cage, rightCatapult, leftCatapult));
                 break;
                 default: break;
             }
             break;
 
             case BEHIND_HUB: switch (selectedBalls) {
-                case NONE: auto.addCommands(new DriveThenScoreThenTaxi(drive, intake, cage, catapult, 7));
+                case NONE: auto.addCommands(new DriveThenScoreThenTaxi(drive, intake, cage, rightCatapult, leftCatapult, 7));
                 break;
                 default: break;
             }
             break;
 
             case AREA_1: switch (selectedBalls) {
-                case BALL_1: auto.addCommands(new Area1GetBall1(drive, intake, cage, catapult));
+                case BALL_1: auto.addCommands(new Area1GetBall1(drive, intake, cage, rightCatapult, leftCatapult));
                 break;
                 default: break;
             }
             break;
 
             case AREA_2: switch (selectedBalls) {
-                case BALL_1: auto.addCommands(new Area2GetBall1(drive, intake, cage, catapult));
+                case BALL_1: auto.addCommands(new Area2GetBall1(drive, intake, cage, rightCatapult, leftCatapult));
                 break;
-                case BALL_2: auto.addCommands(new Area2GetBall2(drive, intake, cage, catapult));
+                case BALL_2: auto.addCommands(new Area2GetBall2(drive, intake, cage, rightCatapult, leftCatapult));
                 break;
                 default: break;
             }
             break;
 
             case AREA_3: switch (selectedBalls) {
-                case BALL_2: auto.addCommands(new Area3GetBall2(drive, intake, cage, catapult));
+                case BALL_2: auto.addCommands(new Area3GetBall2(drive, intake, cage,rightCatapult, leftCatapult));
                 break;
-                case BALL_3: auto.addCommands(new Area3GetBall3(drive, intake, cage, catapult));
+                case BALL_3: auto.addCommands(new Area3GetBall3(drive, intake, cage, rightCatapult, leftCatapult));
                 break;
                 default: break;
             }
             break;
 
             case AREA_4: switch (selectedBalls) {
-                case BALL_3: auto.addCommands(new Area4GetBall3(drive, intake, cage, catapult));
+                case BALL_3: auto.addCommands(new Area4GetBall3(drive, intake, cage, rightCatapult, leftCatapult));
                 break;
                 default: break;
             }

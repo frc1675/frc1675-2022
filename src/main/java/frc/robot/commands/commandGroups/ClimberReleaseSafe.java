@@ -13,9 +13,9 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Intake;
 
 public class ClimberReleaseSafe extends SequentialCommandGroup {
-  public ClimberReleaseSafe(Intake intake, Cage cage, Climber climber, Catapult catapult) {
+  public ClimberReleaseSafe(Intake intake, Cage cage, Climber climber, Catapult rightCatapult, Catapult lefCatapult) {
     addCommands(
-      new RetractIntakeSafe(intake, cage, catapult),
+      new RetractIntakeSafe(intake, cage, rightCatapult, lefCatapult),
       new ReleaseClimber(climber),
       new WaitUntilCommand(()-> climber.getIsExtended())
 

@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.climber.PullUpRobot;
 import frc.robot.commands.commandGroups.ClimberReleaseSafe;
 import frc.robot.commands.commandGroups.ExtendThenRunIntake;
-import frc.robot.commands.commandGroups.FireAnyCatapultsSafe;
+import frc.robot.commands.commandGroups.FireSingleCatapultSafe;
 import frc.robot.commands.commandGroups.PrepareCatapultFire;
 import frc.robot.commands.commandGroups.RetractIntakeSafe;
 import frc.robot.commands.drive.CheesyDrive;
@@ -57,7 +57,8 @@ public class RobotContainer {
   private final Drive drive = new Drive();
   private final Intake intake = new Intake();
   private final Climber climber = new Climber();
-  private final Catapult catapult = new Catapult();
+  private final Catapult rightCatapult = new Catapult('r');
+  private final Catapult leftCatapult = new Catapult('l');
 
   private boolean isCatapultPrepared(){
     return intake.isExtended() && !cage.isClosed();
@@ -84,7 +85,7 @@ public class RobotContainer {
     return -1 * DeadzoneCorrection.correctDeadzone(operatorController.getRawAxis(Constants.LEFT_Y_AXIS));
   }
 */
-  private final AutoChooser autoChooser = new AutoChooser(drive, intake, cage, catapult);
+  private final AutoChooser autoChooser = new AutoChooser(drive, intake, cage, rightCatapult, leftCatapult);
 
   private final CheesyDrive slowDrive = new CheesyDrive(drive, ()-> getDriverLeftY(), ()-> getDriverRightX() , Constants.CLIMBER_DRIVE_MULTIPLIER);
 
@@ -104,7 +105,7 @@ public class RobotContainer {
     drive.setDefaultCommand(new CheesyDrive(drive, () -> getDriverLeftY(), () -> getDriverRightX(), 1.0 ));
 
     //driver controller
-    driverControllerClimberButtons.whenActive(new ClimberReleaseSafe(intake, cage, climber, catapult));
+    driverControllerClimberButtons.whenActive(new ClimberReleaseSafe(intake, cage, climber, rightCatapult, leftCatapult));
     driverControllerClimberButtons.whenActive(slowDrive);
 
 
@@ -113,10 +114,10 @@ public class RobotContainer {
     //driverControllerStartButton.toggleWhenPressed(new CheesyDrivePID(drive, () -> getDriverLeftY(), () -> getDriverRightX() ));
 
     //operator controller
-    operatorControllerRightBumper.whenPressed(new ConditionalCommand( new FireAnyCatapultsSafe(catapult, true, false), new PrintCommand("Catapult not prepared to fire."), () -> isCatapultPrepared() ));
-    operatorControllerLeftBumper.whenPressed(new ConditionalCommand( new FireAnyCatapultsSafe(catapult, false, true), new PrintCommand("Catapult not prepared to fire."), () -> isCatapultPrepared() ));
+    operatorControllerRightBumper.whenPressed(new ConditionalCommand( new FireSingleCatapultSafe(rightCatapult), new PrintCommand("Catapult not prepared to fire."), () -> isCatapultPrepared() ));
+    operatorControllerLeftBumper.whenPressed(new ConditionalCommand( new FireSingleCatapultSafe(leftCatapult), new PrintCommand("Catapult not prepared to fire."), () -> isCatapultPrepared() ));
     operatorControllerAButton.whenPressed(new PrepareCatapultFire(intake, cage));
-    operatorControllerXButton.whenPressed(new RetractIntakeSafe(intake, cage, catapult));
+    operatorControllerXButton.whenPressed(new RetractIntakeSafe(intake, cage, rightCatapult, leftCatapult));
     operatorControllerBButton.whenHeld(new ExtendThenRunIntake(intake, cage, () -> {return Constants.INTAKE_CONSTANT_SPEED;} ));
 
   }

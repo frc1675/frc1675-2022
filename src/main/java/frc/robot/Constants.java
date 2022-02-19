@@ -47,7 +47,7 @@ public final class Constants {
     public static final int CATAPULT_LEFT_SOLENOID_1 = 4;
     public static final int CATAPULT_LEFT_SOLENOID_2 = 5;
     public static final double CATAPULT_WAIT_TIME = 5.0;
-    public static final double CATAPULT_FOLLOW_THROUGH_TIME = 0.5;
+    public static final double CATAPULT_FOLLOW_THROUGH_TIME = 5.0;
     public static final double CATAPULT_WAIT_BETWEEN_TIME = 0.3;
 
     //intake constants

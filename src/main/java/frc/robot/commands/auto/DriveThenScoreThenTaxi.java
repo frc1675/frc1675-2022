@@ -6,7 +6,7 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.commandGroups.FireAnyCatapultsSafe;
+import frc.robot.commands.commandGroups.FireBothCatapultsSafe;
 import frc.robot.commands.commandGroups.PrepareCatapultFire;
 import frc.robot.subsystems.Cage;
 import frc.robot.subsystems.Catapult;
@@ -18,7 +18,7 @@ import frc.robot.subsystems.Intake;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class DriveThenScoreThenTaxi extends SequentialCommandGroup {
   /** Creates a new WaitThenScore. */
-  public DriveThenScoreThenTaxi(Drive drive, Intake intake, Cage cage, Catapult catapult, double waitTime) {
+  public DriveThenScoreThenTaxi(Drive drive, Intake intake, Cage cage, Catapult rightCatapult, Catapult leftCatapult, double waitTime) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
@@ -28,7 +28,7 @@ public class DriveThenScoreThenTaxi extends SequentialCommandGroup {
       new TurnToAngleWithTimeout(drive, -90, 1),
       new DriveToDistanceWithTimeout(drive, -42, 1),
       new PrepareCatapultFire(intake, cage), 
-      new FireAnyCatapultsSafe(catapult, true, true),
+      new FireBothCatapultsSafe(rightCatapult, leftCatapult),
       new DriveToDistanceWithTimeout(drive, 62, 1)
     );
   }

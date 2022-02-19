@@ -7,11 +7,11 @@ package frc.robot.commands.catapult;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Catapult;
 
-public class FireCatapultLeft extends CommandBase {
+public class RetractSingleCatapult extends CommandBase {
   private final Catapult catapult;
 
-  /** Creates a new PullUpRobot. */
-  public FireCatapultLeft(Catapult catapult) {
+  /** Creates a new RetractSingleCatapult. */
+  public RetractSingleCatapult(Catapult catapult) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.catapult = catapult;
     addRequirements(this.catapult);
@@ -20,7 +20,7 @@ public class FireCatapultLeft extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    catapult.fireLeft();
+    catapult.retract();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
