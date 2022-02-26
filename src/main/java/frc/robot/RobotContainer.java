@@ -9,12 +9,9 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.catapult.RetractCatapultRight;
-import frc.robot.commands.climber.PullUpRobot;
-import frc.robot.commands.climber.ReleaseClimber;
+import frc.robot.commands.commandGroups.ClimberPullUpSafe;
 import frc.robot.commands.drive.CheesyDrive;
 import frc.robot.commands.drive.InvertRobotFront;
-import frc.robot.commands.intake.RetractIntake;
 import frc.robot.subsystems.Cage;
 import frc.robot.subsystems.Catapult;
 import frc.robot.subsystems.Climber;
@@ -87,9 +84,9 @@ public class RobotContainer {
     drive.setDefaultCommand(new CheesyDrive(drive, () -> getDriverLeftY(), () -> getDriverRightX(), 1.0 ));
     //driverControllerStartButton.toggleWhenPressed(new CheesyDrivePID(drive, () -> getDriverLeftY(), () -> getDriverRightX() ));
     driverControllerBButton.toggleWhenPressed(new InvertRobotFront(drive));
-    /*
-    operatorControllerXButton.whenHeld(new PullUpRobot(climber));
     
+    operatorControllerXButton.whenHeld(new ClimberPullUpSafe(climber));
+    /*
     operatorControllerBackButton
     .and(operatorControllerLeftBumper)
     .and(operatorControllerRightBumper)
