@@ -18,8 +18,7 @@ import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
   private CANSparkMax intakeMotor = new CANSparkMax(Constants.INTAKE_MOTOR , MotorType.kBrushless);
-  private Solenoid rightSolenoid = new Solenoid(PneumaticsModuleType.REVPH, Constants.INTAKE_RIGHT_SOLENOID);
-  private Solenoid leftSolenoid = new Solenoid(PneumaticsModuleType.REVPH, Constants.INTAKE_LEFT_SOLENOID);
+  private Solenoid sol = new Solenoid(PneumaticsModuleType.REVPH, Constants.INTAKE_SOLENOID);
   private boolean intakeExtended = false;
   private double currentSpeed = 0;
 
@@ -39,15 +38,13 @@ public class Intake extends SubsystemBase {
   }
 
   public void extendIntake(){
-    rightSolenoid.set(true);
-    leftSolenoid.set(true);
+    sol.set(true);
     timer.reset();
     timer.start();
   }
 
   public void retractIntake(){
-    rightSolenoid.set(false);
-    leftSolenoid.set(false);
+    sol.set(false);
     intakeExtended = false;
     timer.stop();
     timer.reset();
