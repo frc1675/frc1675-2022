@@ -11,15 +11,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.commandGroups.ClimberPullUpSafe;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.climber.PullUpRobot;
+import frc.robot.commands.commandGroups.ClimberPullUpSafe;
 import frc.robot.commands.commandGroups.ClimberReleaseSafe;
 import frc.robot.commands.commandGroups.ExtendThenRunIntake;
 import frc.robot.commands.commandGroups.FireSingleCatapultSafe;
 import frc.robot.commands.commandGroups.PrepareCatapultFire;
 import frc.robot.commands.commandGroups.RetractIntakeSafe;
 import frc.robot.commands.drive.CheesyDrive;
+import frc.robot.commands.drive.CheesyDrivePID;
 import frc.robot.commands.drive.InvertRobotFront;
 import frc.robot.subsystems.Cage;
 import frc.robot.subsystems.Catapult;
@@ -41,7 +41,7 @@ public class RobotContainer {
   private final JoystickButton driverControllerBackButton = new JoystickButton(driverController, Constants.BACK_BUTTON);
   private final JoystickButton driverControllerBButton = new JoystickButton(driverController, Constants.B_BUTTON);
   private final JoystickButton driverControllerAButton = new JoystickButton(driverController, Constants.A_BUTTON);
-  //private final JoystickButton driverControllerStartButton = new JoystickButton(driverController, Constants.START_BUTTON);
+  private final JoystickButton driverControllerStartButton = new JoystickButton(driverController, Constants.START_BUTTON);
   private final JoystickButton driverControllerRightBumper = new JoystickButton(driverController, Constants.RIGHT_BUMPER);
   private final JoystickButton driverControllerLeftBumper = new JoystickButton(driverController, Constants.LEFT_BUMPER);
   private final Trigger driverControllerClimberButtons = driverControllerBackButton.and(driverControllerRightBumper).and(driverControllerLeftBumper);
@@ -108,21 +108,11 @@ public class RobotContainer {
     //driver controller
     driverControllerClimberButtons.whenActive(new ClimberReleaseSafe(intake, cage, climber, rightCatapult, leftCatapult));
     driverControllerClimberButtons.whenActive(slowDrive);
-
-
-    driverControllerBButton.whenHeld(new PullUpRobot(climber));
+    driverControllerBButton.whenHeld(new ClimberPullUpSafe(climber));
     driverControllerAButton.toggleWhenPressed(new InvertRobotFront(drive));
-    //driverControllerStartButton.toggleWhenPressed(new CheesyDrivePID(drive, () -> getDriverLeftY(), () -> getDriverRightX() ));
-    driverControllerBButton.toggleWhenPressed(new InvertRobotFront(drive));
-    
-    operatorControllerXButton.whenHeld(new ClimberPullUpSafe(climber));
-    
-    operatorControllerBackButton
-    .and(operatorControllerLeftBumper)
-    .and(operatorControllerRightBumper)
-    .whenActive(new ReleaseClimber(climber)
-    .alongWith(new CheesyDrive(drive, () -> getDriverLeftY(), () -> getDriverRightX(), Constants.CLIMBER_DRIVE_MULTIPLIER )));
+    driverControllerStartButton.toggleWhenPressed(new CheesyDrivePID(drive, () -> getDriverLeftY(), () -> getDriverRightX() ));
 
+    
     //operator controller
     operatorControllerRightBumper.whenPressed(new ConditionalCommand( new FireSingleCatapultSafe(rightCatapult), new PrintCommand("Catapult not prepared to fire."), () -> isCatapultPrepared() ));
     operatorControllerLeftBumper.whenPressed(new ConditionalCommand( new FireSingleCatapultSafe(leftCatapult), new PrintCommand("Catapult not prepared to fire."), () -> isCatapultPrepared() ));
