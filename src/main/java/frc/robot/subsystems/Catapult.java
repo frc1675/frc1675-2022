@@ -15,80 +15,49 @@ import frc.robot.Constants;
 
 public class Catapult extends SubsystemBase {
   /** Creates a new Catapult subsystem. */
-  private Solenoid rightSol1 = new Solenoid(PneumaticsModuleType.REVPH,Constants.CATAPULT_RIGHT_SOLENOID_1);
-  private Solenoid rightSol2 = new Solenoid(PneumaticsModuleType.REVPH,Constants.CATAPULT_RIGHT_SOLENOID_2);
-  private Solenoid leftSol1 = new Solenoid(PneumaticsModuleType.REVPH,Constants.CATAPULT_LEFT_SOLENOID_1);
-  private Solenoid leftSol2 = new Solenoid(PneumaticsModuleType.REVPH,Constants.CATAPULT_LEFT_SOLENOID_2);
+  private Solenoid sol1;
+  private Solenoid sol2;
 
-  private boolean rightExtended = false;
-  private boolean leftExtended = false;
-
+  private boolean extended = false;
   private ShuffleboardTab catapultTab = Shuffleboard.getTab("Catapult");
-
-  private Timer rightTimer = new Timer();
-  private Timer leftTimer = new Timer();
+  private Timer timer = new Timer();
  
-  public Catapult() {
-    catapultTab.addBoolean("Right Up?", () -> rightIsExtended() );
-    catapultTab.addBoolean("Left Up?", () -> leftIsExtended() );
+  public Catapult(char which) {
+    if(which == 'r'){
+      sol1 = new Solenoid(PneumaticsModuleType.REVPH,Constants.CATAPULT_RIGHT_SOLENOID_1);
+      sol2 = new Solenoid(PneumaticsModuleType.REVPH,Constants.CATAPULT_RIGHT_SOLENOID_2);
+      catapultTab.addBoolean("Right Up?", () -> isExtended() );
+    }else{
+      sol1 = new Solenoid(PneumaticsModuleType.REVPH,Constants.CATAPULT_LEFT_SOLENOID_1);
+      sol2 = new Solenoid(PneumaticsModuleType.REVPH,Constants.CATAPULT_LEFT_SOLENOID_2);
+      catapultTab.addBoolean("Left Up?", () -> isExtended() );
+    }
     
   }
 
-  public void fireRight(){
-      rightSol1.set(true);
-      rightSol2.set(true);
-      rightExtended = true;
-      rightTimer.stop();
-      rightTimer.reset();
+  public void fire(){
+      sol1.set(true);
+      sol2.set(true);
+      extended = true;
+      timer.stop();
+      timer.reset();
   }
- 
-  public void fireLeft(){
-      leftSol1.set(true);
-      leftSol2.set(true);
-      leftExtended = true;
-      leftTimer.stop();
-      leftTimer.reset();
+  public void retract(){
+      sol1.set(false);
+      sol2.set(false);
+      timer.start();
     }
-  
-  public void retractRight(){
-      rightSol1.set(false);
-      rightSol2.set(false);
-      rightTimer.start();
-    }
-
-  public void retractLeft(){
-      leftSol1.set(false);
-      leftSol2.set(false);
-      leftTimer.start();
-    }
-
-  public boolean rightIsExtended(){
-    return rightExtended;
-  }
-
-  public boolean leftIsExtended(){
-    return leftExtended;
-  }
 
   public boolean isExtended(){
-    if(rightExtended || leftExtended){
-      return true;
-    }
-    return false;
+    return extended;
   }
 
   @Override
   public void periodic() {
-    if(rightTimer.hasElapsed(Constants.CATAPULT_WAIT_TIME)){
-      rightExtended = false;
-      rightTimer.stop();
-      rightTimer.reset();
-    }
-
-    if(leftTimer.hasElapsed(Constants.CATAPULT_WAIT_TIME)){
-      leftExtended = false;
-      leftTimer.stop();
-      leftTimer.reset();
+    if(timer.hasElapsed(Constants.CATAPULT_WAIT_TIME)){
+      extended = false;
+      timer.stop();
+      timer.reset();
     }
     
   }

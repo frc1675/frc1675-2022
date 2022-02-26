@@ -6,8 +6,10 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Constants;
 import frc.robot.commands.commandGroups.ExtendThenRunIntake;
-import frc.robot.commands.commandGroups.FireAnyCatapultsSafe;
+import frc.robot.commands.commandGroups.FireBothCatapultsSafe;
+import frc.robot.commands.commandGroups.PrepareCatapultFire;
 import frc.robot.commands.commandGroups.RetractIntakeSafe;
 import frc.robot.subsystems.Cage;
 import frc.robot.subsystems.Catapult;
@@ -19,21 +21,22 @@ import frc.robot.subsystems.Intake;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class Area2GetBall2 extends SequentialCommandGroup {
   /** Creates a new Area2GetBall2. */
-  public Area2GetBall2(Drive drive, Intake intake, Cage cage, Catapult catapult) {
+  public Area2GetBall2(Drive drive, Intake intake, Cage cage, Catapult rightCatapult, Catapult leftCatapult) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new TurnToAngleWithTimeout(drive, -17, 1),
       new ParallelDeadlineGroup(
         new DriveToDistanceWithTimeout(drive, 40.5, 1),
-        new ExtendThenRunIntake(intake, cage, 1)
+        new ExtendThenRunIntake(intake, cage, rightCatapult, leftCatapult, () -> {return Constants.INTAKE_CONSTANT_SPEED;})
       ),
-      new RetractIntakeSafe(intake, cage, catapult),
+      new RetractIntakeSafe(intake, cage, rightCatapult, leftCatapult),
       new TurnToAngleWithTimeout(drive, -14, 1),
       new DriveToDistanceWithTimeout(drive, -76.5, 1),
       new TurnToAngleWithTimeout(drive, 50, 1),
       new DriveToDistanceWithTimeout(drive, -18, 12),
-      new FireAnyCatapultsSafe(intake, cage, catapult, true, true),
+      new PrepareCatapultFire(intake, cage),
+      new FireBothCatapultsSafe(rightCatapult, leftCatapult),
       new DriveToDistanceWithTimeout(drive, 63, 1)
     );
   }
