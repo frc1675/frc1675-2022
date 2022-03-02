@@ -33,6 +33,8 @@ public class Climber extends SubsystemBase {
     climberSolenoid.set(false);
     encoder1.setPosition(0);
     encoder2.setPosition(0);
+    climberMotor1.setInverted(true);
+    climberMotor2.setInverted(true);
 
     climberTab.addBoolean("Extended?", () -> isExtended)
     .withSize(1, 1)
@@ -54,7 +56,7 @@ public class Climber extends SubsystemBase {
 
   public void pullUp() {
     if (isExtended) {
-      climberMotor1.set(Constants.CLIMBER_POWER);
+      //climberMotor1.set(Constants.CLIMBER_POWER);
       climberMotor2.set(Constants.CLIMBER_POWER);
     }
   }

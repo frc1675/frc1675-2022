@@ -20,7 +20,6 @@ import frc.robot.commands.commandGroups.PrepareCatapultFire;
 import frc.robot.commands.commandGroups.RetractIntakeSafe;
 import frc.robot.commands.drive.CheesyDrive;
 import frc.robot.commands.drive.CheesyDrivePID;
-import frc.robot.commands.drive.InvertRobotFront;
 import frc.robot.subsystems.Cage;
 import frc.robot.subsystems.Catapult;
 import frc.robot.subsystems.Climber;
@@ -109,8 +108,7 @@ public class RobotContainer {
     driverControllerClimberButtons.whenActive(new ClimberReleaseSafe(intake, cage, climber, rightCatapult, leftCatapult));
     driverControllerClimberButtons.whenActive(slowDrive);
     driverControllerBButton.whenHeld(new ClimberPullUpSafe(climber));
-    driverControllerAButton.toggleWhenPressed(new InvertRobotFront(drive));
-    driverControllerStartButton.toggleWhenPressed(new CheesyDrivePID(drive, () -> getDriverLeftY(), () -> getDriverRightX() ));
+    //driverControllerStartButton.toggleWhenPressed(new CheesyDrivePID(drive, () -> getDriverLeftY(), () -> getDriverRightX() ));
 
     
     //operator controller
@@ -129,7 +127,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // .An ExampleCommand will run in autonomous
-    return autoChooser.generateAuto();
+    return null;//autoChooser.generateAuto();
   }
 
   public void checkAutoPath() {
