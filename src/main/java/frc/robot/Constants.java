@@ -39,26 +39,26 @@ public final class Constants {
     public static final int CLIMBER_SOLENOID = 2;
     public static final double CLIMBER_POWER = 0.75;
     public static final int CLIMBER_ENCODER_SENSITIVITY = 4096;
-    public static final double CLIMBER_WAIT_TIME = 5.0;
+    public static final double CLIMBER_WAIT_TIME = 2.0;
 
     //catapult constants
     public static final int CATAPULT_RIGHT_SOLENOID_1 = 5;
     public static final int CATAPULT_RIGHT_SOLENOID_2 = 6;
     public static final int CATAPULT_LEFT_SOLENOID_1 = 0;
     public static final int CATAPULT_LEFT_SOLENOID_2 = 1;
-    public static final double CATAPULT_WAIT_TIME = 5.0;
-    public static final double CATAPULT_FOLLOW_THROUGH_TIME = 0.5;
+    public static final double CATAPULT_WAIT_TIME = 2.0;
+    public static final double CATAPULT_FOLLOW_THROUGH_TIME = 3.0;
     public static final double CATAPULT_WAIT_BETWEEN_TIME = 0.3;
 
     //intake constants
     public static final int INTAKE_MOTOR = 7;
     public static final int INTAKE_SOLENOID = 4;
-    public static final double INTAKE_WAIT_TIME = 5.0;
+    public static final double INTAKE_WAIT_TIME = 3.0;
     public static final double INTAKE_CONSTANT_SPEED = 1.0;
 
     //cage constants
     public static final int CAGE_SOLENOID = 3;
-    public static final double CAGE_WAIT_TIME = 5.0;
+    public static final double CAGE_WAIT_TIME = 2.0;
 
     //controller constants
     public static final int DRIVER_CONTROLLER = 0;

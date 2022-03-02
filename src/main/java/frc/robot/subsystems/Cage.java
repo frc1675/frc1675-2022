@@ -17,11 +17,13 @@ public class Cage extends SubsystemBase {
   /** Creates a new Catapult subsystem. */
   private Solenoid sol = new Solenoid(PneumaticsModuleType.REVPH, Constants.CAGE_SOLENOID);
   private ShuffleboardTab cageTab = Shuffleboard.getTab("Intake");
+  private ShuffleboardTab driverInfo = Shuffleboard.getTab("Driver Info");
   private Timer timer = new Timer();
   private boolean closed = false;
  
   public Cage() {
     cageTab.addBoolean("Cage Closed?", () -> isClosed() );
+    driverInfo.addBoolean("Cage Closed?", () -> isClosed() );
     
   }
 

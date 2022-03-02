@@ -15,7 +15,6 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -80,7 +79,7 @@ public class Drive extends SubsystemBase {
     leftPIDController.setIZone(0, Constants.VELOCITY_PID_SLOT);
     leftPIDController.setFF(Constants.DRIVE_VELOCITY_FF, Constants.VELOCITY_PID_SLOT);
     leftPIDController.setOutputRange(-1 * Constants.DRIVE_MAX_ACCELERATION, Constants.DRIVE_MAX_ACCELERATION, Constants.VELOCITY_PID_SLOT);
-
+    
     driveTab.addNumber("Right position", () -> rightEncoder.getPosition())
     .withSize(1, 1)
     .withPosition(0, 0);
@@ -96,6 +95,7 @@ public class Drive extends SubsystemBase {
     driveTab.addNumber("Heading", () -> getHeading())
     .withSize(1, 1)
     .withPosition(0, 2);
+    
   }
 
   public void setRight(double speed){
@@ -137,15 +137,6 @@ public class Drive extends SubsystemBase {
 
   public double getLeftPosition() {
     return leftEncoder.getPosition();
-  }
-
-  //switching the front
-  public void invertFront(){
-    rightInverted = !rightInverted;
-    leftInverted = !leftInverted;
-    leftMain.setInverted(leftInverted);
-    rightMain.setInverted(rightInverted);
-    SmartDashboard.putBoolean("Drive Front Intake", rightInverted);
   }
 
   public double getAveragePositionInches() {
