@@ -56,7 +56,7 @@ public final class Constants {
     //intake constants
     public static final int INTAKE_MOTOR = 7;
     public static final int INTAKE_SOLENOID = 4;
-    public static final double INTAKE_WAIT_TIME = 0.5;
+    public static final double INTAKE_WAIT_TIME = 1.0;
     public static final double INTAKE_CONSTANT_SPEED = 1.0;
 
     //cage constants
