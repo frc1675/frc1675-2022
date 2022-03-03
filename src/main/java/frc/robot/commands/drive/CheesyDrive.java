@@ -35,17 +35,18 @@ public class CheesyDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //cheesy drive
+    double readForwardPower = forwardPower.getAsDouble();
+    double readTurnPower = turnPower.getAsDouble();
 
-    double scaledForwardPower = Math.pow(forwardPower.getAsDouble(), 2);
-    double scaledTurnPower = Math.pow(turnPower.getAsDouble(), 2);
+    double scaledForwardPower = Math.pow(readForwardPower, 2);
+    double scaledTurnPower = Math.pow(readTurnPower, 2);
     double scaler;
 
-    if (forwardPower.getAsDouble() < 0) {
+    if (readForwardPower < 0) {
       scaledForwardPower *= -1;
     }
 
-    if (turnPower.getAsDouble() < 0) {
+    if (readTurnPower < 0) {
       scaledTurnPower *= -1;
     }
 
