@@ -36,16 +36,12 @@ public class Drive extends SubsystemBase {
 
   private ShuffleboardTab driveTab = Shuffleboard.getTab("Drivetrain info");
 
-  private boolean leftInverted = true;
-  private boolean rightInverted = false;
-
-
   public Drive() {
     rightFollower.follow(rightMain);
     leftFollower.follow(leftMain);
 
-    leftMain.setInverted(leftInverted);
-    rightMain.setInverted(rightInverted);
+    leftMain.setInverted(false);
+    rightMain.setInverted(true);
 
     if(Robot.isSimulation()){
       REVPhysicsSim.getInstance().addSparkMax(rightMain, DCMotor.getNEO(1));

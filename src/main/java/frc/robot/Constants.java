@@ -22,7 +22,7 @@ public final class Constants {
     public static final double DRIVE_VELOCITY_P = 0.00006;
     public static final double DRIVE_VELOCITY_FF = 0.000015;
     public static final double DRIVE_MAX_ACCELERATION = 1.0;
-    public static final double DRIVE_POSITION_P = 0.2;
+    public static final double DRIVE_POSITION_P = 0.05;
     public static final double DRIVE_POSITION_D = 0.01;
     public static final double ANGLE_P = 0.02;
     public static final double ANGLE_D = 0.002;
