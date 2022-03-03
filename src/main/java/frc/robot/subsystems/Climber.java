@@ -80,6 +80,7 @@ public class Climber extends SubsystemBase {
     // This method will be called once per scheduler run
     if(timer.hasElapsed(Constants.CLIMBER_WAIT_TIME)){
       isExtended = true;
+      motorHitLimit = false;
       encoder1.setPosition(0);
       encoder2.setPosition(0);
       timer.stop();
@@ -89,7 +90,8 @@ public class Climber extends SubsystemBase {
     if(averageEncoderPosition() > Constants.CLIMBER_MAX_RETRACT){
       climberMotor1.set(0);
       climberMotor2.set(0);
-      motorHitLimit = true;   
+      motorHitLimit = true;
+      isExtended = false;   
     }
   }
 }
