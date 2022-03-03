@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.auto.DriveToDistanceWithTimeout;
-import frc.robot.commands.auto.TurnToAngleWithTimeout;
 import frc.robot.commands.commandGroups.ClimberPullUpSafe;
 import frc.robot.commands.commandGroups.ClimberReleaseSafe;
 import frc.robot.commands.commandGroups.ExtendThenRunIntake;
