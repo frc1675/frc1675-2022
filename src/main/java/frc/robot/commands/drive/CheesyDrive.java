@@ -39,6 +39,7 @@ public class CheesyDrive extends CommandBase {
 
     double scaledForwardPower = Math.pow(forwardPower.getAsDouble(), 2);
     double scaledTurnPower = Math.pow(turnPower.getAsDouble(), 2);
+    double scaler;
 
     if (forwardPower.getAsDouble() < 0) {
       scaledForwardPower *= -1;
@@ -52,6 +53,12 @@ public class CheesyDrive extends CommandBase {
 
     double rightPower = scaledForwardPower + -1 * scaledTurnPower;
     double leftPower =  scaledForwardPower +  scaledTurnPower;
+
+    if (rightPower > 1 || leftPower > 1) {
+      scaler = Math.max(rightPower, leftPower);
+      rightPower /= scaler;
+      leftPower /= scaler;
+    }
 
     rightPower *= DriveMultiplier;
     leftPower *= DriveMultiplier;
