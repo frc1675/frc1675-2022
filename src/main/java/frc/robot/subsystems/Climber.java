@@ -24,6 +24,7 @@ public class Climber extends SubsystemBase {
   private RelativeEncoder encoder2 = climberMotor2.getEncoder();
 
   private boolean isExtended = false;
+  private boolean motorHitLimit = false;
   private Timer timer = new Timer();
 
   private ShuffleboardTab climberTab = Shuffleboard.getTab("Climber");
@@ -55,9 +56,9 @@ public class Climber extends SubsystemBase {
   }
 
   public void pullUp() {
-    if (isExtended) {
-      //climberMotor1.set(Constants.CLIMBER_POWER);
-      climberMotor2.set(Constants.CLIMBER_POWER);
+    if (isExtended && !motorHitLimit) {
+        //climberMotor1.set(Constants.CLIMBER_POWER);
+        climberMotor2.set(Constants.CLIMBER_POWER);
     }
   }
 
@@ -83,6 +84,12 @@ public class Climber extends SubsystemBase {
       encoder2.setPosition(0);
       timer.stop();
       timer.reset();
+    }
+
+    if(averageEncoderPosition() > Constants.CLIMBER_MAX_RETRACT){
+      climberMotor1.set(0);
+      climberMotor2.set(0);
+      motorHitLimit = true;   
     }
   }
 }
