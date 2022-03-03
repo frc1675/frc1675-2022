@@ -19,6 +19,8 @@ public final class Constants {
     public static final int RIGHT_BACK = 2;
     public static final int LEFT_FRONT = 4;
     public static final int LEFT_BACK = 3;
+    public static final double SCALER_EXPONENT = 2.0;
+    public static final double TURN_SCALER = 0.5;
     public static final double DRIVE_VELOCITY_P = 0.00006;
     public static final double DRIVE_VELOCITY_FF = 0.000015;
     public static final double DRIVE_MAX_ACCELERATION = 1.0;
