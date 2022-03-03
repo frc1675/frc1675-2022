@@ -34,10 +34,10 @@ public class Area4GetBall3 extends SequentialCommandGroup {
       new TurnToAngleWithTimeout(drive, 44, 0.5),
       new DriveToDistanceWithTimeout(drive, -48, 0.5),
       new TurnToAngleWithTimeout(drive, -27, 0.5),
-      new DriveToDistanceWithTimeout(drive, -31.5, 0.5), 
+      new DriveToDistanceWithTimeout(drive, -19.5, 0.5), 
       new PrepareCatapultFire(intake, cage),
       new FireBothCatapultsSafe(rightCatapult, leftCatapult),
-      new DriveToDistanceWithTimeout(drive, 63, 0.5)
+      new DriveToDistanceWithTimeout(drive, 51, 0.5)
     );
   }
 }
