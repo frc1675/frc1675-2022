@@ -38,23 +38,18 @@ public class CheesyDrive extends CommandBase {
     double readForwardPower = forwardPower.getAsDouble();
     double readTurnPower = turnPower.getAsDouble();
 
-    double scaledForwardPower = Math.pow(readForwardPower, 2);
-    double scaledTurnPower = Math.pow(readTurnPower, 2);
-    double scaler;
+    double scaledForwardPower = Math.abs(Math.pow(readForwardPower, Constants.SCALER_EXPONENT));
+    double scaledTurnPower = Math.abs(Math.pow(readTurnPower, Constants.SCALER_EXPONENT));
 
-    if (readForwardPower < 0) {
-      scaledForwardPower *= -1;
-    }
-
-    if (readTurnPower < 0) {
-      scaledTurnPower *= -1;
-    }
+    scaledForwardPower *= Math.signum(readForwardPower);
+    scaledTurnPower *= Math.signum(readTurnPower);
 
     scaledTurnPower *= Constants.TURN_SCALER;
 
     double rightPower = scaledForwardPower + -1 * scaledTurnPower;
     double leftPower =  scaledForwardPower +  scaledTurnPower;
 
+    double scaler;
     if (rightPower > 1 || leftPower > 1) {
       scaler = Math.max(rightPower, leftPower);
       rightPower /= scaler;
