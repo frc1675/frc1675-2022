@@ -25,22 +25,22 @@ public class Area1GetBall1 extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new TurnToAngleWithTimeout(drive, 28, 1),
-      new DriveToDistanceWithTimeout(drive, 37.5, 1),
-      new TurnToAngleWithTimeout(drive, 62, 1),
+      new TurnToAngleWithTimeout(drive, -28, 0.5),
+      new DriveToDistanceWithTimeout(drive, 37.5, 0.5),
+      new TurnToAngleWithTimeout(drive, -62, 0.5),
       //ParallelDeadlineGroup ends when the first command
       //ends, and interrupts the others.
       new ParallelDeadlineGroup(
-        new DriveToDistanceWithTimeout(drive, 22.5, 1),
+        new DriveToDistanceWithTimeout(drive, 22.5, 0.5),
         new ExtendThenRunIntake(intake, cage, rightCatapult, leftCatapult, () -> {return Constants.INTAKE_CONSTANT_SPEED;})
       ),
       new RetractIntakeSafe(intake, cage, rightCatapult, leftCatapult),
-      new DriveToDistanceWithTimeout(drive, -60.75, 1),
-      new TurnToAngleWithTimeout(drive, -23, 1),
-      new DriveToDistanceWithTimeout(drive, -18, 12),
+      new DriveToDistanceWithTimeout(drive, -60.75, 0.5),
+      new TurnToAngleWithTimeout(drive, 23, 0.5),
+      new DriveToDistanceWithTimeout(drive, -18, 0.5),
       new PrepareCatapultFire(intake, cage),
       new FireBothCatapultsSafe(rightCatapult, leftCatapult),
-      new DriveToDistanceWithTimeout(drive, 63, 1)
+      new DriveToDistanceWithTimeout(drive, 63, 0.5)
     );
   }
 }
