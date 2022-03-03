@@ -87,7 +87,7 @@ public class Climber extends SubsystemBase {
       timer.reset();
     }
 
-    if(averageEncoderPosition() > Constants.CLIMBER_MAX_RETRACT){
+    if(isExtended && (averageEncoderPosition() > Constants.CLIMBER_MAX_RETRACT)){
       climberMotor1.set(0);
       climberMotor2.set(0);
       motorHitLimit = true;
