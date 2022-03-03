@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.auto.DriveToDistance;
+import frc.robot.commands.auto.DriveToDistanceWithTimeout;
 import frc.robot.commands.auto.TurnToAngleWithTimeout;
 import frc.robot.commands.commandGroups.ClimberPullUpSafe;
 import frc.robot.commands.commandGroups.ClimberReleaseSafe;
@@ -43,6 +43,7 @@ public class RobotContainer {
   private final JoystickButton driverControllerBButton = new JoystickButton(driverController, Constants.B_BUTTON);
   //private final JoystickButton driverControllerAButton = new JoystickButton(driverController, Constants.A_BUTTON);
   //private final JoystickButton driverControllerStartButton = new JoystickButton(driverController, Constants.START_BUTTON);
+  private final JoystickButton driverControllerYButton = new JoystickButton(driverController, Constants.B_BUTTON);
   private final JoystickButton driverControllerRightBumper = new JoystickButton(driverController, Constants.RIGHT_BUMPER);
   private final JoystickButton driverControllerLeftBumper = new JoystickButton(driverController, Constants.LEFT_BUMPER);
   private final Trigger driverControllerClimberButtons = driverControllerBackButton.and(driverControllerRightBumper).and(driverControllerLeftBumper);
@@ -110,6 +111,7 @@ public class RobotContainer {
     driverControllerClimberButtons.whenActive(new ClimberReleaseSafe(intake, cage, climber, rightCatapult, leftCatapult));
     driverControllerClimberButtons.whenActive(slowDrive);
     driverControllerBButton.whenHeld(new ClimberPullUpSafe(climber));
+    driverControllerYButton.whenPressed(new DriveToDistanceWithTimeout(drive, Constants.TELEOP_DRIVE_DISTANCE, 0.25));
     //driverControllerStartButton.toggleWhenPressed(new CheesyDrivePID(drive, () -> getDriverLeftY(), () -> getDriverRightX() ));
 
     

@@ -34,6 +34,7 @@ public final class Constants {
     public static final double DRIVE_TOLERANCE = 2.0; //in inches, not rotations
     public static final double CLIMBER_DRIVE_MULTIPLIER = 0.2;
     public static final double ANGLE_TOLERANCE = 1.0; //in degrees
+    public static final double TELEOP_DRIVE_DISTANCE = 24.0;//in inches
 
     //climber constants
     public static final int CLIMBER_MOTOR_1 = 5;
