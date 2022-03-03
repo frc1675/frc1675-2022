@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands.drive;
+import frc.robot.Constants;
 import frc.robot.subsystems.Drive;
 
 import java.util.function.DoubleSupplier;
@@ -36,11 +37,24 @@ public class CheesyDrive extends CommandBase {
   public void execute() {
     //cheesy drive
 
-    double rightPower = forwardPower.getAsDouble() + -1 * turnPower.getAsDouble();
-    double leftPower =  forwardPower.getAsDouble() +  turnPower.getAsDouble();
+    double scaledForwardPower = Math.pow(forwardPower.getAsDouble(), 2);
+    double scaledTurnPower = Math.pow(turnPower.getAsDouble(), 2);
 
-    rightPower = rightPower * DriveMultiplier;
-    leftPower = leftPower * DriveMultiplier;
+    if (forwardPower.getAsDouble() < 0) {
+      scaledForwardPower *= -1;
+    }
+
+    if (turnPower.getAsDouble() < 0) {
+      scaledTurnPower *= -1;
+    }
+
+    scaledTurnPower *= Constants.TURN_SCALER;
+
+    double rightPower = scaledForwardPower + -1 * scaledTurnPower;
+    double leftPower =  scaledForwardPower +  scaledTurnPower;
+
+    rightPower *= DriveMultiplier;
+    leftPower *= DriveMultiplier;
 
     drive.setRight(rightPower);
     drive.setLeft(leftPower);
