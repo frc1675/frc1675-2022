@@ -23,7 +23,7 @@ public class ScoreThenTaxi extends SequentialCommandGroup {
     addCommands(
       new PrepareCatapultFire(intake, cage),
       new FireSingleCatapultSafe(rightCatapult),
-      new DriveToDistanceWithTimeout(drive, 51, 0.5)
+      new DriveToDistanceWithTimeout(drive, 39, 0.5)
     );
   }
 }
