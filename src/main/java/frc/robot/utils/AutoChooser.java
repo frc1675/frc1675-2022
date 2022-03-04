@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.auto.Area1GetBall1;
@@ -87,9 +86,6 @@ public class AutoChooser {
         autoTab.addString("Selected auto path", () -> message)
         .withSize(4, 1)
         .withPosition(0, 3);
-
-        SmartDashboard.putData(startPositionChooser);
-        SmartDashboard.putData(selectedBallsChooser);
     }
 
     //displays what the current auto routine is, or an error if a combination with
@@ -161,7 +157,7 @@ public class AutoChooser {
         //commands to auto, but others will do nothing.
         switch (selectedStart) {
             case TOUCHING_HUB: switch (selectedBalls) {
-                case NONE: auto.addCommands(new ScoreThenTaxi(drive, intake, cage, rightCatapult, leftCatapult));
+                case NONE: auto.addCommands(new ScoreThenTaxi(drive, intake, cage, leftCatapult));
                 break;
                 default: break;
             }

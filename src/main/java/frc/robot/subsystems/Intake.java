@@ -23,14 +23,12 @@ public class Intake extends SubsystemBase {
   private double currentSpeed = 0;
 
   private ShuffleboardTab IntakeTab = Shuffleboard.getTab("Intake");
-  private ShuffleboardTab DriverInfo = Shuffleboard.getTab("Driver Info");
 
   private Timer timer = new Timer();
  
   public Intake() {
     IntakeTab.addBoolean("Intake Extended?", () -> isExtended());
     IntakeTab.addNumber("Intake Speed", ()-> motorSpeed());
-    DriverInfo.addBoolean("Intake Extended?", () -> isExtended());
     
   }
 
