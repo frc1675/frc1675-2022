@@ -17,12 +17,12 @@ import frc.robot.subsystems.Intake;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class ScoreThenTaxi extends SequentialCommandGroup {
   /** Creates a new ScoreThenTaxi. */
-  public ScoreThenTaxi(Drive drive, Intake intake, Cage cage, Catapult rightCatapult, Catapult leftCatapult) {
+  public ScoreThenTaxi(Drive drive, Intake intake, Cage cage, Catapult leftCatapult) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new PrepareCatapultFire(intake, cage),
-      new FireSingleCatapultSafe(rightCatapult),
+      new FireSingleCatapultSafe(leftCatapult),
       new DriveToDistanceWithTimeout(drive, 39, 0.5)
     );
   }
