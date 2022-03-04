@@ -34,10 +34,10 @@ public class Area2GetBall1 extends SequentialCommandGroup {
       new RetractIntakeSafe(intake, cage, rightCatapult, leftCatapult),
       new DriveToDistanceWithTimeout(drive, -60.75, 0.5),
       new TurnToAngleWithTimeout(drive, 23, 0.5),
-      new DriveToDistanceWithTimeout(drive, -18, 0.5),
+      new DriveToDistanceWithTimeout(drive, -6, 0.5),
       new PrepareCatapultFire(intake, cage),
       new FireBothCatapultsSafe(rightCatapult, leftCatapult),
-      new DriveToDistanceWithTimeout(drive, 63, 0.5)
+      new DriveToDistanceWithTimeout(drive, 51, 0.5)
     );
   }
 }

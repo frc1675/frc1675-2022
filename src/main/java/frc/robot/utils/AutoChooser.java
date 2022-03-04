@@ -58,7 +58,7 @@ public class AutoChooser {
 
     private String message;
 
-    public AutoChooser(Drive drive, Intake intake, Cage cage, Catapult rightCatapult, Catapult letfCatapult) {
+    public AutoChooser(Drive drive, Intake intake, Cage cage, Catapult rightCatapult, Catapult leftCatapult) {
         this.drive = drive;
         this.intake = intake;
         this.cage = cage;
