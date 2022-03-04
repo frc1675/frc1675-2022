@@ -5,7 +5,7 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.commandGroups.FireBothCatapultsSafe;
+import frc.robot.commands.commandGroups.FireSingleCatapultSafe;
 import frc.robot.commands.commandGroups.PrepareCatapultFire;
 import frc.robot.subsystems.Cage;
 import frc.robot.subsystems.Catapult;
@@ -22,8 +22,8 @@ public class ScoreThenTaxi extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new PrepareCatapultFire(intake, cage),
-      new FireBothCatapultsSafe(rightCatapult, leftCatapult),
-      new DriveToDistanceWithTimeout(drive, 39, 0.5)
+      new FireSingleCatapultSafe(rightCatapult),
+      new DriveToDistanceWithTimeout(drive, 51, 0.5)
     );
   }
 }
