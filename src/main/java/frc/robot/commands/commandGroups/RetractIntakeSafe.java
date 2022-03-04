@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.commands.cage.OpenCage;
 import frc.robot.commands.catapult.RetractSingleCatapult;
 import frc.robot.commands.intake.RetractIntake;
+import frc.robot.commands.intake.SetIntakeSpeed;
 import frc.robot.subsystems.Cage;
 import frc.robot.subsystems.Catapult;
 import frc.robot.subsystems.Intake;
@@ -24,7 +25,9 @@ public class RetractIntakeSafe extends SequentialCommandGroup {
       new WaitUntilCommand(()-> {return !rightCatapult.isExtended() && !leftCatapult.isExtended();}),
 
       new RetractIntake(intake),
+      new SetIntakeSpeed(intake, ()-> {return 0.5; }).withTimeout(1.0),
       new WaitUntilCommand(()-> {return !intake.isExtended();})
+
       );
   }
 }
