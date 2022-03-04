@@ -52,6 +52,7 @@ public class TurnToAngle extends PIDCommand {
   @Override
   public void initialize() {
     drive.resetAngle();
+    getController().reset();
   }
 
   // Returns true when the command should end.

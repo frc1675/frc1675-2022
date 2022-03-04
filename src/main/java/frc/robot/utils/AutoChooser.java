@@ -16,6 +16,7 @@ import frc.robot.commands.auto.Area3GetBall2;
 import frc.robot.commands.auto.Area3GetBall3;
 import frc.robot.commands.auto.Area4GetBall3;
 import frc.robot.commands.auto.ScoreThenTaxi;
+import frc.robot.commands.auto.ShootInPlace;
 import frc.robot.subsystems.Cage;
 import frc.robot.subsystems.Catapult;
 import frc.robot.subsystems.Drive;
@@ -189,7 +190,7 @@ public class AutoChooser {
             break;
 
             case AREA_4: switch (selectedBalls) {
-                case BALL_3: auto.addCommands(new Area4GetBall3(drive, intake, cage, rightCatapult, leftCatapult));
+                case BALL_3: auto.addCommands(new ShootInPlace(drive, intake, cage, leftCatapult, 0), new Area4GetBall3(drive, intake, cage, rightCatapult, leftCatapult));
                 break;
                 default: break;
             }

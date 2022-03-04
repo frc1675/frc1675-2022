@@ -12,8 +12,6 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.auto.DriveToDistance;
-import frc.robot.commands.auto.TurnToAngleWithTimeout;
 import frc.robot.commands.commandGroups.ClimberPullUpSafe;
 import frc.robot.commands.commandGroups.ClimberReleaseSafe;
 import frc.robot.commands.commandGroups.ExtendThenRunIntake;
@@ -134,5 +132,9 @@ public class RobotContainer {
 
   public void checkAutoPath() {
     autoChooser.checkAutoPath();
+  }
+
+  public void disablePneumatics() {
+    
   }
 }

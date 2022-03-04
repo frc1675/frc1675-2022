@@ -12,18 +12,14 @@ import frc.robot.subsystems.Catapult;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Intake;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ScoreThenTaxi extends SequentialCommandGroup {
-  /** Creates a new ScoreThenTaxi. */
-  public ScoreThenTaxi(Drive drive, Intake intake, Cage cage, Catapult leftCatapult) {
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
+public class ShootInPlace extends SequentialCommandGroup {
+  /** Creates a new ShootInPlace. */
+  public ShootInPlace(Drive drive, Intake intake, Cage cage, Catapult catapult, double angle) {
     addCommands(
+      new TurnToAngleWithTimeout(drive, angle, 0.5),
       new PrepareCatapultFire(intake, cage),
-      new FireSingleCatapultSafe(leftCatapult),
-      new DriveToDistanceWithTimeout(drive, 60, 0.5)
+      new FireSingleCatapultSafe(catapult),
+      new TurnToAngleWithTimeout(drive, angle * -1, 0.5)
     );
   }
 }
