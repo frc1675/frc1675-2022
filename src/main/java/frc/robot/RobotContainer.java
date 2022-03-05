@@ -129,8 +129,8 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // .An ExampleCommand will run in autonomous
-    //return autoChooser.generateAuto();
-    return new SequentialCommandGroup(new TurnToAngleWithTimeout(drive, 90, 0.25), new TurnToAngleWithTimeout(drive, -90, 0.25));
+    return autoChooser.generateAuto();
+    //return new SequentialCommandGroup(new TurnToAngleWithTimeout(drive, 90, 0.25), new TurnToAngleWithTimeout(drive, -90, 0.25));
   }
 
   public void checkAutoPath() {
