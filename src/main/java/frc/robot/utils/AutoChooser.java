@@ -174,7 +174,7 @@ public class AutoChooser {
             case AREA_2: switch (selectedBalls) {
                 case BALL_1: auto.addCommands(new Area2GetBall1(drive, intake, cage, rightCatapult, leftCatapult));
                 break;
-                case BALL_2: auto.addCommands(new Area2GetBall2(drive, intake, cage, rightCatapult, leftCatapult));
+                case BALL_2: auto.addCommands(new ShootInPlace(drive, intake, cage, leftCatapult, 0), new Area2GetBall2(drive, intake, cage, rightCatapult, leftCatapult));
                 break;
                 default: break;
             }
