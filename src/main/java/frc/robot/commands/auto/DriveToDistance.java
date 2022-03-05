@@ -37,7 +37,13 @@ public class DriveToDistance extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    if (count >= Constants.PID_AT_TARGET_LOOPS) {
+      System.out.println("Distance reached");
+    } else {
+      System.out.println("Drive to distance timed out");
+    }
+  }
 
   // Returns true when the command should end.
   @Override
@@ -48,6 +54,6 @@ public class DriveToDistance extends CommandBase {
       count = 0;
     }
 
-    return count >= 20;
+    return count >= Constants.PID_AT_TARGET_LOOPS;
   }
 }

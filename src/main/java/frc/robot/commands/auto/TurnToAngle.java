@@ -53,6 +53,19 @@ public class TurnToAngle extends PIDCommand {
   public void initialize() {
     drive.resetAngle();
     getController().reset();
+    System.out.println("Turn to angle started");
+  }
+
+  @Override
+  public void end(boolean interrupted) {
+    super.end(interrupted);
+    System.out.println("Turn to angle ended");
+
+    if (count >= Constants.PID_AT_TARGET_LOOPS) {
+      System.out.println("Angle reached");
+    } else {
+      System.out.println("Turn to angle timed out");
+    }
   }
 
   // Returns true when the command should end.
@@ -64,6 +77,8 @@ public class TurnToAngle extends PIDCommand {
       count = 0;
     }
 
-    return count >= 20;
+    System.out.println(count);
+
+    return count >= Constants.PID_AT_TARGET_LOOPS;
   }
 }

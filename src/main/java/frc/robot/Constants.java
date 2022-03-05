@@ -28,6 +28,7 @@ public final class Constants {
     public static final double DRIVE_POSITION_D = 0.01;
     public static final double ANGLE_P = 0.02;
     public static final double ANGLE_D = 0.002;
+    public static final int PID_AT_TARGET_LOOPS = 20;
     public static final int VELOCITY_PID_SLOT = 1;
     public static final int POSITION_PID_SLOT = 0;
     public static final double ROTATIONS_PER_INCH = 0.4483;
