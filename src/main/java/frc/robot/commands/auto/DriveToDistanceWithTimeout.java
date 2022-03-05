@@ -15,6 +15,6 @@ public class DriveToDistanceWithTimeout extends SequentialCommandGroup {
   public DriveToDistanceWithTimeout(Drive drive, double inches, double maxSpeed) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new DriveToDistance(drive, inches, maxSpeed).withTimeout(inches/maxSpeed/100));
+    addCommands(new DriveToDistance(drive, inches, maxSpeed).withTimeout(Math.abs(inches)/maxSpeed/100));
   }
 }
