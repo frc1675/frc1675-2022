@@ -21,6 +21,7 @@ import frc.robot.subsystems.Intake;
 public class ExtendThenRunIntake extends SequentialCommandGroup {
   public ExtendThenRunIntake(Intake intake, Cage cage, Catapult rightCatapult, Catapult leftCatapult, DoubleSupplier intakeSpeed) {
     addCommands(
+      new WaitUntilCommand(()-> {return !rightCatapult.isExtended() && !leftCatapult.isExtended(); }),
       new ConditionalCommand(
         new PrintCommand("Intake is already extended."),
         new ExtendIntake(intake),
@@ -29,7 +30,6 @@ public class ExtendThenRunIntake extends SequentialCommandGroup {
       new WaitUntilCommand(()-> intake.isExtended()),
       new CloseCage(cage), 
       new WaitUntilCommand(() -> cage.isClosed()),
-      new WaitUntilCommand(()-> {return !rightCatapult.isExtended() && !leftCatapult.isExtended(); }),
       new PerpetualCommand(new SetIntakeSpeed(intake, intakeSpeed))
     );
   }
