@@ -25,6 +25,7 @@ public class Climber extends SubsystemBase {
 
   private boolean isExtended = false;
   private boolean motorHitLimit = true;
+  private boolean enforceLimit = true;
   private Timer timer = new Timer();
 
   private ShuffleboardTab climberTab = Shuffleboard.getTab("Climber");
@@ -59,6 +60,8 @@ public class Climber extends SubsystemBase {
     if (isExtended && !motorHitLimit) {
         //climberMotor1.set(Constants.CLIMBER_POWER);
         climberMotor2.set(Constants.CLIMBER_POWER);
+    }else if(!enforceLimit) {
+      climberMotor2.set(Constants.CLIMBER_POWER);
     }
   }
 
@@ -73,6 +76,10 @@ public class Climber extends SubsystemBase {
 
   public double averageEncoderPosition(){
     return (encoder1.getPosition() + encoder2.getPosition()) / 2;
+  }
+
+  public void toggleEnforceLimit(){
+    enforceLimit = !enforceLimit;
   }
 
   @Override

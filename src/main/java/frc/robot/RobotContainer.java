@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.climber.ToggleClimberLimitEnforce;
 import frc.robot.commands.commandGroups.ClimberPullUpSafe;
 import frc.robot.commands.commandGroups.ClimberReleaseSafe;
 import frc.robot.commands.commandGroups.ExtendThenRunIntake;
@@ -40,7 +41,7 @@ public class RobotContainer {
   private final JoystickButton driverControllerBackButton = new JoystickButton(driverController, Constants.BACK_BUTTON);
   private final JoystickButton driverControllerBButton = new JoystickButton(driverController, Constants.B_BUTTON);
   //private final JoystickButton driverControllerAButton = new JoystickButton(driverController, Constants.A_BUTTON);
-  //private final JoystickButton driverControllerStartButton = new JoystickButton(driverController, Constants.START_BUTTON);
+  private final JoystickButton driverControllerStartButton = new JoystickButton(driverController, Constants.START_BUTTON);
   private final JoystickButton driverControllerRightBumper = new JoystickButton(driverController, Constants.RIGHT_BUMPER);
   private final JoystickButton driverControllerLeftBumper = new JoystickButton(driverController, Constants.LEFT_BUMPER);
   private final Trigger driverControllerClimberButtons = driverControllerBackButton.and(driverControllerRightBumper).and(driverControllerLeftBumper);
@@ -109,7 +110,7 @@ public class RobotContainer {
     driverControllerClimberButtons.whenActive(slowDrive);
     driverControllerBButton.whenHeld(new ClimberPullUpSafe(climber));
     //driverControllerStartButton.toggleWhenPressed(new CheesyDrivePID(drive, () -> getDriverLeftY(), () -> getDriverRightX() ));
-
+    driverControllerStartButton.whenPressed(new ToggleClimberLimitEnforce(climber));
     
     //operator controller
     operatorControllerLeftBumper.whenPressed(new ConditionalCommand( new FireSingleCatapultSafe(rightCatapult), new PrintCommand("Catapult not prepared to fire."), () -> isCatapultPrepared() ));
