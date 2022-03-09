@@ -26,9 +26,9 @@ public class FireBothCatapultsSafe extends SequentialCommandGroup {
       //in Constants if this behavior is not desired.
 
       new RetractSingleCatapult(rightCatapult),
-      new RetractSingleCatapult(leftCatapult),
+      new RetractSingleCatapult(leftCatapult)
 
-      new WaitUntilCommand(()-> {return !rightCatapult.isExtended() && !leftCatapult.isExtended();} )
+      //new WaitUntilCommand(()-> {return !rightCatapult.isExtended() && !leftCatapult.isExtended();} )
       
     );
   }
