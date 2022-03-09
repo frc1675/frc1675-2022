@@ -54,6 +54,8 @@ public class RobotContainer {
   private final JoystickButton operatorControllerBButton = new JoystickButton(operatorController, Constants.B_BUTTON);
   private final JoystickButton operatorControllerRightBumper = new JoystickButton(operatorController, Constants.RIGHT_BUMPER);
   private final JoystickButton operatorControllerLeftBumper = new JoystickButton(operatorController, Constants.LEFT_BUMPER);
+  private final JoystickButton operatorControllerYButton = new JoystickButton(operatorController, Constants.Y_BUTTON);
+
 
   private final Cage cage = new Cage();
   private final Drive drive = new Drive();
@@ -119,7 +121,7 @@ public class RobotContainer {
     operatorControllerAButton.whenPressed(new PrepareCatapultFire(intake, cage));
     operatorControllerXButton.whenPressed(new RetractIntakeSafe(intake, cage, rightCatapult, leftCatapult));
     operatorControllerBButton.whenHeld(new ExtendThenRunIntake(intake, cage, rightCatapult, leftCatapult, () -> {return Constants.INTAKE_CONSTANT_SPEED;} ));
-
+    operatorControllerYButton.whenHeld(new ExtendThenRunIntake(intake, cage, rightCatapult, leftCatapult, ()-> {return Constants.INTAKE_CONSTANT_BACKWARD;} ));
   }
 
   /**
@@ -138,6 +140,10 @@ public class RobotContainer {
   }
 
   public void disablePneumatics() {
+    rightCatapult.retract();
+    leftCatapult.retract();
+    cage.open();
+    intake.retractIntake();
     
   }
 }
