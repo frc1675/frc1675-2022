@@ -50,9 +50,9 @@ public final class Constants {
     public static final int CATAPULT_RIGHT_SOLENOID_2 = 6;
     public static final int CATAPULT_LEFT_SOLENOID_1 = 0;
     public static final int CATAPULT_LEFT_SOLENOID_2 = 1;
-    public static final double CATAPULT_WAIT_TIME = 2.0;
-    public static final double CATAPULT_FOLLOW_THROUGH_TIME = 3.0;
-    public static final double CATAPULT_WAIT_BETWEEN_TIME = 0.3;
+    public static final double CATAPULT_WAIT_TIME = 1.5;
+    public static final double CATAPULT_FOLLOW_THROUGH_TIME = 1.5;
+    public static final double CATAPULT_WAIT_BETWEEN_TIME = 0;
 
     //intake constants
     public static final int INTAKE_MOTOR = 7;

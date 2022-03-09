@@ -15,9 +15,8 @@ public class PrepareCatapultFire extends SequentialCommandGroup {
   public PrepareCatapultFire(Intake intake, Cage cage) {
     addCommands(
       new ExtendIntake(intake),
-      new WaitUntilCommand( ()-> intake.isExtended()),
-      
       new OpenCage(cage),
+      new WaitUntilCommand( ()-> intake.isExtended()),      
       new WaitUntilCommand( ()-> {return !cage.isClosed();})
     );
   }
