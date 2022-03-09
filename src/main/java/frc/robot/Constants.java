@@ -59,6 +59,7 @@ public final class Constants {
     public static final int INTAKE_SOLENOID = 4;
     public static final double INTAKE_WAIT_TIME = 1.0;
     public static final double INTAKE_CONSTANT_SPEED = 1.0;
+    public static final double INTAKE_CONSTANT_BACKWARD = -1.0;
 
     //cage constants
     public static final int CAGE_SOLENOID = 3;
