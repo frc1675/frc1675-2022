@@ -24,7 +24,6 @@ import frc.robot.subsystems.Intake;
 
 public class AutoChooser {
     public enum StartPosition {
-        TOUCHING_HUB,
         AREA_1,
         AREA_2,
         AREA_3,
@@ -65,11 +64,10 @@ public class AutoChooser {
         this.rightCatapult = rightCatapult;
         this.leftCatapult = leftCatapult;
 
-        startPositionChooser.setDefaultOption("Touching hub", StartPosition.TOUCHING_HUB);
+        startPositionChooser.setDefaultOption("Start area 4", StartPosition.AREA_4);
         startPositionChooser.addOption("Start area 1", StartPosition.AREA_1);
         startPositionChooser.addOption("Start area 2", StartPosition.AREA_2);
-        startPositionChooser.addOption("Start area 3", StartPosition.AREA_3);
-        startPositionChooser.addOption("Start area 4", StartPosition.AREA_4);
+        startPositionChooser.addOption("Start area 3", StartPosition.AREA_3);     
         autoTab.add("Starting position", startPositionChooser)
         .withWidget(BuiltInWidgets.kComboBoxChooser)
         .withSize(2, 1)
@@ -97,16 +95,10 @@ public class AutoChooser {
         SelectedBall selectedBalls = (SelectedBall)selectedBallsChooser.getSelected();
 
         switch (selectedStart) {
-            case TOUCHING_HUB: switch (selectedBalls) {
-                case NONE: message = "Shoot immediately, drive off tarmac";
-                    break;
-                default: message = "We do not have an auto routine programmed for this combination. DO NOT START THE MATCH WITH THIS COMBINATION.";
-                    break;
-            }
-            break;
-
             case AREA_1: switch (selectedBalls) {
                 case BALL_1: message = "Start area 1, get ball 1, drive to hub, shoot both";
+                    break;
+                case NONE: message = "Start area 1, shoot preloaded ball immediately. ";
                     break;
                 default: message = "We do not have an auto routine programmed for this combination. DO NOT START THE MATCH WITH THIS COMBINATION.";
                     break;
@@ -118,6 +110,8 @@ public class AutoChooser {
                     break;
                 case BALL_2: message = "Start area 2, get ball 2, drive to hub, shoot both";
                     break;
+                case NONE: message = "Start area 2, shoot preloaded ball immediately. ";
+                    break;
                 default: message = "We do not have an auto routine programmed for this combination. DO NOT START THE MATCH WITH THIS COMBINATION.";
                     break;
             }
@@ -128,6 +122,8 @@ public class AutoChooser {
                     break;
                 case BALL_3: message = "Start area 3, get ball 3, drive to hub, shoot both";
                     break;
+                case NONE: message = "Start area 3, shoot preloaded ball immediately. ";
+                    break;
                 default: message = "We do not have an auto routine programmed for this combination. DO NOT START THE MATCH WITH THIS COMBINATION.";
                     break;
             }
@@ -135,6 +131,8 @@ public class AutoChooser {
 
             case AREA_4: switch (selectedBalls) {
                 case BALL_3: message = "Start area 4, get ball 3, drive to hub, shoot both";
+                    break;
+                case NONE: message = "Start area 4, shoot preloaded ball immediately. ";
                     break;
                 default: message = "We do not have an auto routine programmed for this combination. DO NOT START THE MATCH WITH THIS COMBINATION.";
                     break;
@@ -157,41 +155,42 @@ public class AutoChooser {
         //certain combinations of selectedStart and selectedBalls will add
         //commands to auto, but others will do nothing.
         switch (selectedStart) {
-            case TOUCHING_HUB: switch (selectedBalls) {
-                case NONE: auto.addCommands(new ScoreThenTaxi(drive, intake, cage, leftCatapult));
-                break;
-                default: break;
-            }
-            break;
-
             case AREA_1: switch (selectedBalls) {
+                case NONE: auto.addCommands(new ScoreThenTaxi(drive, intake, cage, leftCatapult));
+                    break;
                 case BALL_1: auto.addCommands(new Area1GetBall1(drive, intake, cage, rightCatapult, leftCatapult));
-                break;
+                    break;
                 default: break;
             }
             break;
 
             case AREA_2: switch (selectedBalls) {
+                case NONE: auto.addCommands(new ScoreThenTaxi(drive, intake, cage, leftCatapult));
+                    break;
                 case BALL_1: auto.addCommands(new Area2GetBall1(drive, intake, cage, rightCatapult, leftCatapult));
-                break;
+                    break;
                 case BALL_2: auto.addCommands(new ShootInPlace(drive, intake, cage, leftCatapult, 0), new Area2GetBall2(drive, intake, cage, rightCatapult, leftCatapult));
-                break;
+                    break;
                 default: break;
             }
             break;
 
             case AREA_3: switch (selectedBalls) {
+                case NONE: auto.addCommands(new ScoreThenTaxi(drive, intake, cage, leftCatapult));
+                    break;
                 case BALL_2: auto.addCommands(new Area3GetBall2(drive, intake, cage,rightCatapult, leftCatapult));
-                break;
+                    break;
                 case BALL_3: auto.addCommands(new Area3GetBall3(drive, intake, cage, rightCatapult, leftCatapult));
-                break;
+                    break;
                 default: break;
             }
             break;
 
             case AREA_4: switch (selectedBalls) {
+                case NONE: auto.addCommands(new ScoreThenTaxi(drive, intake, cage, leftCatapult));
+                    break;
                 case BALL_3: auto.addCommands(new ShootInPlace(drive, intake, cage, leftCatapult, 0), new Area4GetBall3(drive, intake, cage, rightCatapult, leftCatapult));
-                break;
+                    break;
                 default: break;
             }
             break;
