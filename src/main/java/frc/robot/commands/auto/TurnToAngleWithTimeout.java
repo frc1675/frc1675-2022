@@ -15,6 +15,6 @@ public class TurnToAngleWithTimeout extends SequentialCommandGroup {
   public TurnToAngleWithTimeout(Drive drive, double angle, double maxSpeed) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new TurnToAngle(drive, angle, maxSpeed).withTimeout(Math.abs(angle)/maxSpeed/90));
+    addCommands(new TurnToAngle(drive, angle, maxSpeed).withTimeout(Math.abs(angle)/maxSpeed/70));
   }
 }
