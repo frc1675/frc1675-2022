@@ -23,11 +23,16 @@ import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Intake;
 
 public class AutoChooser {
-    public enum StartPosition {
+    public enum SelectedStart {
         AREA_1,
         AREA_2,
         AREA_3,
         AREA_4
+    }
+
+    public enum ScoreOrder {
+        ONE_BY_ONE,
+        ALL_AT_ONCE
     }
 
     public enum SelectedBall {
@@ -45,8 +50,10 @@ public class AutoChooser {
 
     private ShuffleboardTab autoTab = Shuffleboard.getTab("Choose auto routine");
 
-    private SendableChooser<StartPosition> startPositionChooser = new SendableChooser<StartPosition>();
+    private SendableChooser<SelectedStart> selectedStartChooser = new SendableChooser<SelectedStart>();
+    private SendableChooser<ScoreOrder> scoreOrderChooser = new SendableChooser<ScoreOrder>();
     private SendableChooser<SelectedBall> selectedBallsChooser = new SendableChooser<SelectedBall>();
+
 
     private NetworkTableEntry waitSlider = autoTab.add("Wait time", 0)
     .withWidget(BuiltInWidgets.kNumberSlider)
@@ -64,14 +71,21 @@ public class AutoChooser {
         this.rightCatapult = rightCatapult;
         this.leftCatapult = leftCatapult;
 
-        startPositionChooser.setDefaultOption("Start area 4", StartPosition.AREA_4);
-        startPositionChooser.addOption("Start area 1", StartPosition.AREA_1);
-        startPositionChooser.addOption("Start area 2", StartPosition.AREA_2);
-        startPositionChooser.addOption("Start area 3", StartPosition.AREA_3);     
-        autoTab.add("Starting position", startPositionChooser)
+        selectedStartChooser.setDefaultOption("Start area 1", SelectedStart.AREA_1);
+        selectedStartChooser.addOption("Start area 2", SelectedStart.AREA_2);
+        selectedStartChooser.addOption("Start area 3", SelectedStart.AREA_3);
+        selectedStartChooser.addOption("Start area 4", SelectedStart.AREA_4);     
+        autoTab.add("Starting position", selectedStartChooser)
         .withWidget(BuiltInWidgets.kComboBoxChooser)
         .withSize(2, 1)
         .withPosition(0, 1);
+        
+        scoreOrderChooser.setDefaultOption("Get ball, then score both", ScoreOrder.ALL_AT_ONCE);
+        scoreOrderChooser.addOption("Score, get ball, then score", ScoreOrder.ONE_BY_ONE);
+        autoTab.add("Score preloaded ball first?", scoreOrderChooser)
+        .withWidget(BuiltInWidgets.kComboBoxChooser)
+        .withSize(2, 1)
+        .withPosition(0, 2);
 
         selectedBallsChooser.setDefaultOption("Get no balls", SelectedBall.NONE);
         selectedBallsChooser.addOption("Get ball 1", SelectedBall.BALL_1);
@@ -80,22 +94,22 @@ public class AutoChooser {
         autoTab.add("Which ball to get", selectedBallsChooser)
         .withWidget(BuiltInWidgets.kComboBoxChooser)
         .withSize(2, 1)
-        .withPosition(0, 2);
+        .withPosition(0, 3);
 
         autoTab.addString("Selected auto path", () -> message)
         .withSize(4, 1)
-        .withPosition(0, 3);
+        .withPosition(0, 4);
     }
 
     //displays what the current auto routine is, or an error if a combination with
     //no routine is selected.
     //runs in disabledPeriodic.
     public void checkAutoPath() {
-        StartPosition selectedStart = (StartPosition)startPositionChooser.getSelected();
-        SelectedBall selectedBalls = (SelectedBall)selectedBallsChooser.getSelected();
+        SelectedStart selectedStart = (SelectedStart)selectedStartChooser.getSelected();
+        SelectedBall selectedBall = (SelectedBall)selectedBallsChooser.getSelected();
 
         switch (selectedStart) {
-            case AREA_1: switch (selectedBalls) {
+            case AREA_1: switch (selectedBall) {
                 case BALL_1: message = "Start area 1, get ball 1, drive to hub, shoot both";
                     break;
                 case NONE: message = "Start area 1, shoot preloaded ball immediately. ";
@@ -105,7 +119,7 @@ public class AutoChooser {
             }
             break;
 
-            case AREA_2: switch (selectedBalls) {
+            case AREA_2: switch (selectedBall) {
                 case BALL_1: message = "Start area 2, get ball 1, drive to hub, shoot both";
                     break;
                 case BALL_2: message = "Start area 2, get ball 2, drive to hub, shoot both";
@@ -117,7 +131,7 @@ public class AutoChooser {
             }
             break;
 
-            case AREA_3: switch (selectedBalls) {
+            case AREA_3: switch (selectedBall) {
                 case BALL_2: message = "Start area 3, get ball 2, drive to hub, shoot both";
                     break;
                 case BALL_3: message = "Start area 3, get ball 3, drive to hub, shoot both";
@@ -129,7 +143,7 @@ public class AutoChooser {
             }
             break;
 
-            case AREA_4: switch (selectedBalls) {
+            case AREA_4: switch (selectedBall) {
                 case BALL_3: message = "Start area 4, get ball 3, drive to hub, shoot both";
                     break;
                 case NONE: message = "Start area 4, shoot preloaded ball immediately. ";
@@ -147,49 +161,74 @@ public class AutoChooser {
     public SequentialCommandGroup generateAuto() {
         SequentialCommandGroup auto = new SequentialCommandGroup();
 
-        StartPosition selectedStart = (StartPosition)startPositionChooser.getSelected();
-        SelectedBall selectedBalls = (SelectedBall)selectedBallsChooser.getSelected();
+        SelectedStart selectedStart = (SelectedStart)selectedStartChooser.getSelected();
+        ScoreOrder scoreOrder = (ScoreOrder)scoreOrderChooser.getSelected();
+        SelectedBall selectedBall = (SelectedBall)selectedBallsChooser.getSelected();
 
         auto.addCommands(new WaitCommand(waitSlider.getDouble(0)));
 
         //certain combinations of selectedStart and selectedBalls will add
         //commands to auto, but others will do nothing.
         switch (selectedStart) {
-            case AREA_1: switch (selectedBalls) {
+            case AREA_1: switch (selectedBall) {
                 case NONE: auto.addCommands(new ScoreThenTaxi(drive, intake, cage, leftCatapult));
                     break;
-                case BALL_1: auto.addCommands(new Area1GetBall1(drive, intake, cage, rightCatapult, leftCatapult));
+                case BALL_1:
+                    if (scoreOrder == ScoreOrder.ONE_BY_ONE) {
+                        auto.addCommands(new ShootInPlace(drive, intake, cage, leftCatapult, -100));
+                    }
+                    auto.addCommands(new Area1GetBall1(drive, intake, cage, rightCatapult, leftCatapult));
                     break;
                 default: break;
             }
             break;
 
-            case AREA_2: switch (selectedBalls) {
+            case AREA_2: switch (selectedBall) {
                 case NONE: auto.addCommands(new ScoreThenTaxi(drive, intake, cage, leftCatapult));
                     break;
-                case BALL_1: auto.addCommands(new Area2GetBall1(drive, intake, cage, rightCatapult, leftCatapult));
+                case BALL_1:
+                    if (scoreOrder == ScoreOrder.ONE_BY_ONE) {
+                        auto.addCommands(new ShootInPlace(drive, intake, cage, leftCatapult, 100));
+                    }
+                    auto.addCommands(new Area2GetBall1(drive, intake, cage, rightCatapult, leftCatapult));
                     break;
-                case BALL_2: auto.addCommands(new ShootInPlace(drive, intake, cage, leftCatapult, 0), new Area2GetBall2(drive, intake, cage, rightCatapult, leftCatapult));
+                case BALL_2:
+                    if (scoreOrder == ScoreOrder.ONE_BY_ONE) {
+                        auto.addCommands(new ShootInPlace(drive, intake, cage, leftCatapult, 0));
+                    }
+                    auto.addCommands(new Area2GetBall2(drive, intake, cage, rightCatapult, leftCatapult));
                     break;
                 default: break;
             }
             break;
 
-            case AREA_3: switch (selectedBalls) {
+            case AREA_3: switch (selectedBall) {
                 case NONE: auto.addCommands(new ScoreThenTaxi(drive, intake, cage, leftCatapult));
                     break;
-                case BALL_2: auto.addCommands(new Area3GetBall2(drive, intake, cage,rightCatapult, leftCatapult));
+                case BALL_2:
+                    if (scoreOrder == ScoreOrder.ONE_BY_ONE) {
+                        auto.addCommands(new ShootInPlace(drive, intake, cage, leftCatapult, -80));
+                    }
+                    auto.addCommands(new Area3GetBall2(drive, intake, cage,rightCatapult, leftCatapult));
                     break;
-                case BALL_3: auto.addCommands(new Area3GetBall3(drive, intake, cage, rightCatapult, leftCatapult));
+                case BALL_3:
+                    if (scoreOrder == ScoreOrder.ONE_BY_ONE) {
+                        auto.addCommands(new ShootInPlace(drive, intake, cage, leftCatapult, 100));
+                    }
+                    auto.addCommands(new Area3GetBall3(drive, intake, cage, rightCatapult, leftCatapult));
                     break;
                 default: break;
             }
             break;
 
-            case AREA_4: switch (selectedBalls) {
+            case AREA_4: switch (selectedBall) {
                 case NONE: auto.addCommands(new ScoreThenTaxi(drive, intake, cage, leftCatapult));
                     break;
-                case BALL_3: auto.addCommands(new ShootInPlace(drive, intake, cage, leftCatapult, 0), new Area4GetBall3(drive, intake, cage, rightCatapult, leftCatapult));
+                case BALL_3:
+                    if (scoreOrder == ScoreOrder.ONE_BY_ONE) {
+                        auto.addCommands(new ShootInPlace(drive, intake, cage, leftCatapult, 0));
+                    }
+                    auto.addCommands(new Area4GetBall3(drive, intake, cage, rightCatapult, leftCatapult));
                     break;
                 default: break;
             }
