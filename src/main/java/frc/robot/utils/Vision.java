@@ -17,12 +17,10 @@ public class Vision {
         return NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
     }
 
-    public void toggleCamMode(){
-        if(NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").getDouble(0)==0){
-            NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(1);
-        }
-        else{
-            NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(0);
-        }
+    public void setCamModeDriver(){
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(1);
+    }
+    public void setCamModeVision(){
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(0);
     }
 }
