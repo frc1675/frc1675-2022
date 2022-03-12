@@ -74,7 +74,7 @@ public class Climber extends SubsystemBase {
   }
 
   public boolean getIsExtended() {
-    return motorHitEncoderLimit;
+    return isExtended;
   }
 
   public double averageEncoderPosition(){
