@@ -47,6 +47,11 @@ public class Climber extends SubsystemBase {
     climberTab.addNumber("Average climber position", () -> averageEncoderPosition())
     .withSize(2, 1)
     .withPosition(1, 0);
+
+    climberTab.addBoolean("Switch Pressed?", ()-> switchPressed)
+    .withSize(1, 1)
+    .withPosition(2, 0)
+    ;
   }
 
   public void release() {
@@ -75,6 +80,10 @@ public class Climber extends SubsystemBase {
 
   public boolean getIsExtended() {
     return isExtended;
+  }
+
+  public boolean getIsPressed(){
+    return switchPressed;
   }
 
   public double averageEncoderPosition(){
