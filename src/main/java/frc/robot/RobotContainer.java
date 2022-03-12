@@ -20,6 +20,7 @@ import frc.robot.commands.commandGroups.FireSingleCatapultSafe;
 import frc.robot.commands.commandGroups.PrepareCatapultFire;
 import frc.robot.commands.commandGroups.RetractIntakeSafe;
 import frc.robot.commands.drive.CheesyDrive;
+import frc.robot.commands.drive.LockOnTarget;
 //import frc.robot.commands.drive.CheesyDrivePID;
 import frc.robot.subsystems.Cage;
 import frc.robot.subsystems.Catapult;
@@ -44,6 +45,7 @@ public class RobotContainer {
   private final JoystickButton driverControllerStartButton = new JoystickButton(driverController, Constants.START_BUTTON);
   private final JoystickButton driverControllerRightBumper = new JoystickButton(driverController, Constants.RIGHT_BUMPER);
   private final JoystickButton driverControllerLeftBumper = new JoystickButton(driverController, Constants.LEFT_BUMPER);
+  private final JoystickButton driverControllerXButton = new JoystickButton(driverController, Constants.X_BUTTON);
   private final Trigger driverControllerClimberButtons = driverControllerBackButton.and(driverControllerRightBumper).and(driverControllerLeftBumper);
 
   //operator controller
@@ -111,6 +113,7 @@ public class RobotContainer {
     driverControllerClimberButtons.whenActive(new ClimberReleaseSafe(intake, cage, climber, rightCatapult, leftCatapult));
     driverControllerClimberButtons.whenActive(slowDrive);
     driverControllerBButton.whenHeld(new ClimberPullUpSafe(climber));
+    driverControllerXButton.toggleWhenPressed(new LockOnTarget(drive, () -> getDriverLeftY(), () -> getDriverRightX()));
     //driverControllerStartButton.toggleWhenPressed(new CheesyDrivePID(drive, () -> getDriverLeftY(), () -> getDriverRightX() ));
     driverControllerStartButton.whenPressed(new ToggleClimberLimitEnforce(climber));
     
