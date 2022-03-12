@@ -41,7 +41,7 @@ public class Climber extends SubsystemBase {
     climberMotor1.setInverted(true);
     climberMotor2.setInverted(true);
 
-    climberTab.addBoolean("Extended?", () -> isExtended)
+    climberTab.addBoolean("Extended?", () -> motorHitLimit)
     .withSize(1, 1)
     .withPosition(0, 0);
     climberTab.addNumber("Average climber position", () -> averageEncoderPosition())
@@ -74,7 +74,7 @@ public class Climber extends SubsystemBase {
   }
 
   public boolean getIsExtended() {
-    return isExtended;
+    return motorHitLimit;
   }
 
   public double averageEncoderPosition(){
