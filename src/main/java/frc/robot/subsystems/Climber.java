@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
@@ -22,9 +23,11 @@ public class Climber extends SubsystemBase {
   private Solenoid climberSolenoid = new Solenoid(PneumaticsModuleType.REVPH, Constants.CLIMBER_SOLENOID);
   private RelativeEncoder encoder1 = climberMotor1.getEncoder();
   private RelativeEncoder encoder2 = climberMotor2.getEncoder();
+  private DigitalInput limitSwitch = new DigitalInput(Constants.CLIMBER_LIMIT_SWITCH);
 
   private boolean isExtended = false;
-  private boolean motorHitLimit = true;
+  private boolean motorHitEncoderLimit = true;
+  private boolean switchPressed = true;
   private boolean enforceLimit = true;
   private Timer timer = new Timer();
 
@@ -44,6 +47,11 @@ public class Climber extends SubsystemBase {
     climberTab.addNumber("Average climber position", () -> averageEncoderPosition())
     .withSize(2, 1)
     .withPosition(1, 0);
+
+    climberTab.addBoolean("Switch Pressed?", ()-> switchPressed)
+    .withSize(1, 1)
+    .withPosition(2, 0)
+    ;
   }
 
   public void release() {
@@ -57,7 +65,7 @@ public class Climber extends SubsystemBase {
   }
 
   public void pullUp() {
-    if (isExtended && !motorHitLimit) {
+    if ((isExtended && !motorHitEncoderLimit) && !switchPressed) {
         //climberMotor1.set(Constants.CLIMBER_POWER);
         climberMotor2.set(Constants.CLIMBER_POWER);
     }else if(!enforceLimit) {
@@ -74,6 +82,10 @@ public class Climber extends SubsystemBase {
     return isExtended;
   }
 
+  public boolean getIsPressed(){
+    return switchPressed;
+  }
+
   public double averageEncoderPosition(){
     return (encoder1.getPosition() + encoder2.getPosition()) / 2;
   }
@@ -87,7 +99,7 @@ public class Climber extends SubsystemBase {
     // This method will be called once per scheduler run
     if(timer.hasElapsed(Constants.CLIMBER_WAIT_TIME)){
       isExtended = true;
-      motorHitLimit = false;
+      motorHitEncoderLimit = false;
       encoder1.setPosition(0);
       encoder2.setPosition(0);
       timer.stop();
@@ -98,9 +110,11 @@ public class Climber extends SubsystemBase {
       climberMotor1.set(0);
       climberMotor2.set(0);
       isExtended = false;
-      motorHitLimit = true;
+      motorHitEncoderLimit = true;
       encoder1.setPosition(0);
       encoder2.setPosition(0);
     }
+
+    switchPressed = limitSwitch.get();
   }
 }

@@ -44,6 +44,7 @@ public final class Constants {
     public static final int CLIMBER_ENCODER_SENSITIVITY = 4096;
     public static final double CLIMBER_WAIT_TIME = 0.5;
     public static final double CLIMBER_MAX_RETRACT = 120; 
+    public static final int CLIMBER_LIMIT_SWITCH = 0;
 
     //catapult constants
     public static final int CATAPULT_RIGHT_SOLENOID_1 = 5;
