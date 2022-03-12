@@ -41,7 +41,7 @@ public class Climber extends SubsystemBase {
     climberMotor1.setInverted(true);
     climberMotor2.setInverted(true);
 
-    climberTab.addBoolean("Extended?", () -> motorHitEncoderLimit)
+    climberTab.addBoolean("Extended?", () -> isExtended)
     .withSize(1, 1)
     .withPosition(0, 0);
     climberTab.addNumber("Average climber position", () -> averageEncoderPosition())
