@@ -92,5 +92,8 @@ public final class Constants {
 
     //vision constants
     public static final double LOCK_ON_TARGET_MAX_SPEED = 0.5;
-
+    public static final double PERCENT_AREA_TO_INCHES = 100.0; //needs to be tested
+    public static final double HUB_HEIGHT = 72.0; //needs to be measured
+    public static final double MIN_SCORING_DISTANCE = 12.0;
+    public static final double MAX_SCORING_DISTANCE = 24.0;
 }
