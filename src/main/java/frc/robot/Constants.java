@@ -89,4 +89,7 @@ public final class Constants {
     //mathematical constants
     public static final double DEADZONE_CONSTANT = 0.1675;
 
+    //vision constants
+    public static final double LOCK_ON_TARGET_MAX_SPEED = 0.5;
+
 }
