@@ -66,9 +66,9 @@ public class Climber extends SubsystemBase {
 
   public void pullUp() {
     if ((isExtended && !motorHitEncoderLimit) && !switchPressed) {
-        //climberMotor1.set(Constants.CLIMBER_POWER);
+        climberMotor1.set(Constants.CLIMBER_POWER);
         climberMotor2.set(Constants.CLIMBER_POWER);
-    }else if(!enforceLimit) {
+    }else if(!enforceLimit && !switchPressed) {
       climberMotor2.set(Constants.CLIMBER_POWER);
     }
   }
@@ -116,5 +116,6 @@ public class Climber extends SubsystemBase {
     }
 
     switchPressed = limitSwitch.get();
+    switchPressed = !switchPressed;
   }
 }
