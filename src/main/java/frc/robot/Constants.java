@@ -92,5 +92,7 @@ public final class Constants {
 
     //vision constants
     public static final double LOCK_ON_TARGET_MAX_SPEED = 0.5;
-
+    public static final int ROLLING_AVERAGE_LOOPS = 10;
+    public static final double LOCK_ON_P = 0.04;
+    public static final double LOCK_ON_D = 0.004;
 }
