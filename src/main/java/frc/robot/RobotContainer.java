@@ -69,6 +69,10 @@ public class RobotContainer {
     return intake.isExtended() && !cage.isClosed();
   }
 
+  private boolean isCatapultExtended(){
+    return rightCatapult.isExtended() || leftCatapult.isExtended();
+  }
+
   private double getDriverLeftY(){
     return -1 * DeadzoneCorrection.correctDeadzone(driverController.getRawAxis(Constants.LEFT_Y_AXIS));
   }
@@ -113,7 +117,10 @@ public class RobotContainer {
     driverControllerClimberButtons.whenActive(new ClimberReleaseSafe(intake, cage, climber, rightCatapult, leftCatapult));
     driverControllerClimberButtons.whenActive(slowDrive);
     driverControllerBButton.whenHeld(new ClimberPullUpSafe(climber));
-    driverControllerXButton.toggleWhenPressed(new LockOnTarget(drive, () -> getDriverLeftY(), () -> getDriverRightX()));
+    driverControllerXButton.toggleWhenPressed(
+      new LockOnTarget(drive, () -> getDriverLeftY(), () -> getDriverRightX())
+      .withInterrupt(()-> isCatapultExtended())
+      );
     //driverControllerStartButton.toggleWhenPressed(new CheesyDrivePID(drive, () -> getDriverLeftY(), () -> getDriverRightX() ));
     driverControllerStartButton.whenPressed(new ToggleClimberLimitEnforce(climber));
     
