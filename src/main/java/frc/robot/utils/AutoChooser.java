@@ -16,7 +16,6 @@ import frc.robot.commands.auto.Area3GetBall2;
 import frc.robot.commands.auto.Area3GetBall3;
 import frc.robot.commands.auto.Area4GetBall3;
 import frc.robot.commands.auto.ScoreThenTaxi;
-import frc.robot.commands.auto.ShootInPlace;
 import frc.robot.subsystems.Cage;
 import frc.robot.subsystems.Catapult;
 import frc.robot.subsystems.Drive;
@@ -30,16 +29,12 @@ public class AutoChooser {
         AREA_4
     }
 
-    public enum ScoreOrder {
-        ONE_BY_ONE,
-        ALL_AT_ONCE
-    }
-
     public enum SelectedBall {
         NONE,
         BALL_1,
         BALL_2,
-        BALL_3
+        BALL_3,
+        TWO_BALLS
     }
 
     private Drive drive;
@@ -51,7 +46,6 @@ public class AutoChooser {
     private ShuffleboardTab autoTab = Shuffleboard.getTab("Choose auto routine");
 
     private SendableChooser<SelectedStart> selectedStartChooser = new SendableChooser<SelectedStart>();
-    private SendableChooser<ScoreOrder> scoreOrderChooser = new SendableChooser<ScoreOrder>();
     private SendableChooser<SelectedBall> selectedBallsChooser = new SendableChooser<SelectedBall>();
 
 
@@ -79,13 +73,6 @@ public class AutoChooser {
         .withWidget(BuiltInWidgets.kComboBoxChooser)
         .withSize(2, 1)
         .withPosition(0, 1);
-        
-        scoreOrderChooser.setDefaultOption("Get ball, then score both", ScoreOrder.ALL_AT_ONCE);
-        scoreOrderChooser.addOption("Score, get ball, then score", ScoreOrder.ONE_BY_ONE);
-        autoTab.add("Score preloaded ball first?", scoreOrderChooser)
-        .withWidget(BuiltInWidgets.kComboBoxChooser)
-        .withSize(2, 1)
-        .withPosition(0, 2);
 
         selectedBallsChooser.setDefaultOption("Get no balls", SelectedBall.NONE);
         selectedBallsChooser.addOption("Get ball 1", SelectedBall.BALL_1);
@@ -162,7 +149,6 @@ public class AutoChooser {
         SequentialCommandGroup auto = new SequentialCommandGroup();
 
         SelectedStart selectedStart = (SelectedStart)selectedStartChooser.getSelected();
-        ScoreOrder scoreOrder = (ScoreOrder)scoreOrderChooser.getSelected();
         SelectedBall selectedBall = (SelectedBall)selectedBallsChooser.getSelected();
 
         auto.addCommands(new WaitCommand(waitSlider.getDouble(0)));
@@ -173,11 +159,7 @@ public class AutoChooser {
             case AREA_1: switch (selectedBall) {
                 case NONE: auto.addCommands(new ScoreThenTaxi(drive, intake, cage, leftCatapult));
                     break;
-                case BALL_1:
-                    if (scoreOrder == ScoreOrder.ONE_BY_ONE) {
-                        auto.addCommands(new ShootInPlace(drive, intake, cage, leftCatapult, -100));
-                    }
-                    auto.addCommands(new Area1GetBall1(drive, intake, cage, rightCatapult, leftCatapult));
+                case BALL_1: auto.addCommands(new Area1GetBall1(drive, intake, cage, rightCatapult, leftCatapult));
                     break;
                 default: break;
             }
@@ -186,17 +168,9 @@ public class AutoChooser {
             case AREA_2: switch (selectedBall) {
                 case NONE: auto.addCommands(new ScoreThenTaxi(drive, intake, cage, leftCatapult));
                     break;
-                case BALL_1:
-                    if (scoreOrder == ScoreOrder.ONE_BY_ONE) {
-                        auto.addCommands(new ShootInPlace(drive, intake, cage, leftCatapult, 100));
-                    }
-                    auto.addCommands(new Area2GetBall1(drive, intake, cage, rightCatapult, leftCatapult));
+                case BALL_1: auto.addCommands(new Area2GetBall1(drive, intake, cage, rightCatapult, leftCatapult));
                     break;
-                case BALL_2:
-                    if (scoreOrder == ScoreOrder.ONE_BY_ONE) {
-                        auto.addCommands(new ShootInPlace(drive, intake, cage, leftCatapult, 0));
-                    }
-                    auto.addCommands(new Area2GetBall2(drive, intake, cage, rightCatapult, leftCatapult));
+                case BALL_2: auto.addCommands(new Area2GetBall2(drive, intake, cage, rightCatapult, leftCatapult));
                     break;
                 default: break;
             }
@@ -205,17 +179,9 @@ public class AutoChooser {
             case AREA_3: switch (selectedBall) {
                 case NONE: auto.addCommands(new ScoreThenTaxi(drive, intake, cage, leftCatapult));
                     break;
-                case BALL_2:
-                    if (scoreOrder == ScoreOrder.ONE_BY_ONE) {
-                        auto.addCommands(new ShootInPlace(drive, intake, cage, leftCatapult, -80));
-                    }
-                    auto.addCommands(new Area3GetBall2(drive, intake, cage,rightCatapult, leftCatapult));
+                case BALL_2: auto.addCommands(new Area3GetBall2(drive, intake, cage,rightCatapult, leftCatapult));
                     break;
-                case BALL_3:
-                    if (scoreOrder == ScoreOrder.ONE_BY_ONE) {
-                        auto.addCommands(new ShootInPlace(drive, intake, cage, leftCatapult, 100));
-                    }
-                    auto.addCommands(new Area3GetBall3(drive, intake, cage, rightCatapult, leftCatapult));
+                case BALL_3: auto.addCommands(new Area3GetBall3(drive, intake, cage, rightCatapult, leftCatapult));
                     break;
                 default: break;
             }
@@ -224,11 +190,7 @@ public class AutoChooser {
             case AREA_4: switch (selectedBall) {
                 case NONE: auto.addCommands(new ScoreThenTaxi(drive, intake, cage, leftCatapult));
                     break;
-                case BALL_3:
-                    if (scoreOrder == ScoreOrder.ONE_BY_ONE) {
-                        auto.addCommands(new ShootInPlace(drive, intake, cage, leftCatapult, 0));
-                    }
-                    auto.addCommands(new Area4GetBall3(drive, intake, cage, rightCatapult, leftCatapult));
+                case BALL_3: auto.addCommands(new Area4GetBall3(drive, intake, cage, rightCatapult, leftCatapult));
                     break;
                 default: break;
             }
