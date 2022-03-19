@@ -115,7 +115,10 @@ public class RobotContainer {
 
     //driver controller
     driverControllerClimberButtons.whenActive(new ClimberReleaseSafe(intake, cage, climber, rightCatapult, leftCatapult));
-    driverControllerClimberButtons.whenActive(slowDrive);
+    driverControllerClimberButtons.whenActive(
+      slowDrive
+      .withInterrupt(()-> {return !climber.getIsExtended();})
+      );
     driverControllerBButton.whenHeld(new ClimberPullUpSafe(climber));
     driverControllerXButton.toggleWhenPressed(
       new LockOnTarget(drive, () -> getDriverLeftY(), () -> getDriverRightX())
