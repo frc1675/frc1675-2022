@@ -20,9 +20,9 @@ import frc.robot.subsystems.Intake;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class Area1GetBall1 extends SequentialCommandGroup {
-  /** Creates a new Area1GetBall1. */
-  public Area1GetBall1(Drive drive, Intake intake, Cage cage, Catapult rightCatapult, Catapult leftCatapult) {
+public class Area1ThreeBalls extends SequentialCommandGroup {
+  /** Creates a new Area1ThreeBalls. */
+  public Area1ThreeBalls(Drive drive, Intake intake, Cage cage, Catapult rightCatapult, Catapult leftCatapult) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
@@ -30,18 +30,21 @@ public class Area1GetBall1 extends SequentialCommandGroup {
       new TurnToAngleWithTimeout(drive, 78, 0.5),
       new DriveToDistanceWithTimeout(drive, 36.5, 0.5),
       new TurnToAngleWithTimeout(drive, -73.5, 0.5),
-      //ParallelDeadlineGroup ends when the first command
-      //ends, and interrupts the others.
       new ParallelDeadlineGroup(
         new DriveToDistanceWithTimeout(drive, 23.75, 0.25),
         new ExtendThenRunIntake(intake, cage, rightCatapult, leftCatapult, () -> {return Constants.INTAKE_CONSTANT_SPEED;})
       ),
       new RetractIntakeSafe(intake, cage, rightCatapult, leftCatapult),
-      new TurnToAngleWithTimeout(drive, 13, 0.5),
-      new DriveToDistanceWithTimeout(drive, -42.75, 0.5),
+      new TurnToAngleWithTimeout(drive, 107, 0.5),
+      new ParallelDeadlineGroup(
+        new DriveToDistanceWithTimeout(drive, 71, 0.25),
+        new ExtendThenRunIntake(intake, cage, rightCatapult, leftCatapult, () -> {return Constants.INTAKE_CONSTANT_SPEED;})
+      ),
+      new TurnToAngleWithTimeout(drive, -62, 0.5),
+      new DriveToDistanceWithTimeout(drive, -97.5, 0.5),
       new PrepareCatapultFire(intake, cage),
       new FireBothCatapultsSafe(rightCatapult, leftCatapult),
-      new DriveToDistanceWithTimeout(drive, 60, 0.5)
+      new DriveToDistanceWithTimeout(drive, 100, 0.5)
     );
   }
 }

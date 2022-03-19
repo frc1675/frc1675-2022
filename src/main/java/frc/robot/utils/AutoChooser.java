@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.auto.Area1GetBall1;
+import frc.robot.commands.auto.Area1ThreeBalls;
 import frc.robot.commands.auto.Area2GetBall1;
 import frc.robot.commands.auto.Area2GetBall2;
 import frc.robot.commands.auto.Area3GetBall2;
@@ -101,6 +102,8 @@ public class AutoChooser {
                     break;
                 case NONE: message = "Start area 1, shoot preloaded ball immediately. ";
                     break;
+                case TWO_BALLS: message = "Three ball auto from area 1!";
+                    break;
                 default: message = "We do not have an auto routine programmed for this combination. DO NOT START THE MATCH WITH THIS COMBINATION.";
                     break;
             }
@@ -160,6 +163,8 @@ public class AutoChooser {
                 case NONE: auto.addCommands(new ScoreThenTaxi(drive, intake, cage, leftCatapult));
                     break;
                 case BALL_1: auto.addCommands(new Area1GetBall1(drive, intake, cage, rightCatapult, leftCatapult));
+                    break;
+                case TWO_BALLS: auto.addCommands(new Area1ThreeBalls(drive, intake, cage, rightCatapult, leftCatapult));
                     break;
                 default: break;
             }
