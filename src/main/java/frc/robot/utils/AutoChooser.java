@@ -79,6 +79,7 @@ public class AutoChooser {
         selectedBallsChooser.addOption("Get ball 1", SelectedBall.BALL_1);
         selectedBallsChooser.addOption("Get ball 2", SelectedBall.BALL_2);
         selectedBallsChooser.addOption("Get ball 3", SelectedBall.BALL_3);
+        selectedBallsChooser.addOption("3-ball auto", SelectedBall.TWO_BALLS);
         autoTab.add("Which ball to get", selectedBallsChooser)
         .withWidget(BuiltInWidgets.kComboBoxChooser)
         .withSize(2, 1)
