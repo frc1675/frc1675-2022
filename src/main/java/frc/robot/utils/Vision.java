@@ -99,4 +99,10 @@ public class Vision {
     public static void setPipelineVision() {
         NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(0);
     }
+
+    /*public static double getDistanceFromSize() {
+        double hypotenuse = Math.sqrt(1 / areaPercent()) * Constants.PERCENT_AREA_TO_INCHES;
+        double distance = Math.sqrt(Math.pow(hypotenuse, 2) - Math.pow(Constants.HUB_HEIGHT, 2));
+        return distance;
+    }*/
 }
