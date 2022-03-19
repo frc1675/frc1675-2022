@@ -26,6 +26,7 @@ public class Area4GetBall3 extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
+      new PrepareCatapultFire(intake, cage),
       new FireSingleCatapultSafe(leftCatapult),
       new TurnToAngleWithTimeout(drive, -26, 0.5),
       new ParallelDeadlineGroup(
