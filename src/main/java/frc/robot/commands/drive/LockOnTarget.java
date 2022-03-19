@@ -22,9 +22,9 @@ public class LockOnTarget extends PIDCommand {
   public LockOnTarget(Drive drive, DoubleSupplier forwardPower, DoubleSupplier turnPower) {
     super(
       // The controller that the command will use
-      new PIDController(Constants.ANGLE_P, 0, Constants.ANGLE_D),
+      new PIDController(Constants.LOCK_ON_P, 0, Constants.LOCK_ON_D),
       // This should return the measurement
-      Vision::horizOffset,
+      Vision::rollingAverageHorizOffset,
       // This should return the setpoint (can also be a constant)
       () -> 0,
       // This uses the output
@@ -33,11 +33,11 @@ public class LockOnTarget extends PIDCommand {
         double readTurnPower;
         if (Vision.isTargetValid()) {
           if (output > Constants.LOCK_ON_TARGET_MAX_SPEED) {
-            readTurnPower = Constants.LOCK_ON_TARGET_MAX_SPEED;
-          } else if (output < -1 * Constants.LOCK_ON_TARGET_MAX_SPEED) {
             readTurnPower = -1 * Constants.LOCK_ON_TARGET_MAX_SPEED;
+          } else if (output < -1 * Constants.LOCK_ON_TARGET_MAX_SPEED) {
+            readTurnPower = Constants.LOCK_ON_TARGET_MAX_SPEED;
           } else {
-            readTurnPower = output;
+            readTurnPower = -1 * output;
           }
         } else {
           readTurnPower = turnPower.getAsDouble();
@@ -77,6 +77,7 @@ public class LockOnTarget extends PIDCommand {
   @Override
   public void initialize() {
     getController().reset();
+    Vision.setPipelineVision();
   }
 
   @Override
@@ -84,6 +85,7 @@ public class LockOnTarget extends PIDCommand {
     super.end(interrupted);
     drive.setRight(0);
     drive.setLeft(0);
+    Vision.setPipelineDriver();
   }
 
   // Returns true when the command should end.

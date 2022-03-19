@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.utils.Vision;
 
 public class Drive extends SubsystemBase {
   /** Creates a new Drive subsystem. */
@@ -79,19 +80,36 @@ public class Drive extends SubsystemBase {
     driveTab.addNumber("Right position", () -> rightEncoder.getPosition())
     .withSize(1, 1)
     .withPosition(0, 0);
+
     driveTab.addNumber("Left position", () -> leftEncoder.getPosition())
     .withSize(1, 1)
     .withPosition(0, 1);
+
     driveTab.addNumber("Right position inches", () -> {return rightEncoder.getPosition() / Constants.ROTATIONS_PER_INCH;})
     .withSize(2, 1)
     .withPosition(1, 0);
+
     driveTab.addNumber("Left position inches", () -> {return leftEncoder.getPosition() / Constants.ROTATIONS_PER_INCH;})
     .withSize(2, 1)
     .withPosition(1, 1);
+
     driveTab.addNumber("Heading", () -> getHeading())
     .withSize(1, 1)
     .withPosition(0, 2);
     
+    /*driveTab.addBoolean("OK to shoot?", () ->
+      Vision.isTargetValid()
+      && Math.abs(Vision.horizOffset()) <= Constants.ANGLE_TOLERANCE
+      && Vision.getDistanceFromSize() >= Constants.MIN_SCORING_DISTANCE
+      && Vision.getDistanceFromSize() <= Constants.MAX_SCORING_DISTANCE
+    )
+    .withSize(1, 1)
+    .withPosition(0, 4);*/
+/*
+    driveTab.addBoolean("Lock On Target status", () -> this.getCurrentCommand().getName().equals("LockOnTarget"))
+    .withSize(1, 1)
+    .withPosition(1, 4);
+*/
   }
 
   public void setRight(double speed){
