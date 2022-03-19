@@ -43,7 +43,8 @@ public final class Constants {
     public static final double CLIMBER_POWER = 0.75;
     public static final int CLIMBER_ENCODER_SENSITIVITY = 4096;
     public static final double CLIMBER_WAIT_TIME = 0.5;
-    public static final double CLIMBER_MAX_RETRACT = 130; 
+    public static final double CLIMBER_MAX_RETRACT = 120; 
+    public static final int CLIMBER_LIMIT_SWITCH = 0;
 
     //catapult constants
     public static final int CATAPULT_RIGHT_SOLENOID_1 = 5;
@@ -88,5 +89,8 @@ public final class Constants {
     
     //mathematical constants
     public static final double DEADZONE_CONSTANT = 0.1675;
+
+    //vision constants
+    public static final double LOCK_ON_TARGET_MAX_SPEED = 0.5;
 
 }
