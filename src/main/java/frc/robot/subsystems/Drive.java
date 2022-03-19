@@ -105,10 +105,11 @@ public class Drive extends SubsystemBase {
     )
     .withSize(1, 1)
     .withPosition(0, 4);*/
-
+/*
     driveTab.addBoolean("Lock On Target status", () -> this.getCurrentCommand().getName().equals("LockOnTarget"))
     .withSize(1, 1)
     .withPosition(1, 4);
+*/
   }
 
   public void setRight(double speed){
