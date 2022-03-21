@@ -27,17 +27,15 @@ public class Area1ThreeBalls extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new FireSingleCatapultSafe(leftCatapult),
-      new TurnToAngleWithTimeout(drive, 78, 0.5),
-      new DriveToDistanceWithTimeout(drive, 36.5, 0.5),
-      new TurnToAngleWithTimeout(drive, -73.5, 0.5),
+      new TurnToAngleWithTimeout(drive, 37, 0.5),
       new ParallelDeadlineGroup(
-        new DriveToDistanceWithTimeout(drive, 23.75, 0.25),
+        new DriveToDistanceWithTimeout(drive, 42, 0.25),
         new ExtendThenRunIntake(intake, cage, rightCatapult, leftCatapult, () -> {return Constants.INTAKE_CONSTANT_SPEED;})
       ),
       new RetractIntakeSafe(intake, cage, rightCatapult, leftCatapult),
-      new TurnToAngleWithTimeout(drive, 107, 0.5),
+      new TurnToAngleWithTimeout(drive, 71.5, 0.5),
       new ParallelDeadlineGroup(
-        new DriveToDistanceWithTimeout(drive, 71, 0.25),
+        new DriveToDistanceWithTimeout(drive, 85.5, 0.25),
         new ExtendThenRunIntake(intake, cage, rightCatapult, leftCatapult, () -> {return Constants.INTAKE_CONSTANT_SPEED;})
       ),
       new TurnToAngleWithTimeout(drive, -62, 0.5),
