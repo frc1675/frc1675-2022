@@ -19,12 +19,7 @@ public class FireSingleCatapultSafe extends SequentialCommandGroup {
 
       new WaitUntilCommand(()-> catapult.isExtended()),
       new WaitCommand(Constants.CATAPULT_FOLLOW_THROUGH_TIME),
-      //wait an additional x amount of seconds to provide enough
-      //follow through for balls to get good launch. Set to zero
-      //in Constants if this behavior is not desired.
-      new RetractSingleCatapult(catapult),
-
-      new WaitUntilCommand(()-> {return !catapult.isExtended();} )
+      new RetractSingleCatapult(catapult)
       
     );
   }
