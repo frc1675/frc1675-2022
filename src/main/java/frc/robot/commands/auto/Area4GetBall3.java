@@ -33,6 +33,8 @@ public class Area4GetBall3 extends SequentialCommandGroup {
         new DriveToDistanceWithTimeout(drive, 46.5, 0.25),
         new ExtendThenRunIntake(intake, cage, rightCatapult, leftCatapult, () -> {return Constants.INTAKE_CONSTANT_SPEED;})
       ),
+      new ExtendThenRunIntake(intake, cage, rightCatapult, leftCatapult, () -> {return Constants.INTAKE_CONSTANT_SPEED;})
+      .withTimeout(0.5),
       new RetractIntakeSafe(intake, cage, rightCatapult, leftCatapult),
       new TurnToAngleWithTimeout(drive, 20, 0.5),
       new DriveToDistanceWithTimeout(drive, -42.75, 0.5),
