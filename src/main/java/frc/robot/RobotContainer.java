@@ -45,7 +45,7 @@ public class RobotContainer {
   private final JoystickButton driverControllerStartButton = new JoystickButton(driverController, Constants.START_BUTTON);
   private final JoystickButton driverControllerRightBumper = new JoystickButton(driverController, Constants.RIGHT_BUMPER);
   private final JoystickButton driverControllerLeftBumper = new JoystickButton(driverController, Constants.LEFT_BUMPER);
-  private final JoystickButton driverControllerXButton = new JoystickButton(driverController, Constants.X_BUTTON);
+  //private final JoystickButton driverControllerXButton = new JoystickButton(driverController, Constants.X_BUTTON);
   private final Trigger driverControllerClimberButtons = driverControllerBackButton.and(driverControllerRightBumper).and(driverControllerLeftBumper);
 
   //operator controller
@@ -56,7 +56,7 @@ public class RobotContainer {
   private final JoystickButton operatorControllerRightBumper = new JoystickButton(operatorController, Constants.RIGHT_BUMPER);
   private final JoystickButton operatorControllerLeftBumper = new JoystickButton(operatorController, Constants.LEFT_BUMPER);
   private final JoystickButton operatorControllerYButton = new JoystickButton(operatorController, Constants.Y_BUTTON);
-
+  private final JoystickButton operatorControllerStartButton = new JoystickButton(operatorController, Constants.START_BUTTON);
 
   private final Cage cage = new Cage();
   private final Drive drive = new Drive();
@@ -117,10 +117,6 @@ public class RobotContainer {
     driverControllerClimberButtons.whenActive(new ClimberReleaseSafe(intake, cage, climber, rightCatapult, leftCatapult));
     driverControllerClimberButtons.whenActive(slowDrive);
     driverControllerBButton.whenHeld(new ClimberPullUpSafe(climber));
-    driverControllerXButton.toggleWhenPressed(
-      new LockOnTarget(drive, () -> getDriverLeftY(), () -> getDriverRightX())
-      .withInterrupt(()-> isCatapultExtended())
-      );
     //driverControllerStartButton.toggleWhenPressed(new CheesyDrivePID(drive, () -> getDriverLeftY(), () -> getDriverRightX() ));
     driverControllerStartButton.whenPressed(new ToggleClimberLimitEnforce(climber));
     
@@ -131,6 +127,9 @@ public class RobotContainer {
     operatorControllerXButton.whenPressed(new RetractIntakeSafe(intake, cage, rightCatapult, leftCatapult));
     operatorControllerBButton.whenHeld(new ExtendThenRunIntake(intake, cage, rightCatapult, leftCatapult, () -> {return Constants.INTAKE_CONSTANT_SPEED;} ));
     operatorControllerYButton.whenHeld(new ExtendThenRunIntake(intake, cage, rightCatapult, leftCatapult, ()-> {return Constants.INTAKE_CONSTANT_BACKWARD;} ));
+    operatorControllerStartButton.toggleWhenPressed(
+      new LockOnTarget(drive, () -> getDriverLeftY(), () -> getDriverRightX())
+      .withInterrupt(()-> isCatapultExtended()));
   }
 
   /**
