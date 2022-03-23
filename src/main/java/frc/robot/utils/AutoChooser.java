@@ -83,11 +83,11 @@ public class AutoChooser {
         autoTab.add("Which ball to get", selectedBallsChooser)
         .withWidget(BuiltInWidgets.kComboBoxChooser)
         .withSize(2, 1)
-        .withPosition(0, 3);
+        .withPosition(0, 2);
 
         autoTab.addString("Selected auto path", () -> message)
         .withSize(4, 1)
-        .withPosition(0, 4);
+        .withPosition(0, 3);
     }
 
     //displays what the current auto routine is, or an error if a combination with
