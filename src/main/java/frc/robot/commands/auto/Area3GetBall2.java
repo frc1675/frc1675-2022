@@ -29,7 +29,7 @@ public class Area3GetBall2 extends SequentialCommandGroup {
     addCommands(
       new PrepareCatapultFire(intake, cage),
       new FireSingleCatapultSafe(leftCatapult),
-      new TurnToAngleWithTimeout(drive, 22, 0.5),
+      new TurnToAngleWithTimeout(drive, -68, 0.5),
       new ParallelDeadlineGroup(
         new DriveToDistanceWithTimeout(drive, 62.75, 0.25),
         new ExtendThenRunIntake(intake, cage, rightCatapult, leftCatapult, () -> {return Constants.INTAKE_CONSTANT_SPEED;})

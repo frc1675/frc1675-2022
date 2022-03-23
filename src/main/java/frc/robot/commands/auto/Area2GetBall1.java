@@ -29,6 +29,7 @@ public class Area2GetBall1 extends SequentialCommandGroup {
     addCommands(
       new PrepareCatapultFire(intake, cage),
       new FireSingleCatapultSafe(leftCatapult),
+      new TurnToAngle(drive, -90, 0.5),
       new DriveToDistanceWithTimeout(drive, 55.25, 0.5),
       new TurnToAngleWithTimeout(drive, 45.5, 0.5),
       new ParallelDeadlineGroup(
