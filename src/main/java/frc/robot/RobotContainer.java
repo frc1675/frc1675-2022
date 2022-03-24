@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.climber.ToggleClimberLimitEnforce;
@@ -116,8 +117,11 @@ public class RobotContainer {
 
     //driver controller
     driverControllerClimberButtons.whenActive(
+      new ClimberReleaseSafe(intake, cage, climber, rightCatapult, leftCatapult)
+    );
+    driverControllerClimberButtons.whenActive(
     new SequentialCommandGroup(
-      new ClimberReleaseSafe(intake, cage, climber, rightCatapult, leftCatapult),
+      new WaitUntilCommand(()-> climber.getIsExtended()),
       slowDrive.withInterrupt(()-> {return !climber.getIsExtended();})
     ));
     
