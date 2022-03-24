@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.commands.commandGroups.ExtendThenRunIntake;
 import frc.robot.commands.commandGroups.FireBothCatapultsSafe;
-import frc.robot.commands.commandGroups.FireSingleCatapultSafe;
 import frc.robot.commands.commandGroups.PrepareCatapultFire;
 import frc.robot.commands.commandGroups.RetractIntakeSafe;
 import frc.robot.subsystems.Cage;
@@ -28,7 +27,7 @@ public class Area1GetBall1 extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new PrepareCatapultFire(intake, cage),
-      new FireSingleCatapultSafe(leftCatapult),
+      new FireBothCatapultsSafe(rightCatapult, leftCatapult),
       new TurnToAngleWithTimeout(drive, 78, 0.5),
       new DriveToDistanceWithTimeout(drive, 36.5, 0.5),
       new TurnToAngleWithTimeout(drive, -73.5, 0.5),

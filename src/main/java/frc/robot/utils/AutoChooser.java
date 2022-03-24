@@ -161,7 +161,7 @@ public class AutoChooser {
         //commands to auto, but others will do nothing.
         switch (selectedStart) {
             case AREA_1: switch (selectedBall) {
-                case NONE: auto.addCommands(new ScoreThenTaxi(drive, intake, cage, leftCatapult));
+                case NONE: auto.addCommands(new ScoreThenTaxi(drive, intake, cage, rightCatapult, leftCatapult));
                     break;
                 case BALL_1: auto.addCommands(new Area1GetBall1(drive, intake, cage, rightCatapult, leftCatapult));
                     break;
@@ -172,7 +172,7 @@ public class AutoChooser {
             break;
 
             case AREA_2: switch (selectedBall) {
-                case NONE: auto.addCommands(new ScoreThenTaxi(drive, intake, cage, leftCatapult));
+                case NONE: auto.addCommands(new ScoreThenTaxi(drive, intake, cage, rightCatapult, leftCatapult));
                     break;
                 case BALL_1: auto.addCommands(new Area2GetBall1(drive, intake, cage, rightCatapult, leftCatapult));
                     break;
@@ -183,7 +183,7 @@ public class AutoChooser {
             break;
 
             case AREA_3: switch (selectedBall) {
-                case NONE: auto.addCommands(new ScoreThenTaxi(drive, intake, cage, leftCatapult));
+                case NONE: auto.addCommands(new ScoreThenTaxi(drive, intake, cage, rightCatapult, leftCatapult));
                     break;
                 case BALL_2: auto.addCommands(new Area3GetBall2(drive, intake, cage,rightCatapult, leftCatapult));
                     break;
@@ -194,7 +194,7 @@ public class AutoChooser {
             break;
 
             case AREA_4: switch (selectedBall) {
-                case NONE: auto.addCommands(new ScoreThenTaxi(drive, intake, cage, leftCatapult));
+                case NONE: auto.addCommands(new ScoreThenTaxi(drive, intake, cage, rightCatapult, leftCatapult));
                     break;
                 case BALL_3: auto.addCommands(new Area4GetBall3(drive, intake, cage, rightCatapult, leftCatapult));
                     break;
