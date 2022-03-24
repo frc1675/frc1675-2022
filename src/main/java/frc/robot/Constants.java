@@ -95,4 +95,8 @@ public final class Constants {
     public static final int ROLLING_AVERAGE_LOOPS = 10;
     public static final double LOCK_ON_P = 0.04;
     public static final double LOCK_ON_D = 0.004;
+    public static final double MIN_VERT_OFFSET = 12.0;
+    public static final double MAX_VERT_OFFSET = 23.0;
+    public static final double MIN_AREA_PERCENT = 0.01;
+    public static final double MAX_AREA_PERCENT = 0.02;
 }
