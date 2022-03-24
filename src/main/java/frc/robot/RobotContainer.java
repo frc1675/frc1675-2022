@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.climber.ToggleClimberLimitEnforce;
@@ -96,8 +98,6 @@ public class RobotContainer {
 */
   private final AutoChooser autoChooser = new AutoChooser(drive, intake, cage, rightCatapult, leftCatapult);
 
-  private final CheesyDrive slowDrive = new CheesyDrive(drive, ()-> getDriverLeftY(), ()-> getDriverRightX() , Constants.CLIMBER_DRIVE_MULTIPLIER);
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
@@ -114,8 +114,15 @@ public class RobotContainer {
     drive.setDefaultCommand(new CheesyDrive(drive, () -> getDriverLeftY(), () -> getDriverRightX(), 1.0 ));
 
     //driver controller
-    driverControllerClimberButtons.whenActive(new ClimberReleaseSafe(intake, cage, climber, rightCatapult, leftCatapult));
-    driverControllerClimberButtons.whenActive(slowDrive);
+    driverControllerClimberButtons.whenActive(
+      new ClimberReleaseSafe(intake, cage, climber, rightCatapult, leftCatapult)
+    );
+    driverControllerClimberButtons.whenActive(
+    new SequentialCommandGroup(
+      new WaitUntilCommand(()-> climber.getIsExtended()),
+      new CheesyDrive(drive, ()-> getDriverLeftY(), ()-> getDriverRightX() , Constants.CLIMBER_DRIVE_MULTIPLIER).withInterrupt(()-> {return !climber.getIsExtended();})
+    ));
+    
     driverControllerBButton.whenHeld(new ClimberPullUpSafe(climber));
     //driverControllerStartButton.toggleWhenPressed(new CheesyDrivePID(drive, () -> getDriverLeftY(), () -> getDriverRightX() ));
     driverControllerStartButton.whenPressed(new ToggleClimberLimitEnforce(climber));
