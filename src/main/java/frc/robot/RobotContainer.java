@@ -98,8 +98,6 @@ public class RobotContainer {
 */
   private final AutoChooser autoChooser = new AutoChooser(drive, intake, cage, rightCatapult, leftCatapult);
 
-  private final CheesyDrive slowDrive = new CheesyDrive(drive, ()-> getDriverLeftY(), ()-> getDriverRightX() , Constants.CLIMBER_DRIVE_MULTIPLIER);
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
@@ -122,7 +120,7 @@ public class RobotContainer {
     driverControllerClimberButtons.whenActive(
     new SequentialCommandGroup(
       new WaitUntilCommand(()-> climber.getIsExtended()),
-      slowDrive.withInterrupt(()-> {return !climber.getIsExtended();})
+      new CheesyDrive(drive, ()-> getDriverLeftY(), ()-> getDriverRightX() , Constants.CLIMBER_DRIVE_MULTIPLIER).withInterrupt(()-> {return !climber.getIsExtended();})
     ));
     
     driverControllerBButton.whenHeld(new ClimberPullUpSafe(climber));
