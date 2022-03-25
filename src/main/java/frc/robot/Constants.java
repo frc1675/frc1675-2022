@@ -33,7 +33,7 @@ public final class Constants {
     public static final int POSITION_PID_SLOT = 0;
     public static final double ROTATIONS_PER_INCH = 0.4483;
     public static final double DRIVE_TOLERANCE = 2.0; //in inches, not rotations
-    public static final double CLIMBER_DRIVE_MULTIPLIER = 0.2;
+    public static final double CLIMBER_DRIVE_MULTIPLIER = 0.3;
     public static final double ANGLE_TOLERANCE = 1.0; //in degrees
 
     //climber constants
@@ -95,7 +95,7 @@ public final class Constants {
     public static final int ROLLING_AVERAGE_LOOPS = 10;
     public static final double LOCK_ON_P = 0.04;
     public static final double LOCK_ON_D = 0.004;
-    public static final double MIN_VERT_OFFSET = 12.0;
+    public static final double MIN_VERT_OFFSET = 11.0;
     public static final double MAX_VERT_OFFSET = 23.0;
     public static final double MIN_AREA_PERCENT = 0.01;
     public static final double MAX_AREA_PERCENT = 0.02;
