@@ -43,7 +43,7 @@ public class Area4GetBall3 extends SequentialCommandGroup {
         ),
         new SequentialCommandGroup(
           new RetractIntakeSafe(intake, cage, rightCatapult, leftCatapult),
-          new WaitCommand(0.7),
+          new WaitCommand(1.5),
           new PrepareCatapultFire(intake, cage)
         )
       ),
