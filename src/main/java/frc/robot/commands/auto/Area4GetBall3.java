@@ -30,13 +30,13 @@ public class Area4GetBall3 extends SequentialCommandGroup {
       new PrepareCatapultFire(intake, cage),
       new FireBothCatapultsSafe(rightCatapult, leftCatapult),
       new TurnToAngleWithTimeout(drive, -26, 0.5),
-      new ParallelCommandGroup(
+      new ParallelDeadlineGroup(
         new DriveToDistanceWithTimeout(drive, 46.5, 0.25),
         new ExtendThenRunIntake(intake, cage, rightCatapult, leftCatapult, () -> {return Constants.INTAKE_CONSTANT_SPEED;})
       ),
       new ExtendThenRunIntake(intake, cage, rightCatapult, leftCatapult, () -> {return Constants.INTAKE_CONSTANT_SPEED;})
       .withTimeout(0.5),
-      new ParallelDeadlineGroup(
+      new ParallelCommandGroup(
         new SequentialCommandGroup(
           new TurnToAngleWithTimeout(drive, 15, 0.5),
           new DriveToDistanceWithTimeout(drive, -36.75, 0.5)
