@@ -34,6 +34,13 @@ public class Vision {
 
         visionTab.addNumber("Area percent rolling average", () -> rollingAverageAreaPercent())
         .withPosition(3, 1);
+
+        visionTab.addBoolean("Ok to shoot?", () -> {return
+            isTargetValid()
+            && rollingAverageVertOffset() > Constants.MIN_VERT_OFFSET
+            && rollingAverageVertOffset() < Constants.MAX_VERT_OFFSET;
+        })
+        .withPosition(4, 0);
     }
 
     public static boolean isTargetValid() {
@@ -101,8 +108,13 @@ public class Vision {
     }
 
     /*public static double getDistanceFromSize() {
-        double hypotenuse = Math.sqrt(1 / areaPercent()) * Constants.PERCENT_AREA_TO_INCHES;
+        double hypotenuse = Math.sqrt(1 / rollingAverageAreaPercent()) * Constants.PERCENT_AREA_TO_INCHES;
         double distance = Math.sqrt(Math.pow(hypotenuse, 2) - Math.pow(Constants.HUB_HEIGHT, 2));
+        return distance;
+    }
+
+    public static double getDistanceFromAngle() {
+        double distance = Constants.HUB_HEIGHT / Math.tan(Math.toRadians(rollingAverageVertOffset + Constants.LIMELIGHT_ANGLE));
         return distance;
     }*/
 }

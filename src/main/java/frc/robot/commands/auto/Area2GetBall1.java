@@ -4,13 +4,13 @@
 
 package frc.robot.commands.auto;
 
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.commands.commandGroups.ExtendThenRunIntake;
 import frc.robot.commands.commandGroups.FireBothCatapultsSafe;
-import frc.robot.commands.commandGroups.FireSingleCatapultSafe;
 import frc.robot.commands.commandGroups.PrepareCatapultFire;
 import frc.robot.commands.commandGroups.RetractIntakeSafe;
 import frc.robot.subsystems.Cage;
@@ -28,7 +28,7 @@ public class Area2GetBall1 extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new PrepareCatapultFire(intake, cage),
-      new FireSingleCatapultSafe(leftCatapult),
+      new FireBothCatapultsSafe(rightCatapult, leftCatapult),
       new TurnToAngle(drive, -90, 0.5),
       new DriveToDistanceWithTimeout(drive, 55.25, 0.5),
       new TurnToAngleWithTimeout(drive, 45.5, 0.5),
@@ -38,14 +38,14 @@ public class Area2GetBall1 extends SequentialCommandGroup {
       ),
       new ExtendThenRunIntake(intake, cage, rightCatapult, leftCatapult, () -> {return Constants.INTAKE_CONSTANT_SPEED;})
       .withTimeout(0.5),
-      new ParallelDeadlineGroup(
+      new ParallelCommandGroup(
         new SequentialCommandGroup(
           new TurnToAngleWithTimeout(drive, 13, 0.5),
           new DriveToDistanceWithTimeout(drive, -42.75, 0.5)
         ),
         new SequentialCommandGroup(
           new RetractIntakeSafe(intake, cage, rightCatapult, leftCatapult),
-          new WaitCommand(0.7),
+          new WaitCommand(1.5),
           new PrepareCatapultFire(intake, cage)
         )
       ),
