@@ -70,6 +70,8 @@ public class Climber extends SubsystemBase {
         climberMotor2.set(Constants.CLIMBER_POWER);
     }else if(!enforceLimit && !switchPressed) {
       climberMotor2.set(Constants.CLIMBER_POWER);
+    }else{
+      System.out.println("Limit switch pressed");
     }
   }
 
