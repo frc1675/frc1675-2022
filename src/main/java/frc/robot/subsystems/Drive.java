@@ -5,11 +5,8 @@
 package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.REVPhysicsSim;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxPIDController;
 
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.I2C;
@@ -18,7 +15,10 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.utils.Vision;
+import net.thefletcher.revrobotics.CANSparkMax;
+import net.thefletcher.revrobotics.SparkMaxPIDController;
+import net.thefletcher.revrobotics.enums.ControlType;
+import net.thefletcher.revrobotics.enums.MotorType;
 
 public class Drive extends SubsystemBase {
   /** Creates a new Drive subsystem. */
@@ -43,13 +43,15 @@ public class Drive extends SubsystemBase {
 
     leftMain.setInverted(false);
     rightMain.setInverted(true);
-
+/*
     if(Robot.isSimulation()){
+
       REVPhysicsSim.getInstance().addSparkMax(rightMain, DCMotor.getNEO(1));
       REVPhysicsSim.getInstance().addSparkMax(rightFollower, DCMotor.getNEO(1));
       REVPhysicsSim.getInstance().addSparkMax(leftMain, DCMotor.getNEO(1));
       REVPhysicsSim.getInstance().addSparkMax(leftFollower, DCMotor.getNEO(1));
     }
+  */
 
     rightPIDController.setP(Constants.DRIVE_POSITION_P, Constants.POSITION_PID_SLOT);
     rightPIDController.setI(0, Constants.POSITION_PID_SLOT);
@@ -123,21 +125,22 @@ public class Drive extends SubsystemBase {
 
   //using pid
   public void setRightVelocityPID(double targetVelocity){
-    rightPIDController.setReference(targetVelocity, CANSparkMax.ControlType.kVelocity, Constants.VELOCITY_PID_SLOT);
+    rightPIDController.setReference(targetVelocity, ControlType.kVelocity, Constants.VELOCITY_PID_SLOT);
+    
   }
 
   public void setLeftVelocityPID(double targetVelocity){
-    leftPIDController.setReference(targetVelocity, CANSparkMax.ControlType.kVelocity, Constants.VELOCITY_PID_SLOT);
+    leftPIDController.setReference(targetVelocity, ControlType.kVelocity, Constants.VELOCITY_PID_SLOT);
   }
 
   public void setRightPositionPID(double inches, double maxSpeed) {
     rightPIDController.setOutputRange(-1 * maxSpeed, maxSpeed, Constants.POSITION_PID_SLOT);
-    rightPIDController.setReference(inches * Constants.ROTATIONS_PER_INCH, CANSparkMax.ControlType.kPosition, Constants.POSITION_PID_SLOT);
+    rightPIDController.setReference(inches * Constants.ROTATIONS_PER_INCH, ControlType.kPosition, Constants.POSITION_PID_SLOT);
   }
 
   public void setLeftPositionPID(double inches, double maxSpeed) {
     leftPIDController.setOutputRange(-1 * maxSpeed, maxSpeed, Constants.POSITION_PID_SLOT);
-    leftPIDController.setReference(inches * Constants.ROTATIONS_PER_INCH, CANSparkMax.ControlType.kPosition, Constants.POSITION_PID_SLOT);
+    leftPIDController.setReference(inches * Constants.ROTATIONS_PER_INCH, ControlType.kPosition, Constants.POSITION_PID_SLOT);
   }
 
   public void resetEncoders() {
