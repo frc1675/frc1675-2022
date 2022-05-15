@@ -3,6 +3,7 @@ package frc.robot.utils;
 import java.util.Map;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -49,6 +50,8 @@ public class AutoChooser {
     private SendableChooser<SelectedStart> selectedStartChooser = new SendableChooser<SelectedStart>();
     private SendableChooser<SelectedBall> selectedBallsChooser = new SendableChooser<SelectedBall>();
 
+    private int option;
+    private int prev;
 
     private NetworkTableEntry waitSlider = autoTab.add("Wait time", 0)
     .withWidget(BuiltInWidgets.kNumberSlider)
@@ -93,6 +96,14 @@ public class AutoChooser {
     //displays what the current auto routine is, or an error if a combination with
     //no routine is selected.
     //runs in disabledPeriodic.
+    public void checkOptionsAllowed(){
+
+        if(message == "We do not have an auto routine programmed for this combination. DO NOT START THE MATCH WITH THIS COMBINATION." && option != prev) {
+            DriverStation.reportWarning("NO AUTO ROUTINE PROGRAMMED FOR THE SELECTED OPTIONS! PLEASE CHOOSE ALLOWED OPTIONS!", false);
+        }
+        prev = option;
+    }
+
     public void checkAutoPath() {
         SelectedStart selectedStart = (SelectedStart)selectedStartChooser.getSelected();
         SelectedBall selectedBall = (SelectedBall)selectedBallsChooser.getSelected();
@@ -100,46 +111,61 @@ public class AutoChooser {
         switch (selectedStart) {
             case AREA_1: switch (selectedBall) {
                 case BALL_1: message = "Start area 1, get ball 1, drive to hub, shoot both";
+                    option = 0;
                     break;
                 case NONE: message = "Start area 1, shoot preloaded ball immediately. ";
+                    option = 1;
                     break;
                 case TWO_BALLS: message = "Three ball auto from area 1!";
+                    option = 2;
                     break;
                 default: message = "We do not have an auto routine programmed for this combination. DO NOT START THE MATCH WITH THIS COMBINATION.";
+                    option = 3;
                     break;
             }
             break;
 
             case AREA_2: switch (selectedBall) {
                 case BALL_1: message = "Start area 2, get ball 1, drive to hub, shoot both";
+                    option = 4;
                     break;
                 case BALL_2: message = "Start area 2, get ball 2, drive to hub, shoot both";
+                    option = 5;
                     break;
                 case NONE: message = "Start area 2, shoot preloaded ball immediately. ";
+                    option = 6;
                     break;
                 default: message = "We do not have an auto routine programmed for this combination. DO NOT START THE MATCH WITH THIS COMBINATION.";
+                    option = 7;
                     break;
             }
             break;
 
             case AREA_3: switch (selectedBall) {
                 case BALL_2: message = "Start area 3, get ball 2, drive to hub, shoot both";
+                    option = 8;
                     break;
                 case BALL_3: message = "Start area 3, get ball 3, drive to hub, shoot both";
+                    option = 9;
                     break;
                 case NONE: message = "Start area 3, shoot preloaded ball immediately. ";
+                    option = 10;
                     break;
                 default: message = "We do not have an auto routine programmed for this combination. DO NOT START THE MATCH WITH THIS COMBINATION.";
+                    option = 11;
                     break;
             }
             break;
 
             case AREA_4: switch (selectedBall) {
                 case BALL_3: message = "Start area 4, get ball 3, drive to hub, shoot both";
+                    option = 12;
                     break;
                 case NONE: message = "Start area 4, shoot preloaded ball immediately. ";
+                    option = 13;
                     break;
                 default: message = "We do not have an auto routine programmed for this combination. DO NOT START THE MATCH WITH THIS COMBINATION.";
+                    option = 14;
                     break;
             }
             break;
@@ -167,7 +193,7 @@ public class AutoChooser {
                     break;
                 case TWO_BALLS: auto.addCommands(new Area1ThreeBalls(drive, intake, cage, rightCatapult, leftCatapult));
                     break;
-                default: break;
+                default: DriverStation.reportWarning("NO AUTO ROUTINE PROGRAMMED FOR THE SELECTED OPTIONS! PROCEEDING WITHOUT AUTO ROUTINE!", false); break;
             }
             break;
 
@@ -178,7 +204,7 @@ public class AutoChooser {
                     break;
                 case BALL_2: auto.addCommands(new Area2GetBall2(drive, intake, cage, rightCatapult, leftCatapult));
                     break;
-                default: break;
+                default: DriverStation.reportWarning("NO AUTO ROUTINE PROGRAMMED FOR THE SELECTED OPTIONS! PROCEEDING WITHOUT AUTO ROUTINE!", false); break;
             }
             break;
 
@@ -189,7 +215,7 @@ public class AutoChooser {
                     break;
                 case BALL_3: auto.addCommands(new Area3GetBall3(drive, intake, cage, rightCatapult, leftCatapult));
                     break;
-                default: break;
+                default: DriverStation.reportWarning("NO AUTO ROUTINE PROGRAMMED FOR THE SELECTED OPTIONS! PROCEEDING WITHOUT AUTO ROUTINE!", false); break;
             }
             break;
 
@@ -198,7 +224,7 @@ public class AutoChooser {
                     break;
                 case BALL_3: auto.addCommands(new Area4GetBall3(drive, intake, cage, rightCatapult, leftCatapult));
                     break;
-                default: break;
+                default: DriverStation.reportWarning("NO AUTO ROUTINE PROGRAMMED FOR THE SELECTED OPTIONS! PROCEEDING WITHOUT AUTO ROUTINE!", false); break;
             }
             break;
 
