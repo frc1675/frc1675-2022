@@ -91,19 +91,20 @@ public class AutoChooser {
         autoTab.addString("Selected auto path", () -> message)
         .withSize(4, 1)
         .withPosition(0, 3);
+
+        autoTab.addBoolean("Ok to start?", () -> {return message != "We do not have an auto routine programmed for this combination. DO NOT START THE MATCH WITH THIS COMBINATION.";});
     }
 
-    //displays what the current auto routine is, or an error if a combination with
-    //no routine is selected.
-    //runs in disabledPeriodic.
     public void checkOptionsAllowed(){
-
         if(message == "We do not have an auto routine programmed for this combination. DO NOT START THE MATCH WITH THIS COMBINATION." && option != prev) {
             DriverStation.reportWarning("NO AUTO ROUTINE PROGRAMMED FOR THE SELECTED OPTIONS! PLEASE CHOOSE ALLOWED OPTIONS!", false);
         }
         prev = option;
     }
 
+    //displays what the current auto routine is, or an error if a combination with
+    //no routine is selected.
+    //runs in disabledPeriodic.
     public void checkAutoPath() {
         SelectedStart selectedStart = (SelectedStart)selectedStartChooser.getSelected();
         SelectedBall selectedBall = (SelectedBall)selectedBallsChooser.getSelected();
