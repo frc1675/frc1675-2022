@@ -3,6 +3,7 @@ package frc.robot.utils;
 import java.util.Map;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -10,6 +11,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants;
 import frc.robot.commands.auto.Area1GetBall1;
 import frc.robot.commands.auto.Area1ThreeBalls;
 import frc.robot.commands.auto.Area2GetBall1;
@@ -53,12 +55,14 @@ public class AutoChooser {
     private int option;
     private int prev;
 
+    private AutoChooserSendable sendable = new AutoChooserSendable();
+
     private NetworkTableEntry waitSlider = autoTab.add("Wait time", 0)
     .withWidget(BuiltInWidgets.kNumberSlider)
     .withProperties(Map.of("min", 0, "max", 10, "block increment", 0.5))
     .withSize(2, 1)
     .withPosition(0, 0)
-    .getEntry();
+    .getEntry(); 
 
     private String message;
 
@@ -68,6 +72,12 @@ public class AutoChooser {
         this.cage = cage;
         this.rightCatapult = rightCatapult;
         this.leftCatapult = leftCatapult;
+
+        SendableRegistry.add(sendable, Constants.WIDGET_NAME);
+        
+        autoTab.add(sendable)
+        .withWidget(Constants.WIDGET_NAME)
+        .withPosition(4, 1);
 
         selectedStartChooser.setDefaultOption("Start area 1", SelectedStart.AREA_1);
         selectedStartChooser.addOption("Start area 2", SelectedStart.AREA_2);
@@ -182,7 +192,7 @@ public class AutoChooser {
         SelectedStart selectedStart = (SelectedStart)selectedStartChooser.getSelected();
         SelectedBall selectedBall = (SelectedBall)selectedBallsChooser.getSelected();
 
-        auto.addCommands(new WaitCommand(waitSlider.getDouble(0)));
+        auto.addCommands(new WaitCommand(waitSlider.getDouble(0)));     
 
         //certain combinations of selectedStart and selectedBalls will add
         //commands to auto, but others will do nothing.
