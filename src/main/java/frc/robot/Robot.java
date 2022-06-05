@@ -65,7 +65,6 @@ public class Robot extends TimedRobot {
   public void disabledPeriodic() {
     //check if a valid autonomous sequence is selected
     robotContainer.checkAutoPath();
-    robotContainer.checkOptionsAllowed();
   }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */

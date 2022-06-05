@@ -153,10 +153,6 @@ public class RobotContainer {
     autoChooser.checkAutoPath();
   }
 
-  public void checkOptionsAllowed() {
-    autoChooser.checkOptionsAllowed();
-  }
-
   public void disablePneumatics() {
     rightCatapult.retract();
     leftCatapult.retract();
