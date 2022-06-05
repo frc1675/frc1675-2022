@@ -99,7 +99,4 @@ public final class Constants {
     public static final double MAX_VERT_OFFSET = 23.0;
     public static final double MIN_AREA_PERCENT = 0.01;
     public static final double MAX_AREA_PERCENT = 0.02;
-
-    //plugin constants
-    public static final String WIDGET_NAME = "1675FieldMap";
 }
