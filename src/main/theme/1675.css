@@ -1,0 +1,12 @@
+@import "/edu/wpi/first/shuffleboard/app/dark.css";
+/* This theme extends Shuffleboards built-in dark theme, which can be found here: 
+https://github.com/wpilibsuite/shuffleboard/blob/main/app/src/main/resources/edu/wpi/first/shuffleboard/app/dark.css 
+This theme overrides global colors with a few different shades of brown
+*/
+.root {
+    -swatch-100: #663d00;
+    -swatch-200: #663d00;
+    -swatch-300: #ff8c1a;
+    -swatch-400: #e67300;
+    -swatch-500: #b35900;
+}
