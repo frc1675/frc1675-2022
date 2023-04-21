@@ -2,6 +2,7 @@ package frc.robot.utils;
 
 import java.util.Map;
 
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -50,7 +51,7 @@ public class AutoChooser {
     private SendableChooser<SelectedBall> selectedBallsChooser = new SendableChooser<SelectedBall>();
 
 
-    private NetworkTableEntry waitSlider = autoTab.add("Wait time", 0)
+    private GenericEntry waitSlider = autoTab.add("Wait time", 0)
     .withWidget(BuiltInWidgets.kNumberSlider)
     .withProperties(Map.of("min", 0, "max", 10, "block increment", 0.5))
     .withSize(2, 1)
