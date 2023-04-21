@@ -114,29 +114,29 @@ public class RobotContainer {
     drive.setDefaultCommand(new CheesyDrive(drive, () -> getDriverLeftY(), () -> getDriverRightX(), 1.0 ));
 
     //driver controller
-    driverControllerClimberButtons.whenActive(
+    driverControllerClimberButtons.whileTrue(
       new ClimberReleaseSafe(intake, cage, climber, rightCatapult, leftCatapult)
     );
-    driverControllerClimberButtons.whenActive(
+    driverControllerClimberButtons.whileTrue(
     new SequentialCommandGroup(
       new WaitUntilCommand(()-> climber.getIsExtended()),
-      new CheesyDrive(drive, ()-> getDriverLeftY(), ()-> getDriverRightX() , Constants.CLIMBER_DRIVE_MULTIPLIER).withInterrupt(()-> {return !climber.getIsExtended();})
+      new CheesyDrive(drive, ()-> getDriverLeftY(), ()-> getDriverRightX() , Constants.CLIMBER_DRIVE_MULTIPLIER).until(()-> {return !climber.getIsExtended();})
     ));
     
-    driverControllerBButton.whenHeld(new ClimberPullUpSafe(climber));
+    driverControllerBButton.whileTrue(new ClimberPullUpSafe(climber));
     //driverControllerStartButton.toggleWhenPressed(new CheesyDrivePID(drive, () -> getDriverLeftY(), () -> getDriverRightX() ));
-    driverControllerStartButton.whenPressed(new ToggleClimberLimitEnforce(climber));
+    driverControllerStartButton.onTrue(new ToggleClimberLimitEnforce(climber));
     
     //operator controller
-    operatorControllerLeftBumper.whenPressed(new ConditionalCommand( new FireSingleCatapultSafe(rightCatapult), new PrintCommand("Catapult not prepared to fire."), () -> isCatapultPrepared() ));
-    operatorControllerRightBumper.whenPressed(new ConditionalCommand( new FireSingleCatapultSafe(leftCatapult), new PrintCommand("Catapult not prepared to fire."), () -> isCatapultPrepared() ));
-    operatorControllerAButton.whenPressed(new PrepareCatapultFire(intake, cage));
-    operatorControllerXButton.whenPressed(new RetractIntakeSafe(intake, cage, rightCatapult, leftCatapult));
-    operatorControllerBButton.whenHeld(new ExtendThenRunIntake(intake, cage, rightCatapult, leftCatapult, () -> {return Constants.INTAKE_CONSTANT_SPEED;} ));
-    operatorControllerYButton.whenHeld(new ExtendThenRunIntake(intake, cage, rightCatapult, leftCatapult, ()-> {return Constants.INTAKE_CONSTANT_BACKWARD;} ));
-    operatorControllerStartButton.toggleWhenPressed(
+    operatorControllerLeftBumper.onTrue(new ConditionalCommand( new FireSingleCatapultSafe(rightCatapult), new PrintCommand("Catapult not prepared to fire."), () -> isCatapultPrepared() ));
+    operatorControllerRightBumper.onTrue(new ConditionalCommand( new FireSingleCatapultSafe(leftCatapult), new PrintCommand("Catapult not prepared to fire."), () -> isCatapultPrepared() ));
+    operatorControllerAButton.onTrue(new PrepareCatapultFire(intake, cage));
+    operatorControllerXButton.onTrue(new RetractIntakeSafe(intake, cage, rightCatapult, leftCatapult));
+    operatorControllerBButton.whileTrue(new ExtendThenRunIntake(intake, cage, rightCatapult, leftCatapult, () -> {return Constants.INTAKE_CONSTANT_SPEED;} ));
+    operatorControllerYButton.whileTrue(new ExtendThenRunIntake(intake, cage, rightCatapult, leftCatapult, ()-> {return Constants.INTAKE_CONSTANT_BACKWARD;} ));
+    operatorControllerStartButton.toggleOnTrue(
       new LockOnTarget(drive, () -> getDriverLeftY(), () -> getDriverRightX())
-      .withInterrupt(()-> isCatapultExtended()));
+      .until(()-> isCatapultExtended()));
   }
 
   /**
