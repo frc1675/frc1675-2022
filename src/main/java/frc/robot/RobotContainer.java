@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.auto.TurnToAngle;
 import frc.robot.commands.climber.ToggleClimberLimitEnforce;
 import frc.robot.commands.commandGroups.ClimberPullUpSafe;
 import frc.robot.commands.commandGroups.ClimberReleaseSafe;
@@ -30,6 +31,7 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Intake;
 import frc.robot.utils.AutoChooser;
+import frc.robot.utils.DPadButton;
 import frc.robot.utils.DeadzoneCorrection;
 
 /**
@@ -59,6 +61,20 @@ public class RobotContainer {
   private final JoystickButton operatorControllerLeftBumper = new JoystickButton(operatorController, Constants.LEFT_BUMPER);
   private final JoystickButton operatorControllerYButton = new JoystickButton(operatorController, Constants.Y_BUTTON);
   private final JoystickButton operatorControllerStartButton = new JoystickButton(operatorController, Constants.START_BUTTON);
+
+  //accessible controller
+  private final Joystick accessibleController = new Joystick(Constants.ACCESSIBLE_CONTROLLER);
+  private final JoystickButton accessibleControllerXButton = new JoystickButton(accessibleController, Constants.X_BUTTON);
+  private final JoystickButton accessibleControllerAButton = new JoystickButton(accessibleController, Constants.A_BUTTON);
+  private final JoystickButton accessibleControllerBButton = new JoystickButton(accessibleController, Constants.B_BUTTON);
+  private final JoystickButton accessibleControllerRightBumper = new JoystickButton(accessibleController, Constants.RIGHT_BUMPER);
+  private final JoystickButton accessibleControllerLeftBumper = new JoystickButton(accessibleController, Constants.LEFT_BUMPER);
+  private final JoystickButton accessibleControllerYButton = new JoystickButton(accessibleController, Constants.Y_BUTTON);
+  private final JoystickButton accessibleControllerStartButton = new JoystickButton(accessibleController, Constants.START_BUTTON);
+  private final DPadButton accesibleDPadUp = new DPadButton(accessibleController, DPadButton.Direction.UP);
+  private final DPadButton accessibleDPadRight = new DPadButton(accessibleController, DPadButton.Direction.RIGHT);
+  private final DPadButton accessibleDPadLeft = new DPadButton(accessibleController, DPadButton.Direction.LEFT);
+  private final DPadButton accesibleDPadDown = new DPadButton(accessibleController, DPadButton.Direction.DOWN);
 
   private final Cage cage = new Cage();
   private final Drive drive = new Drive();
@@ -137,6 +153,16 @@ public class RobotContainer {
     operatorControllerStartButton.toggleOnTrue(
       new LockOnTarget(drive, () -> getDriverLeftY(), () -> getDriverRightX())
       .until(()-> isCatapultExtended()));
+
+      //accessibleController
+      accessibleControllerAButton.whileTrue(new CheesyDrive(drive, ()->0.4, ()->0.0, 1.0));
+      accessibleControllerBButton.whileTrue(new CheesyDrive(drive, ()->-0.4, ()->0.0, 1.0));
+      accesibleDPadUp.onTrue(new TurnToAngle(drive, 0,.3) );
+      accessibleDPadRight.onTrue(new TurnToAngle(drive, 90,.2) );
+      accesibleDPadDown.onTrue(new TurnToAngle(drive, 180,.2) );
+      accessibleDPadLeft.onTrue(new TurnToAngle(drive, 270,.2) );
+
+
   }
 
   /**
