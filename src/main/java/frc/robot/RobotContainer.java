@@ -85,6 +85,12 @@ public class RobotContainer {
   private final Catapult rightCatapult = new Catapult('r');
   private final Catapult leftCatapult = new Catapult('l');
 
+  private final Joystick adaptiveOperatorController = new Joystick(Constants.ADAPTIVE_OPERATOR_CONTROLLER);
+  private final JoystickButton adaptiveOperatorControllerAButton = new JoystickButton(adaptiveOperatorController, Constants.A_BUTTON);
+  private final JoystickButton adaptiveOperatorControllerBButton = new JoystickButton(adaptiveOperatorController, Constants.B_BUTTON);
+  private final JoystickButton adaptiveOperatorControllerYButton = new JoystickButton(adaptiveOperatorController, Constants.Y_BUTTON);
+  
+
   private boolean isCatapultPrepared(){
     return intake.isExtended() && !cage.isClosed();
   }
@@ -129,6 +135,10 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    adaptiveOperatorControllerAButton.onTrue(new ConditionalCommand( new FireSingleCatapultSafe(rightCatapult), new PrintCommand("Catapult not prepared to fire."), () -> isCatapultPrepared() ));
+    adaptiveOperatorControllerBButton.onTrue(new PrepareCatapultFire(intake, cage));
+    adaptiveOperatorControllerYButton.onTrue(new RetractIntakeSafe(intake, cage, rightCatapult, leftCatapult));
+
     drive.setDefaultCommand(new CheesyDrive(drive, () -> getDriverLeftY(), () -> getDriverRightX(), 1.0 ));
 
     //driver controller

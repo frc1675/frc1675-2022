@@ -70,6 +70,7 @@ public final class Constants {
     public static final int DRIVER_CONTROLLER = 0;
     public static final int OPERATOR_CONTROLLER = 1;
     public static final int ACCESSIBLE_CONTROLLER = 2;
+    public static final int ADAPTIVE_OPERATOR_CONTROLLER = 3;
 
     public static final int LEFT_X_AXIS = 0;
     public static final int LEFT_Y_AXIS= 1;
