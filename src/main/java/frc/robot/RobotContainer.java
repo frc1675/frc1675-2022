@@ -31,8 +31,8 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Intake;
 import frc.robot.utils.AutoChooser;
-import frc.robot.utils.DPadButton;
 import frc.robot.utils.DeadzoneCorrection;
+import frc.robot.utils.DPadButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -51,6 +51,17 @@ public class RobotContainer {
   private final JoystickButton driverControllerLeftBumper = new JoystickButton(driverController, Constants.LEFT_BUMPER);
   //private final JoystickButton driverControllerXButton = new JoystickButton(driverController, Constants.X_BUTTON);
   private final Trigger driverControllerClimberButtons = driverControllerBackButton.and(driverControllerRightBumper).and(driverControllerLeftBumper);
+  
+
+  //Adaptive Driver controller
+  private final Joystick adaptiveController = new Joystick(Constants.ACCESSIBLE_CONTROLLER);
+  private final JoystickButton adaptiveControllerAButton = new  JoystickButton(adaptiveController,Constants.A_BUTTON);
+  private final JoystickButton adaptiveControllerBButton = new JoystickButton(adaptiveController,Constants.B_BUTTON);
+
+  private final DPadButton adaptiveDriverDPadUp = new DPadButton(driverController, DPadButton.Direction.UP);
+  private final DPadButton adaptiveDriverDPadRight = new DPadButton(driverController, DPadButton.Direction.RIGHT);
+  private final DPadButton adaptiveDriverDPadLeft = new DPadButton(driverController, DPadButton.Direction.LEFT);
+  private final DPadButton adaptiveDriverDPadDown = new DPadButton(driverController, DPadButton.Direction.DOWN);
 
   //operator controller
   private final Joystick operatorController = new Joystick(Constants.OPERATOR_CONTROLLER);
@@ -62,19 +73,10 @@ public class RobotContainer {
   private final JoystickButton operatorControllerYButton = new JoystickButton(operatorController, Constants.Y_BUTTON);
   private final JoystickButton operatorControllerStartButton = new JoystickButton(operatorController, Constants.START_BUTTON);
 
-  //accessible controller
-  private final Joystick accessibleController = new Joystick(Constants.ACCESSIBLE_CONTROLLER);
-  private final JoystickButton accessibleControllerXButton = new JoystickButton(accessibleController, Constants.X_BUTTON);
-  private final JoystickButton accessibleControllerAButton = new JoystickButton(accessibleController, Constants.A_BUTTON);
-  private final JoystickButton accessibleControllerBButton = new JoystickButton(accessibleController, Constants.B_BUTTON);
-  private final JoystickButton accessibleControllerRightBumper = new JoystickButton(accessibleController, Constants.RIGHT_BUMPER);
-  private final JoystickButton accessibleControllerLeftBumper = new JoystickButton(accessibleController, Constants.LEFT_BUMPER);
-  private final JoystickButton accessibleControllerYButton = new JoystickButton(accessibleController, Constants.Y_BUTTON);
-  private final JoystickButton accessibleControllerStartButton = new JoystickButton(accessibleController, Constants.START_BUTTON);
-  private final DPadButton accesibleDPadUp = new DPadButton(accessibleController, DPadButton.Direction.UP);
-  private final DPadButton accessibleDPadRight = new DPadButton(accessibleController, DPadButton.Direction.RIGHT);
-  private final DPadButton accessibleDPadLeft = new DPadButton(accessibleController, DPadButton.Direction.LEFT);
-  private final DPadButton accesibleDPadDown = new DPadButton(accessibleController, DPadButton.Direction.DOWN);
+  private final DPadButton operatorDPadUp = new DPadButton(operatorController, DPadButton.Direction.UP);
+  private final DPadButton operatorDPadRight = new DPadButton(operatorController, DPadButton.Direction.RIGHT);
+  private final DPadButton operatorDPadLeft = new DPadButton(operatorController, DPadButton.Direction.LEFT);
+  private final DPadButton operatorDPadDown = new DPadButton(operatorController, DPadButton.Direction.DOWN);
 
   private final Cage cage = new Cage();
   private final Drive drive = new Drive();
@@ -130,39 +132,35 @@ public class RobotContainer {
     drive.setDefaultCommand(new CheesyDrive(drive, () -> getDriverLeftY(), () -> getDriverRightX(), 1.0 ));
 
     //driver controller
-    driverControllerClimberButtons.whileTrue(
+    driverControllerClimberButtons.whenActive(
       new ClimberReleaseSafe(intake, cage, climber, rightCatapult, leftCatapult)
     );
-    driverControllerClimberButtons.whileTrue(
+    driverControllerClimberButtons.whenActive(
     new SequentialCommandGroup(
       new WaitUntilCommand(()-> climber.getIsExtended()),
-      new CheesyDrive(drive, ()-> getDriverLeftY(), ()-> getDriverRightX() , Constants.CLIMBER_DRIVE_MULTIPLIER).until(()-> {return !climber.getIsExtended();})
+      new CheesyDrive(drive, ()-> getDriverLeftY(), ()-> getDriverRightX() , Constants.CLIMBER_DRIVE_MULTIPLIER).withInterrupt(()-> {return !climber.getIsExtended();})
     ));
     
-    driverControllerBButton.whileTrue(new ClimberPullUpSafe(climber));
+    driverControllerBButton.whenHeld(new ClimberPullUpSafe(climber));
     //driverControllerStartButton.toggleWhenPressed(new CheesyDrivePID(drive, () -> getDriverLeftY(), () -> getDriverRightX() ));
-    driverControllerStartButton.onTrue(new ToggleClimberLimitEnforce(climber));
+    driverControllerStartButton.whenPressed(new ToggleClimberLimitEnforce(climber));
     
     //operator controller
-    operatorControllerLeftBumper.onTrue(new ConditionalCommand( new FireSingleCatapultSafe(rightCatapult), new PrintCommand("Catapult not prepared to fire."), () -> isCatapultPrepared() ));
-    operatorControllerRightBumper.onTrue(new ConditionalCommand( new FireSingleCatapultSafe(leftCatapult), new PrintCommand("Catapult not prepared to fire."), () -> isCatapultPrepared() ));
-    operatorControllerAButton.onTrue(new PrepareCatapultFire(intake, cage));
-    operatorControllerXButton.onTrue(new RetractIntakeSafe(intake, cage, rightCatapult, leftCatapult));
-    operatorControllerBButton.whileTrue(new ExtendThenRunIntake(intake, cage, rightCatapult, leftCatapult, () -> {return Constants.INTAKE_CONSTANT_SPEED;} ));
-    operatorControllerYButton.whileTrue(new ExtendThenRunIntake(intake, cage, rightCatapult, leftCatapult, ()-> {return Constants.INTAKE_CONSTANT_BACKWARD;} ));
-    operatorControllerStartButton.toggleOnTrue(
+    operatorControllerLeftBumper.whenPressed(new ConditionalCommand( new FireSingleCatapultSafe(rightCatapult), new PrintCommand("Catapult not prepared to fire."), () -> isCatapultPrepared() ));
+    operatorControllerRightBumper.whenPressed(new ConditionalCommand( new FireSingleCatapultSafe(leftCatapult), new PrintCommand("Catapult not prepared to fire."), () -> isCatapultPrepared() ));
+    operatorControllerAButton.whenPressed(new PrepareCatapultFire(intake, cage));
+    operatorControllerXButton.whenPressed(new RetractIntakeSafe(intake, cage, rightCatapult, leftCatapult));
+    operatorControllerBButton.whenHeld(new ExtendThenRunIntake(intake, cage, rightCatapult, leftCatapult, () -> {return Constants.INTAKE_CONSTANT_SPEED;} ));
+    operatorControllerYButton.whenHeld(new ExtendThenRunIntake(intake, cage, rightCatapult, leftCatapult, ()-> {return Constants.INTAKE_CONSTANT_BACKWARD;} ));
+    operatorControllerStartButton.toggleWhenPressed(
       new LockOnTarget(drive, () -> getDriverLeftY(), () -> getDriverRightX())
-      .until(()-> isCatapultExtended()));
-
-      //accessibleController
-      accessibleControllerAButton.whileTrue(new CheesyDrive(drive, ()->0.4, ()->0.0, 1.0));
-      accessibleControllerBButton.whileTrue(new CheesyDrive(drive, ()->-0.4, ()->0.0, 1.0));
-      accesibleDPadUp.onTrue(new TurnToAngle(drive, 0,.3) );
-      accessibleDPadRight.onTrue(new TurnToAngle(drive, 90,.2) );
-      accesibleDPadDown.onTrue(new TurnToAngle(drive, 180,.2) );
-      accessibleDPadLeft.onTrue(new TurnToAngle(drive, 270,.2) );
+      .withInterrupt(()-> isCatapultExtended()));
 
 
+      adaptiveDriverDPadUp.whenPressed(new TurnToAngle(drive, 0, 0.2));
+      adaptiveDriverDPadRight.whenPressed(new TurnToAngle(drive, 90, 0.2));
+      adaptiveDriverDPadLeft.whenPressed(new TurnToAngle(drive, 180, 0.2));
+      adaptiveDriverDPadDown.whenPressed(new TurnToAngle(drive, 270, 0.2));
   }
 
   /**
